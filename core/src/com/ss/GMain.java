@@ -5,6 +5,7 @@ import com.platform.IPlatform;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.ss.core.exSprite.particle.GParticleSystem;
+import com.ss.core.util.GAssetsManager;
 import com.ss.core.util.GDirectedGame;
 import com.ss.core.util.GScreen;
 import com.ss.core.util.GStage;
@@ -19,7 +20,7 @@ public class GMain extends GDirectedGame {
   public static int screenHeight = 0;
   public static int screenWidth = 0;
   public static final int testType = 2;
-  public static TextureAtlas textureAtlas;
+  public static TextureAtlas textureAtlas, weaponAtlas;
   public static float ratioX, ratioY;
 
   public static IPlatform platform;
@@ -85,7 +86,8 @@ public class GMain extends GDirectedGame {
 
   public void create()
   {
-//      textureAtlas = GAssetsManager.getTextureAtlas("ColorMatch.atlas");
+      textureAtlas = GAssetsManager.getTextureAtlas("IdleBoat.atlas");
+      weaponAtlas = GAssetsManager.getTextureAtlas("Weapon.atlas");
       this.init();
       C.init();
       this.setScreen(menuScreen());

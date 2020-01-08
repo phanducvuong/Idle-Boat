@@ -1,0 +1,34 @@
+
+Weapon.png
+size: 256,64
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+bullet_0
+  rotate: false
+  xy: 102, 4
+  size: 14, 14
+  orig: 14, 14
+  offset: 0, 0
+  index: -1
+cannon_0
+  rotate: false
+  xy: 2, 2
+  size: 48, 54
+  orig: 48, 54
+  offset: 0, 0
+  index: -1
+cannon_0_fight
+  rotate: false
+  xy: 102, 20
+  size: 32, 36
+  orig: 32, 36
+  offset: 0, 0
+  index: -1
+cannon_2
+  rotate: false
+  xy: 52, 2
+  size: 48, 54
+  orig: 48, 54
+  offset: 0, 0
+  index: -1
