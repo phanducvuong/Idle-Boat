@@ -9,9 +9,14 @@ import java.util.List;
 public class LogicGame {
 
   private static LogicGame instance;
+  private Game G;
 
-  public static LogicGame getInstance() {
-    return instance == null ? instance = new LogicGame() : instance;
+  public static LogicGame getInstance(Game G) {
+    return instance == null ? instance = new LogicGame(G) : instance;
+  }
+
+  private LogicGame(Game G) {
+    this.G = G;
   }
 
   private PosOfWeapon getPosWeaponAtV(Vector2 v, List<PosOfWeapon> list) {
@@ -21,16 +26,32 @@ public class LogicGame {
     return null;
   }
 
-  private void chkIdCannonAndMerge(PosOfWeapon pFrom, PosOfWeapon pTo) {
+  private void chkIdCannonAndMerge(Vector2 vFrom, Vector2 vTo, List<PosOfWeapon> list) {
 
-    Weapon wFrom = pFrom.getWeapon();
-    Weapon wTo = pTo.getWeapon();
+    PosOfWeapon pFrom = getPosWeaponAtV(vFrom, list);
+    PosOfWeapon pTo = getPosWeaponAtV(vTo, list);
 
-    if (wFrom.getIdCannon() != wTo.getIdCannon())
-      System.out.println(wFrom.getIdCannon() + "  " + wTo.getIdCannon());
+    try {
+      if (pFrom.getWeapon().getIdCannon() != pTo.getWeapon().getIdCannon()) {
+
+        Weapon weTemp = pTo.getWeapon();
+        pTo.setWeapon(pFrom.getWeapon());
+        pFrom.setWeapon(weTemp);
+
+        pFrom.getWeapon().setPosWeapon(pFrom.pos);
+        pTo.getWeapon().setPosWeapon(pTo.pos);
+
+      }
+      else { //idCannon equal => weapon level up and update weapon at vTo, release vFrome
+
+      }
+
+    }
+    catch (Exception ex) {  } //error
+
   }
 
-  public void checkMergeWeapon(Vector2 vFrom, Vector2 vTo, List<PosOfWeapon> list) {
+  public void chkMergeWeapon(Vector2 vFrom, Vector2 vTo, List<PosOfWeapon> list) {
     PosOfWeapon pTo = getPosWeaponAtV(vTo, list);
     PosOfWeapon pFrom = getPosWeaponAtV(vFrom, list);
 
@@ -39,12 +60,13 @@ public class LogicGame {
       if (pTo.getIsEmpty()) {
         pTo.setEmpty(false);
         pTo.setWeapon(pFrom.getWeapon());
+        pTo.getWeapon().setPosWeapon(pTo.pos);
 
         pFrom.setWeapon(null);
         pFrom.setEmpty(true);
       }
       else
-        chkIdCannonAndMerge(pFrom, pTo);
+        chkIdCannonAndMerge(vFrom, vTo, list);
     }
   }
 }

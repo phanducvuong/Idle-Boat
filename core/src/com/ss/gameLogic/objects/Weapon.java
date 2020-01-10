@@ -10,7 +10,6 @@ import com.ss.GMain;
 import com.ss.core.util.GUI;
 import com.ss.gameLogic.Game;
 import com.ss.gameLogic.Interface.IMerge;
-import com.ss.gameLogic.config.Config;
 
 public class Weapon {
 
@@ -18,7 +17,7 @@ public class Weapon {
   private Image cannon, cannonFight, bullet;
   private int attackBullet;
   private int idCannon;
-  private Vector2 pos, tempPos;
+  private Vector2 pos;
 
   private Group gUI;
   private Game G;
@@ -45,10 +44,21 @@ public class Weapon {
 
   private void dragAndDrop() {
     cannon.addListener(new DragListener() {
+
+      @Override
+      public void dragStart(InputEvent event, float x, float y, int pointer) {
+        super.dragStart(event, x, y, pointer);
+
+        cannon.setZIndex(1000);
+
+      }
+
       @Override
       public void drag(InputEvent event, float x, float y, int pointer) {
         super.dragStart(event, x, y, pointer);
+
         cannon.moveBy(x - cannon.getWidth() / 2, y - cannon.getHeight() / 2);
+
       }
 
       @Override
@@ -69,19 +79,23 @@ public class Weapon {
       if (x >= v.x - 44 && x <= v.x + 44 && y >= v.y - 88 && y <= v.y + 44) {
 
         if (pos != v) {
-          tempPos = pos;
-          pos = v;
+          iMerge.mergeWeapon(pos, v);
+          break;
+        }
+        else {
           cannon.setPosition(pos.x + cannon.getWidth()/2 - 25, pos.y - 20);
-          iMerge.mergeWeapon(tempPos, pos);
+          break;
         }
       }
-      else
+      else {
         cannon.setPosition(pos.x + cannon.getWidth()/2 - 25, pos.y - 20);
+      }
     }
   }
 
-  public void setPosWeapon(Vector2 v) {
-    cannon.setPosition(v.x + cannon.getWidth()/2 - 25, v.y - 20);
+  public void setPosWeapon(Vector2 vTo) {
+    pos = vTo;
+    cannon.setPosition(vTo.x + cannon.getWidth()/2 - 25, vTo.y - 20);
   }
 
   public int getIdCannon() {

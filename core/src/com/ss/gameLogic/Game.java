@@ -8,6 +8,7 @@ import com.ss.GMain;
 import com.ss.core.util.GLayer;
 import com.ss.core.util.GStage;
 import com.ss.core.util.GUI;
+import com.ss.data.Data;
 import com.ss.gameLogic.Interface.IMerge;
 import com.ss.gameLogic.config.Config;
 import com.ss.gameLogic.objects.PosOfWeapon;
@@ -20,10 +21,12 @@ public class Game implements IMerge {
 
   private TextureAtlas textureAtlas = GMain.textureAtlas;
   private Group gUI;
-  private LogicGame logicGame = LogicGame.getInstance();
+  private LogicGame logicGame = LogicGame.getInstance(this);
 
   public List<PosOfWeapon> listPosOfWeapon;
   public List<Weapon> listWeapon;
+
+  private Data data = Data.getInstance();
 
   public Game() {
     gUI = new Group();
@@ -67,7 +70,7 @@ public class Game implements IMerge {
   }
 
   @Override
-  public void mergeWeapon(Vector2 vFrome, Vector2 vTo) {
-    logicGame.checkMergeWeapon(vFrome, vTo, listPosOfWeapon);
+  public void mergeWeapon(Vector2 vFrom, Vector2 vTo) {
+    logicGame.chkMergeWeapon(vFrom, vTo, listPosOfWeapon);
   }
 }

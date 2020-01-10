@@ -10,6 +10,7 @@ import com.ss.core.util.GDirectedGame;
 import com.ss.core.util.GScreen;
 import com.ss.core.util.GStage;
 import com.ss.core.util.GStage.StageBorder;
+import com.ss.data.Data;
 import com.ss.gameLogic.config.C;
 import com.ss.scenes.GameScene;
 
@@ -90,6 +91,7 @@ public class GMain extends GDirectedGame {
       weaponAtlas = GAssetsManager.getTextureAtlas("Weapon.atlas");
       this.init();
       C.init();
+      Data.getInstance();
       this.setScreen(menuScreen());
   }
   
