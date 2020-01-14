@@ -19,6 +19,9 @@ public class WeaponJson {
   @SerializedName("id_cannon")
   private int idCannon;
 
+  @SerializedName("speed")
+  private float speed;
+
   public String getCannon() {
     return cannon;
   }
@@ -57,5 +60,13 @@ public class WeaponJson {
 
   public void setIdCannon(int idCannon) {
     this.idCannon = idCannon;
+  }
+
+  public float getSpeed() {
+    return speed;
+  }
+
+  public void setSpeed(float speed) {
+    this.speed = speed;
   }
 }

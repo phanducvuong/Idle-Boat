@@ -17,4 +17,10 @@ public class Config {
     public static final Vector2 POS_7 = new Vector2(POS_6.x, POS_6.y + 130);
     public static final Vector2 POS_8 = new Vector2(POS_2.x + 115, POS_6.y);
     public static final Vector2 POS_9 = new Vector2(POS_8.x, POS_7.y);
+
+    public static final Vector2 POS_BOAT_0 = new Vector2(POS_6.x - 10, POS_6.y + 20);
+    public static final Vector2 POS_BOAT_1 = new Vector2(POS_0.x - 10, POS_0.y + 20); // x: min, y: max
+    public static final Vector2 POS_BOAT_2 = new Vector2(POS_1.x - 10, POS_1.y + 20);
+    public static final Vector2 POS_BOAT_3 = new Vector2(POS_2.x - 10, POS_2.y + 20);
+    public static final Vector2 POS_BOAT_4 = new Vector2(POS_8.x - 10, POS_8.y + 20);
 }

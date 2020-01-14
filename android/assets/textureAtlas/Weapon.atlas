@@ -1,34 +1,489 @@
 
 Weapon.png
-size: 256,64
+size: 2048,128
 format: RGBA8888
 filter: Nearest,Nearest
 repeat: none
 bullet_0
   rotate: false
-  xy: 102, 4
-  size: 14, 14
-  orig: 14, 14
+  xy: 839, 8
+  size: 18, 18
+  orig: 18, 18
+  offset: 0, 0
+  index: -1
+bullet_10
+  rotate: false
+  xy: 1100, 2
+  size: 12, 27
+  orig: 12, 27
+  offset: 0, 0
+  index: -1
+bullet_11
+  rotate: false
+  xy: 816, 5
+  size: 21, 20
+  orig: 21, 20
+  offset: 0, 0
+  index: -1
+bullet_12
+  rotate: false
+  xy: 841, 103
+  size: 5, 23
+  orig: 5, 23
+  offset: 0, 0
+  index: -1
+bullet_13
+  rotate: false
+  xy: 824, 101
+  size: 15, 25
+  orig: 15, 25
+  offset: 0, 0
+  index: -1
+bullet_14
+  rotate: false
+  xy: 1148, 2
+  size: 8, 40
+  orig: 8, 40
+  offset: 0, 0
+  index: -1
+bullet_15
+  rotate: false
+  xy: 1286, 73
+  size: 11, 53
+  orig: 11, 53
+  offset: 0, 0
+  index: -1
+bullet_16
+  rotate: false
+  xy: 1173, 78
+  size: 35, 48
+  orig: 35, 48
+  offset: 0, 0
+  index: -1
+bullet_17
+  rotate: false
+  xy: 1239, 10
+  size: 28, 50
+  orig: 28, 50
+  offset: 0, 0
+  index: -1
+bullet_18
+  rotate: false
+  xy: 1264, 68
+  size: 20, 58
+  orig: 20, 58
+  offset: 0, 0
+  index: -1
+bullet_19
+  rotate: false
+  xy: 907, 18
+  size: 43, 53
+  orig: 43, 53
+  offset: 0, 0
+  index: -1
+bullet_2
+  rotate: false
+  xy: 840, 29
+  size: 16, 18
+  orig: 16, 18
+  offset: 0, 0
+  index: -1
+bullet_20
+  rotate: false
+  xy: 749, 8
+  size: 41, 17
+  orig: 41, 17
+  offset: 0, 0
+  index: -1
+bullet_21
+  rotate: false
+  xy: 1081, 88
+  size: 32, 38
+  orig: 32, 38
+  offset: 0, 0
+  index: -1
+bullet_22
+  rotate: false
+  xy: 49, 59
+  size: 26, 8
+  orig: 26, 8
+  offset: 0, 0
+  index: -1
+bullet_23
+  rotate: false
+  xy: 792, 3
+  size: 22, 22
+  orig: 22, 22
+  offset: 0, 0
+  index: -1
+bullet_4
+  rotate: false
+  xy: 1269, 17
+  size: 16, 49
+  orig: 16, 49
+  offset: 0, 0
+  index: -1
+bullet_5
+  rotate: false
+  xy: 1115, 90
+  size: 18, 36
+  orig: 18, 36
+  offset: 0, 0
+  index: -1
+bullet_6
+  rotate: false
+  xy: 820, 28
+  size: 18, 19
+  orig: 18, 19
+  offset: 0, 0
+  index: -1
+bullet_7
+  rotate: false
+  xy: 1206, 26
+  size: 31, 50
+  orig: 31, 50
+  offset: 0, 0
+  index: -1
+bullet_8
+  rotate: false
+  xy: 797, 27
+  size: 21, 20
+  orig: 21, 20
+  offset: 0, 0
+  index: -1
+bullet_9
+  rotate: false
+  xy: 1068, 2
+  size: 30, 27
+  orig: 30, 27
   offset: 0, 0
   index: -1
 cannon_0
   rotate: false
-  xy: 2, 2
+  xy: 502, 72
   size: 48, 54
   orig: 48, 54
   offset: 0, 0
   index: -1
 cannon_0_fight
   rotate: false
-  xy: 102, 20
-  size: 32, 36
-  orig: 32, 36
+  xy: 652, 72
+  size: 48, 54
+  orig: 48, 54
+  offset: 0, 0
+  index: -1
+cannon_1
+  rotate: false
+  xy: 552, 72
+  size: 48, 54
+  orig: 48, 54
+  offset: 0, 0
+  index: -1
+cannon_10
+  rotate: false
+  xy: 301, 68
+  size: 49, 58
+  orig: 49, 58
+  offset: 0, 0
+  index: -1
+cannon_11
+  rotate: false
+  xy: 459, 2
+  size: 45, 68
+  orig: 45, 68
+  offset: 0, 0
+  index: -1
+cannon_11_fight
+  rotate: false
+  xy: 506, 2
+  size: 45, 68
+  orig: 45, 68
+  offset: 0, 0
+  index: -1
+cannon_12
+  rotate: false
+  xy: 402, 72
+  size: 48, 54
+  orig: 48, 54
+  offset: 0, 0
+  index: -1
+cannon_12_fight
+  rotate: false
+  xy: 603, 16
+  size: 48, 54
+  orig: 48, 54
+  offset: 0, 0
+  index: -1
+cannon_13
+  rotate: false
+  xy: 216, 2
+  size: 48, 56
+  orig: 48, 56
+  offset: 0, 0
+  index: -1
+cannon_13_fight
+  rotate: false
+  xy: 352, 70
+  size: 48, 56
+  orig: 48, 56
+  offset: 0, 0
+  index: -1
+cannon_14
+  rotate: false
+  xy: 702, 83
+  size: 59, 43
+  orig: 59, 43
+  offset: 0, 0
+  index: -1
+cannon_14_fight
+  rotate: false
+  xy: 763, 101
+  size: 59, 25
+  orig: 59, 25
+  offset: 0, 0
+  index: -1
+cannon_15
+  rotate: false
+  xy: 49, 69
+  size: 59, 57
+  orig: 59, 57
+  offset: 0, 0
+  index: -1
+cannon_15_fight
+  rotate: false
+  xy: 2, 5
+  size: 59, 44
+  orig: 59, 44
+  offset: 0, 0
+  index: -1
+cannon_16
+  rotate: false
+  xy: 2, 51
+  size: 45, 75
+  orig: 45, 75
+  offset: 0, 0
+  index: -1
+cannon_16_fight
+  rotate: false
+  xy: 110, 59
+  size: 48, 67
+  orig: 48, 67
+  offset: 0, 0
+  index: -1
+cannon_17
+  rotate: false
+  xy: 411, 2
+  size: 46, 68
+  orig: 46, 68
+  offset: 0, 0
+  index: -1
+cannon_17_fight
+  rotate: false
+  xy: 315, 4
+  size: 46, 62
+  orig: 46, 62
+  offset: 0, 0
+  index: -1
+cannon_18
+  rotate: false
+  xy: 206, 60
+  size: 44, 66
+  orig: 44, 66
+  offset: 0, 0
+  index: -1
+cannon_18_fight
+  rotate: false
+  xy: 160, 59
+  size: 44, 67
+  orig: 44, 67
+  offset: 0, 0
+  index: -1
+cannon_19
+  rotate: false
+  xy: 252, 65
+  size: 47, 61
+  orig: 47, 61
+  offset: 0, 0
+  index: -1
+cannon_19_fight
+  rotate: false
+  xy: 266, 2
+  size: 47, 61
+  orig: 47, 61
+  offset: 0, 0
+  index: -1
+cannon_1_fight
+  rotate: false
+  xy: 452, 72
+  size: 48, 54
+  orig: 48, 54
   offset: 0, 0
   index: -1
 cannon_2
   rotate: false
-  xy: 52, 2
+  xy: 553, 16
   size: 48, 54
   orig: 48, 54
+  offset: 0, 0
+  index: -1
+cannon_20
+  rotate: false
+  xy: 749, 27
+  size: 46, 54
+  orig: 46, 54
+  offset: 0, 0
+  index: -1
+cannon_20_fight
+  rotate: false
+  xy: 990, 26
+  size: 46, 46
+  orig: 46, 46
+  offset: 0, 0
+  index: -1
+cannon_21
+  rotate: false
+  xy: 797, 49
+  size: 48, 50
+  orig: 48, 50
+  offset: 0, 0
+  index: -1
+cannon_21_fight
+  rotate: false
+  xy: 1031, 82
+  size: 48, 44
+  orig: 48, 44
+  offset: 0, 0
+  index: -1
+cannon_22
+  rotate: false
+  xy: 987, 74
+  size: 42, 52
+  orig: 42, 52
+  offset: 0, 0
+  index: -1
+cannon_22_fight
+  rotate: false
+  xy: 942, 74
+  size: 43, 52
+  orig: 43, 52
+  offset: 0, 0
+  index: -1
+cannon_23
+  rotate: false
+  xy: 895, 73
+  size: 45, 53
+  orig: 45, 53
+  offset: 0, 0
+  index: -1
+cannon_23_fight
+  rotate: false
+  xy: 859, 2
+  size: 46, 48
+  orig: 46, 48
+  offset: 0, 0
+  index: -1
+cannon_2_fight
+  rotate: false
+  xy: 116, 3
+  size: 48, 54
+  orig: 48, 54
+  offset: 0, 0
+  index: -1
+cannon_3
+  rotate: false
+  xy: 602, 72
+  size: 48, 54
+  orig: 48, 54
+  offset: 0, 0
+  index: -1
+cannon_3_fight
+  rotate: false
+  xy: 166, 3
+  size: 48, 54
+  orig: 48, 54
+  offset: 0, 0
+  index: -1
+cannon_4
+  rotate: false
+  xy: 1148, 44
+  size: 23, 82
+  orig: 23, 82
+  offset: 0, 0
+  index: -1
+cannon_4_fight
+  rotate: false
+  xy: 1239, 62
+  size: 23, 64
+  orig: 23, 64
+  offset: 0, 0
+  index: -1
+cannon_5
+  rotate: false
+  xy: 1038, 7
+  size: 28, 73
+  orig: 28, 73
+  offset: 0, 0
+  index: -1
+cannon_5_fight
+  rotate: false
+  xy: 1173, 23
+  size: 31, 53
+  orig: 31, 53
+  offset: 0, 0
+  index: -1
+cannon_6
+  rotate: false
+  xy: 952, 10
+  size: 36, 62
+  orig: 36, 62
+  offset: 0, 0
+  index: -1
+cannon_6_fight
+  rotate: false
+  xy: 1111, 33
+  size: 35, 53
+  orig: 35, 53
+  offset: 0, 0
+  index: -1
+cannon_7
+  rotate: false
+  xy: 363, 6
+  size: 46, 62
+  orig: 46, 62
+  offset: 0, 0
+  index: -1
+cannon_7_fight
+  rotate: false
+  xy: 847, 52
+  size: 46, 49
+  orig: 46, 49
+  offset: 0, 0
+  index: -1
+cannon_8
+  rotate: false
+  xy: 706, 19
+  size: 41, 62
+  orig: 41, 62
+  offset: 0, 0
+  index: -1
+cannon_8_fight
+  rotate: false
+  xy: 1068, 31
+  size: 41, 49
+  orig: 41, 49
+  offset: 0, 0
+  index: -1
+cannon_9
+  rotate: false
+  xy: 63, 2
+  size: 51, 55
+  orig: 51, 55
+  offset: 0, 0
+  index: -1
+cannon_9_fight
+  rotate: false
+  xy: 653, 20
+  size: 51, 50
+  orig: 51, 50
   offset: 0, 0
   index: -1

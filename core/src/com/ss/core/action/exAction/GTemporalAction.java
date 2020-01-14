@@ -1,5 +1,6 @@
 package com.ss.core.action.exAction;
 
+import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.actions.TemporalAction;
@@ -10,6 +11,7 @@ public class GTemporalAction extends TemporalAction {
   public static GTemporalAction add(float duration, ActInterface at) {
     GTemporalAction instance = Actions.action(GTemporalAction.class);
     instance.setDuration(duration);
+    instance.setInterpolation(Interpolation.linear);
     instance.at = at;
     return  instance;
   }

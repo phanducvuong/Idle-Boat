@@ -1,6 +1,7 @@
 package com.ss.gameLogic;
 
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.ss.gameLogic.objects.PosOfWeapon;
 import com.ss.gameLogic.objects.Weapon;
 
@@ -68,5 +69,9 @@ public class LogicGame {
       else
         chkIdCannonAndMerge(vFrom, vTo, list);
     }
+  }
+
+  public boolean chkCollision(Image bullet, Image boat) {
+    return bullet.getY() < boat.getY()+boat.getHeight();
   }
 }

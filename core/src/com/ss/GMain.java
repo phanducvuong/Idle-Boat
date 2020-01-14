@@ -21,7 +21,7 @@ public class GMain extends GDirectedGame {
   public static int screenHeight = 0;
   public static int screenWidth = 0;
   public static final int testType = 2;
-  public static TextureAtlas textureAtlas, weaponAtlas;
+  public static TextureAtlas textureAtlas, weaponAtlas, boatAtlas;
   public static float ratioX, ratioY;
 
   public static IPlatform platform;
@@ -89,6 +89,7 @@ public class GMain extends GDirectedGame {
   {
       textureAtlas = GAssetsManager.getTextureAtlas("IdleBoat.atlas");
       weaponAtlas = GAssetsManager.getTextureAtlas("Weapon.atlas");
+      boatAtlas = GAssetsManager.getTextureAtlas("Boat.atlas");
       this.init();
       C.init();
       Data.getInstance();
