@@ -6,9 +6,23 @@ filter: Nearest,Nearest
 repeat: none
 bg
   rotate: false
-  xy: 2, 90
+  xy: 2, 180
   size: 720, 1280
   orig: 720, 1280
+  offset: 0, 0
+  index: -1
+bg_coin
+  rotate: false
+  xy: 2, 90
+  size: 326, 88
+  orig: 326, 88
+  offset: 0, 0
+  index: -1
+coin_star
+  rotate: false
+  xy: 330, 114
+  size: 62, 64
+  orig: 62, 64
   offset: 0, 0
   index: -1
 pos_weapon
@@ -16,5 +30,19 @@ pos_weapon
   xy: 2, 2
   size: 86, 86
   orig: 86, 86
+  offset: 0, 0
+  index: -1
+recycle
+  rotate: false
+  xy: 724, 1317
+  size: 55, 63
+  orig: 55, 63
+  offset: 0, 0
+  index: -1
+shop
+  rotate: false
+  xy: 724, 1382
+  size: 103, 78
+  orig: 103, 78
   offset: 0, 0
   index: -1

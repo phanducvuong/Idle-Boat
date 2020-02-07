@@ -23,4 +23,10 @@ public class Config {
     public static final Vector2 POS_BOAT_2 = new Vector2(POS_1.x - 10, POS_1.y + 20);
     public static final Vector2 POS_BOAT_3 = new Vector2(POS_2.x - 10, POS_2.y + 20);
     public static final Vector2 POS_BOAT_4 = new Vector2(POS_8.x - 10, POS_8.y + 20);
+
+    //speed bullet
+    public static final float SPEED_BULLET = 1f;
+    public static final float TIME_DELAY_ATTACK = 1f;
+    public static final float TIME_BOAT_MOVE = 15f;
+    public static final float TIME_APPEAR_BOAT = .5f;
 }

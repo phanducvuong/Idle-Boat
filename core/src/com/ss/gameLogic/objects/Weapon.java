@@ -1,23 +1,25 @@
 package com.ss.gameLogic.objects;
 
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import static com.badlogic.gdx.math.Interpolation.*;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.*;
+import static com.ss.gameLogic.config.Config.*;
+
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.utils.DragListener;
 import com.ss.GMain;
-import com.ss.core.action.exAction.GTemporalAction;
+import com.ss.core.action.exAction.GSimpleAction;
 import com.ss.core.action.exAction.GTween;
-import com.ss.core.util.GStage;
 import com.ss.core.util.GUI;
 import com.ss.gameLogic.Game;
 import com.ss.gameLogic.Interface.ICollision;
 import com.ss.gameLogic.Interface.IMerge;
 
-public class Weapon {
+public class Weapon extends Image {
 
   private TextureAtlas weaponAtlas = GMain.weaponAtlas;
   private Image cannon, cannonFight, bullet;
@@ -25,9 +27,7 @@ public class Weapon {
   private float attackBullet, speed;
   private int idCannon;
   private Vector2 pos;
-  public boolean isFight = false;
-
-  public int col = -1;
+  public boolean isFight = false, isDrag = false, isOn = false; //isOn: chk weapon is have in screen or not
 
   private Group gUI;
   private Game G;
@@ -68,6 +68,9 @@ public class Weapon {
       public void drag(InputEvent event, float x, float y, int pointer) {
         super.dragStart(event, x, y, pointer);
 
+        isFight = true;
+        isDrag = true;
+
         cannon.moveBy(x - cannon.getWidth() / 2, y - cannon.getHeight() / 2);
 
       }
@@ -77,7 +80,8 @@ public class Weapon {
         super.dragStop(event, x, y, pointer);
 
         updatePosWeapon(cannon.getX(), cannon.getY());
-
+        isDrag = false;
+        isFight = false;
       }
     });
   }
@@ -231,7 +235,7 @@ public class Weapon {
           break;
       }
     }
-    catch (Exception ex) {  }
+    catch (Exception ignored) {  }
   }
 
   private void setPosBullet(Vector2 vTo) {
@@ -298,29 +302,47 @@ public class Weapon {
           bullet.setPosition(cannon.getX() + cannon.getWidth()/2 + 3, cannon.getY() + cannon.getHeight()/2 - 30);
           break;
       }
+      bound.setPosition(bullet.getX(), bullet.getY());
     }
-    catch (Exception ex) {  }
+    catch (Exception ex) { System.out.println("ERR"); }
   }
 
   public void attack(float delay) {
 
-    float x = bullet.getX();
-    float y = bullet.getY();
+    bullet.setVisible(true);
 
-    GTween.action(bullet, delay(delay), () -> {
+    isFight = true;
+    GTween.action(bullet,
 
-      bullet.addAction(GTemporalAction.add(speed, (p,a) -> {
+            sequence(
+              delay(delay),
+              parallel(
 
-        if (bound.overlaps(G.boat.bound)) {
-          bullet.clearActions();
-          iCollision.Collision(this);
-        }
+                      moveTo(bullet.getX(), -50, SPEED_BULLET, linear),
+                      GSimpleAction.simpleAction((d, a) -> {
 
-        float yy = (float) (y - GStage.getWorldHeight() *p);
-        bullet.setPosition(x, yy);
-        bound.setPosition(x, yy);
-      }));
-    });
+                        bound.setPosition(bullet.getX(), bullet.getY());
+                        //check collision
+                        iCollision.Collision(this);
+
+                        return true;
+                      })//simple action
+              )//parallel action
+            ),
+            () -> {
+              if (!isDrag)
+                isFight = false;
+              resetWeapon();
+            }//onComplete
+    );
+  }
+
+  public void resetWeapon() {
+
+    bullet.clearActions();
+    bullet.setVisible(false);
+    setPosBullet(pos);
+
   }
 
   public float getSpeed() {
@@ -340,20 +362,42 @@ public class Weapon {
   }
 
   public void addCannonToScene() {
+
     cannon.setScale(2f);
     gUI.addActor(cannon);
+
   }
 
   public void addCannonFightToScene() {
+
     try {
       cannonFight.setScale(2f);
       gUI.addActor(cannonFight);
     }
     catch (Exception ex) {  }
+
   }
 
   public void addBulletToScene() {
+
     bullet.setScale(2f);
+    bullet.setVisible(false);
     gUI.addActor(bullet);
+
+  }
+
+  public void removeWeapon() {
+
+    isFight = false;
+    isDrag = false;
+    isOn = false;
+
+    cannon.remove();
+    cannonFight.remove();
+    bullet.remove();
+  }
+
+  public Rectangle getBound() {
+    return bound;
   }
 }

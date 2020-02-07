@@ -12,6 +12,7 @@ import com.ss.gameLogic.objects.Weapon;
 import org.omg.CORBA.PUBLIC_MEMBER;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class Data {
@@ -23,8 +24,8 @@ public class Data {
   private List<WeaponJson> listDataWeapon;
   private List<BoatJson> listDataBoat;
 
-  public List<Weapon> listWeapon;
-  public List<Boat> listBoat;
+  public HashMap<String, List<Weapon>> HMWeapon;
+  public HashMap<String, List<Boat>> HMBoat;
 
   public static Data getInstance() {
     return instance == null ? instance = new Data() : instance;
@@ -33,8 +34,9 @@ public class Data {
   private Data() {
     listDataWeapon = new ArrayList<>();
     listDataBoat = new ArrayList<>();
-    listWeapon = new ArrayList<>();
-    listBoat = new ArrayList<>();
+
+    HMWeapon = new HashMap<>();
+    HMBoat = new HashMap<>();
 
     initData();
   }
@@ -62,6 +64,7 @@ public class Data {
   }
 
   public void initListWeapon(Game G, Group gUI) {
+
     for (WeaponJson weapon : listDataWeapon) {
 
       String cannon = weapon.getCannon();
@@ -70,24 +73,44 @@ public class Data {
       int id_cannon = weapon.getIdCannon();
       float speed = weapon.getSpeed();
 
-      try {
-        listWeapon.add(new Weapon(G, gUI, cannon, bullet, attack_bullet, speed, id_cannon));
+      List<Weapon> listWeapon = new ArrayList<>();
+
+      for (int i=0; i<10; i++) {
+
+        try {
+          listWeapon.add(new Weapon(G, gUI, cannon, bullet, attack_bullet, speed, id_cannon));
+        }
+        catch (Exception ex) {}
+
       }
-      catch (Exception ex) {}
+
+      HMWeapon.put(cannon, listWeapon);
     }
   }
 
   public void initListBoat(Game G, Group gUI) {
+
     for (BoatJson boat : listDataBoat) {
 
       String imgBoat = boat.getBoat();
       int blood = boat.getBlood();
       float speed = boat.getSpeed();
+      int idBoat = boat.getIdBoat();
 
-      try {
-        listBoat.add(new Boat(G, gUI, imgBoat, speed, blood));
+      List<Boat> listBoat = new ArrayList<>();
+
+      for (int i=0; i<20; i++) {
+
+        try {
+
+          listBoat.add(new Boat(G, gUI, imgBoat, speed, blood, idBoat));
+
+        }
+        catch (Exception ex) {}
       }
-      catch (Exception ex) {}
+
+      HMBoat.put(imgBoat, listBoat);
+
     }
   }
 }

@@ -13,6 +13,9 @@ public class BoatJson {
   @SerializedName("speed")
   private float speed;
 
+  @SerializedName("id_boat")
+  private int idBoat;
+
   public String getBoat() {
     return boat;
   }
@@ -35,5 +38,13 @@ public class BoatJson {
 
   public void setSpeed(float speed) {
     this.speed = speed;
+  }
+
+  public int getIdBoat() {
+    return idBoat;
+  }
+
+  public void setIdBoat(int idBoat) {
+    this.idBoat = idBoat;
   }
 }

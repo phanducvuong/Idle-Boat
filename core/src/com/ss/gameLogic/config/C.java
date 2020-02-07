@@ -21,7 +21,7 @@ public class C {
         public static String title = "";
         public static String adsTimeLbl = "";
         static void initLocalize() {
-            FileHandle specFilehandle = Gdx.files.internal("i18n/lang_" + "id");
+            FileHandle specFilehandle = Gdx.files.internal("i18n/lang_" + "col");
             FileHandle baseFileHandle = Gdx.files.internal("i18n/lang");
 
             try {

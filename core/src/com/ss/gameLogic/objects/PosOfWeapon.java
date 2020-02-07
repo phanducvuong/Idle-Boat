@@ -16,6 +16,8 @@ public class PosOfWeapon {
   private boolean isEmpty = true;
   public String name;
 
+  public int col;
+
   public PosOfWeapon(Group gUI) {
     this.gUI = gUI;
 
@@ -30,16 +32,56 @@ public class PosOfWeapon {
 
   public void setPosition(int i) {
     switch (i) {
-      case 0: boxContainer.setPosition(Config.POS_0.x, Config.POS_0.y); pos = Config.POS_0; break;
-      case 1: boxContainer.setPosition(Config.POS_1.x, Config.POS_1.y); pos = Config.POS_1; break;
-      case 2: boxContainer.setPosition(Config.POS_2.x, Config.POS_2.y); pos = Config.POS_2; break;
-      case 3: boxContainer.setPosition(Config.POS_3.x, Config.POS_3.y); pos = Config.POS_3; break;
-      case 4: boxContainer.setPosition(Config.POS_4.x, Config.POS_4.y); pos = Config.POS_4; break;
-      case 5: boxContainer.setPosition(Config.POS_5.x, Config.POS_5.y); pos = Config.POS_5; break;
-      case 6: boxContainer.setPosition(Config.POS_6.x, Config.POS_6.y); pos = Config.POS_6; break;
-      case 7: boxContainer.setPosition(Config.POS_7.x, Config.POS_7.y); pos = Config.POS_7; break;
-      case 8: boxContainer.setPosition(Config.POS_8.x, Config.POS_8.y); pos = Config.POS_8; break;
-      case 9: boxContainer.setPosition(Config.POS_9.x, Config.POS_9.y); pos = Config.POS_9; break;
+      case 0:
+        boxContainer.setPosition(Config.POS_0.x, Config.POS_0.y);
+        pos = Config.POS_0;
+        col = 1;
+        break;
+      case 1:
+        boxContainer.setPosition(Config.POS_1.x, Config.POS_1.y);
+        pos = Config.POS_1;
+        col = 2;
+        break;
+      case 2:
+        boxContainer.setPosition(Config.POS_2.x, Config.POS_2.y);
+        pos = Config.POS_2;
+        col = 3;
+        break;
+      case 3:
+        boxContainer.setPosition(Config.POS_3.x, Config.POS_3.y);
+        pos = Config.POS_3;
+        col = 3;
+        break;
+      case 4:
+        boxContainer.setPosition(Config.POS_4.x, Config.POS_4.y);
+        pos = Config.POS_4;
+        col = 2;
+        break;
+      case 5:
+        boxContainer.setPosition(Config.POS_5.x, Config.POS_5.y);
+        pos = Config.POS_5;
+        col = 1;
+        break;
+      case 6:
+        boxContainer.setPosition(Config.POS_6.x, Config.POS_6.y);
+        pos = Config.POS_6;
+        col = 0;
+        break;
+      case 7:
+        boxContainer.setPosition(Config.POS_7.x, Config.POS_7.y);
+        pos = Config.POS_7;
+        col = 0;
+      break;
+      case 8:
+        boxContainer.setPosition(Config.POS_8.x, Config.POS_8.y);
+        pos = Config.POS_8;
+        col = 4;
+      break;
+      case 9:
+        boxContainer.setPosition(Config.POS_9.x, Config.POS_9.y);
+        pos = Config.POS_9;
+        col = 4;
+        break;
     }
   }
 

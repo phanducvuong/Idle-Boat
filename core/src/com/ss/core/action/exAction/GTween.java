@@ -7,6 +7,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.actions.ParallelAction;
 import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 
 public class GTween {
     public static void Blink(Actor target, float aHigh, float aLow, float duration, int repeat, Runnable onComplete) {
@@ -29,6 +30,14 @@ public class GTween {
                 Actions.run(callback)
         ));
     }
+
+    public static void setTimeout(Image image, float timeout, Runnable callback) {
+        image.addAction(Actions.sequence(
+                Actions.delay(timeout),
+                Actions.run(callback)
+        ));
+    }
+
     public static <T extends Actor> void action(T target, Action action, Runnable onComplete){
         SequenceAction seq = new SequenceAction();
         seq.addAction(action);
