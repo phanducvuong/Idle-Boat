@@ -11,18 +11,11 @@ bg
   orig: 720, 1280
   offset: 0, 0
   index: -1
-bg_coin
+coin
   rotate: false
   xy: 2, 90
   size: 326, 88
   orig: 326, 88
-  offset: 0, 0
-  index: -1
-coin_star
-  rotate: false
-  xy: 330, 114
-  size: 62, 64
-  orig: 62, 64
   offset: 0, 0
   index: -1
 pos_weapon
@@ -34,7 +27,7 @@ pos_weapon
   index: -1
 recycle
   rotate: false
-  xy: 724, 1317
+  xy: 330, 115
   size: 55, 63
   orig: 55, 63
   offset: 0, 0

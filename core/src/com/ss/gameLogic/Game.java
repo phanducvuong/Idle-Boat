@@ -20,6 +20,7 @@ import static com.ss.gameLogic.config.Config.*;
 import com.ss.gameLogic.objects.Boat;
 import com.ss.gameLogic.objects.PosOfWeapon;
 import com.ss.gameLogic.objects.Weapon;
+import com.ss.gameLogic.ui.GamePlayUI;
 
 import org.omg.Messaging.SYNC_WITH_TRANSPORT;
 
@@ -33,6 +34,8 @@ public class Game implements IMerge, ICollision, IDanger {
   private Group gUI;
   private Group gBoat;
   private LogicGame logicGame = LogicGame.getInstance(this);
+  private GamePlayUI gamePlayUI;
+  private int idCannonPresent = 0;
 
   public List<PosOfWeapon> listPosOfWeapon;
   private List<Boat> listBoat;
@@ -49,8 +52,9 @@ public class Game implements IMerge, ICollision, IDanger {
 
     GStage.addToLayer(GLayer.ui, gUI);
     gUI.addActor(gBoat);
+    gamePlayUI = new GamePlayUI(this, gUI);
 
-    data.initListWeapon(this, gUI);
+    data.initListWeapon(this, gamePlayUI, gUI);
     data.initListBoat(this, gUI);
 
     listBoat = new ArrayList<>();
@@ -65,6 +69,8 @@ public class Game implements IMerge, ICollision, IDanger {
     initAsset();
     initPosOfWeapon();
     initWeapon();
+
+    gamePlayUI.initShopAndBtnBuyWeapon();
 
     nextBoat();
   }
@@ -231,6 +237,49 @@ public class Game implements IMerge, ICollision, IDanger {
         if (!pos.getWeapon().isFight)
           pos.getWeapon().attack(TIME_DELAY_ATTACK);
     }
+
+  }
+
+  public void delWeapon(Weapon weapon) {
+
+    for (PosOfWeapon pos : listPosOfWeapon){
+      if (pos.getWeapon() == weapon) {
+        pos.setWeapon(null);
+        pos.setEmpty(true);
+        weapon.removeWeapon();
+        break;
+      }
+    }
+
+  }
+
+  public void addWeapon(float x, float y) {
+
+    Weapon weapon = null;
+
+    for (Weapon w : data.HMWeapon.get("cannon_"+0))
+      if (!w.isOn) {
+        w.isOn = true;
+        weapon = w;
+        break;
+      }
+
+    for (PosOfWeapon pos : listPosOfWeapon)
+      if (pos.getIsEmpty()) {
+        pos.setEmpty(false);
+        pos.setWeapon(weapon);
+
+        try {
+
+          weapon.setPosWeapon(pos.pos);
+          weapon.addBulletToScene();
+          weapon.addCannonToScene();
+
+        }
+        catch (Exception ex) {  }
+
+        break;
+      }
 
   }
 }

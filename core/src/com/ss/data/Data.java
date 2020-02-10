@@ -8,6 +8,7 @@ import com.google.gson.JsonArray;
 import com.ss.gameLogic.Game;
 import com.ss.gameLogic.objects.Boat;
 import com.ss.gameLogic.objects.Weapon;
+import com.ss.gameLogic.ui.GamePlayUI;
 
 import org.omg.CORBA.PUBLIC_MEMBER;
 
@@ -63,7 +64,7 @@ public class Data {
     }
   }
 
-  public void initListWeapon(Game G, Group gUI) {
+  public void initListWeapon(Game G, GamePlayUI gamePlayUI, Group gUI) {
 
     for (WeaponJson weapon : listDataWeapon) {
 
@@ -78,7 +79,7 @@ public class Data {
       for (int i=0; i<10; i++) {
 
         try {
-          listWeapon.add(new Weapon(G, gUI, cannon, bullet, attack_bullet, speed, id_cannon));
+          listWeapon.add(new Weapon(G, gamePlayUI, gUI, cannon, bullet, attack_bullet, speed, id_cannon));
         }
         catch (Exception ex) {}
 
