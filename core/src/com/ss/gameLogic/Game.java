@@ -71,6 +71,7 @@ public class Game implements IMerge, ICollision, IDanger {
     initWeapon();
 
     gamePlayUI.initShopAndBtnBuyWeapon();
+    gamePlayUI.initTopUI();
 
     nextBoat();
   }
@@ -143,6 +144,8 @@ public class Game implements IMerge, ICollision, IDanger {
 
   private void startBoat(Boat boat) {
     //todo move all boat in listBoat => boat is die reset boat and move boat again
+
+    gamePlayUI.gTopUI.setZIndex(1000);
 
     try {
       gBoat.addActor(boat);

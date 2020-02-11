@@ -26,20 +26,24 @@ public class GamePlayUI {
   private Image imgShop;
   public Image imgRecycle;
 
+  public Group gTopUI;
+  private Image coinCollection, bgPercentFinished, imgPercentFinished, imgSetting;
+
   public GamePlayUI(Game G, Group gUI) {
 
     this.gUI = gUI;
     this.G = G;
     gBuyWeapon = new Group();
+    gTopUI = new Group();
 
   }
 
   public void initShopAndBtnBuyWeapon() {
 
     btnCoin = GUI.createImage(textureAtlas, "coin");
-    iconWeapon = GUI.createImage(GMain.weaponAtlas, "cannon_12");
+    iconWeapon = GUI.createImage(GMain.weaponAtlas, "cannon_0");
     iconWeapon.setScale(1.4f);
-    iconWeapon.setPosition(gBuyWeapon.getX() + 5, gBuyWeapon.getY() - 5);
+    iconWeapon.setPosition(gBuyWeapon.getX() + 5, gBuyWeapon.getY());
 
     gBuyWeapon.addActor(btnCoin);
     gBuyWeapon.addActor(iconWeapon);
@@ -59,6 +63,30 @@ public class GamePlayUI {
     gUI.addActor(imgRecycle);
 
     eventClickListener();
+  }
+
+  public void initTopUI() {
+
+    bgPercentFinished = GUI.createImage(textureAtlas, "bg_percent_finished");
+    bgPercentFinished.setPosition(gUI.getWidth()/2 - bgPercentFinished.getWidth()/2, 0);
+
+    coinCollection = GUI.createImage(textureAtlas, "coin_collection");
+    coinCollection.setPosition(0, bgPercentFinished.getHeight()/2 - coinCollection.getHeight()/2);
+
+    imgPercentFinished = GUI.createImage(textureAtlas, "percent_finished");
+    float y = bgPercentFinished.getY() + bgPercentFinished.getHeight()/2 - imgPercentFinished.getHeight()/2;
+    imgPercentFinished.setPosition(bgPercentFinished.getX() + 92, y);
+
+    imgSetting = GUI.createImage(textureAtlas, "setting");
+    imgSetting.setScale(1.2f);
+    imgSetting.setPosition(coinCollection.getX(), coinCollection.getY() + 100);
+
+    gTopUI.addActor(coinCollection);
+    gTopUI.addActor(bgPercentFinished);
+    gTopUI.addActor(imgSetting);
+    gTopUI.addActor(imgPercentFinished);
+    gUI.addActor(gTopUI);
+
   }
 
   private void eventClickListener() {
@@ -95,13 +123,32 @@ public class GamePlayUI {
       case "cannon_9":
       case "cannon_10":
       case "cannon_11":
+      case "cannon_19":
         iconWeapon.setPosition(gBuyWeapon.getX() + 5, gBuyWeapon.getY() - 10);
         break;
 
       case "cannon_12":
+      case "cannon_13":
         iconWeapon.setPosition(gBuyWeapon.getX() + 5, gBuyWeapon.getY() - 5);
         break;
 
+      case "cannon_14":
+        iconWeapon.setPosition(gBuyWeapon.getX() + 5, gBuyWeapon.getY() + 10);
+        break;
+
+      case "cannon_15":
+      case "cannon_20":
+      case "cannon_21":
+      case "cannon_22":
+      case "cannon_23":
+        iconWeapon.setPosition(gBuyWeapon.getX() + 5, gBuyWeapon.getY());
+        break;
+
+      case "cannon_16":
+      case "cannon_17":
+      case "cannon_18":
+        iconWeapon.setPosition(gBuyWeapon.getX() + 5, gBuyWeapon.getY() - 15);
+        break;
     }
 
   }

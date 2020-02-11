@@ -57,7 +57,7 @@ public class Boat extends Image {
 
     imgBoat.setPosition(0, 0);
     bound.setPosition(0, 0);
-    float randY = imgBoat.getY() + 100;
+    float randY = imgBoat.getY() + 200;
 
     switch (rand) {
       case 0:
@@ -99,7 +99,7 @@ public class Boat extends Image {
 
   public void moveBoat() {
 
-    float y = imgBoat.getY() + 100 + GStage.getWorldHeight();
+    float y = imgBoat.getY() + 200 + GStage.getWorldHeight();
     isAlive = true;
 
     imgBoat.addAction(Actions.parallel(
@@ -109,7 +109,8 @@ public class Boat extends Image {
             GSimpleAction.simpleAction((d, a) -> {
 
               bound.setPosition(imgBoat.getX(), imgBoat.getY());
-              iDanger.fire(this);
+              if (imgBoat.getY() >= 50)
+                iDanger.fire(this);
 
 //              if (imgBoat.getY() > 500) //end game
 //                iDanger.endGame();
