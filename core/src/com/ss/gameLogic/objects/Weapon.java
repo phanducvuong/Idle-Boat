@@ -20,8 +20,6 @@ import com.ss.gameLogic.Interface.ICollision;
 import com.ss.gameLogic.Interface.IMerge;
 import com.ss.gameLogic.ui.GamePlayUI;
 
-import org.omg.Messaging.SYNC_WITH_TRANSPORT;
-
 public class Weapon extends Image {
 
   private TextureAtlas weaponAtlas = GMain.weaponAtlas;
@@ -376,6 +374,8 @@ public class Weapon extends Image {
   public Image getBullet() {
     return bullet;
   }
+
+  public Image getCannon() { return cannon; }
 
   public void addCannonToScene() {
 

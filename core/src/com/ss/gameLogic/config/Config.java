@@ -1,7 +1,9 @@
 package com.ss.gameLogic.config;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.math.Vector2;
+import com.ss.core.util.GAssetsManager;
 import com.ss.core.util.GStage;
 
 public class Config {
@@ -28,5 +30,8 @@ public class Config {
     public static final float SPEED_BULLET = 1f;
     public static final float TIME_DELAY_ATTACK = 1f;
     public static final float TIME_BOAT_MOVE = 15f;
-    public static final float TIME_APPEAR_BOAT = .5f;
+    public static final float TIME_APPEAR_BOAT = .25f;
+
+    //font
+    public static final BitmapFont BITMAP_YELLOW_FONT = GAssetsManager.getBitmapFont("font_white.fnt");
 }

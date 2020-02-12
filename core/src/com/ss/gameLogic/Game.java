@@ -58,13 +58,7 @@ public class Game implements IMerge, ICollision, IDanger {
     data.initListBoat(this, gUI);
 
     listBoat = new ArrayList<>();
-    for (int i=0; i<10; i++) {
-
-      listBoat.add(data.HMBoat.get("boat_0").get(i));
-      listBoat.add(data.HMBoat.get("boat_1").get(i));
-      listBoat.add(data.HMBoat.get("boat_2").get(i));
-
-    }
+    initLv(10, "boat_0", "boat_1", "boat_2");
 
     initAsset();
     initPosOfWeapon();
@@ -74,6 +68,14 @@ public class Game implements IMerge, ICollision, IDanger {
     gamePlayUI.initTopUI();
 
     nextBoat();
+  }
+
+  private void initLv(int numBoat, String ...boat) {
+
+    for (int i=0; i<numBoat; i++)
+      for (String b : boat)
+        listBoat.add(data.HMBoat.get(b).get(i));
+
   }
 
   private void initAsset() {
@@ -171,7 +173,7 @@ public class Game implements IMerge, ICollision, IDanger {
 
   private void nextBoat() {
 
-    if (countTarget < 20 && !endGame)
+    if (countTarget < 100 && !endGame)
       startBoat(getRandomBoat());
   }
 
@@ -200,10 +202,10 @@ public class Game implements IMerge, ICollision, IDanger {
         float blood = boat.getBlood() - weapon.getAttackBullet();
         boat.setBlood(blood);
 
-        if (boat.getBlood() <= 0) { //reset boat
+        if (boat.getBlood() <= 0) {
           boat.resetBoat();
           countTarget++;
-        }
+        } //reset boat when boat is destroy
 
         if (!weapon.isDrag)
           weapon.isFight = false;
@@ -260,7 +262,7 @@ public class Game implements IMerge, ICollision, IDanger {
 
     Weapon weapon = null;
 
-    for (Weapon w : data.HMWeapon.get("cannon_"+0))
+    for (Weapon w : data.HMWeapon.get("cannon_"+4))
       if (!w.isOn) {
         w.isOn = true;
         weapon = w;

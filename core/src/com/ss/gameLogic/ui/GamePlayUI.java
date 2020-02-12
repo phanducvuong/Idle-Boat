@@ -5,10 +5,13 @@ import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.utils.Align;
 import com.ss.GMain;
 import com.ss.core.util.GStage;
 import com.ss.core.util.GUI;
 import com.ss.gameLogic.Game;
+import com.ss.gameLogic.config.Config;
 import com.ss.gameLogic.objects.Weapon;
 
 public class GamePlayUI {
@@ -28,6 +31,7 @@ public class GamePlayUI {
 
   public Group gTopUI;
   private Image coinCollection, bgPercentFinished, imgPercentFinished, imgSetting;
+  public Label lbCoinCollection;
 
   public GamePlayUI(Game G, Group gUI) {
 
@@ -77,11 +81,17 @@ public class GamePlayUI {
     float y = bgPercentFinished.getY() + bgPercentFinished.getHeight()/2 - imgPercentFinished.getHeight()/2;
     imgPercentFinished.setPosition(bgPercentFinished.getX() + 92, y);
 
+    lbCoinCollection = new Label("25M", new Label.LabelStyle(Config.BITMAP_YELLOW_FONT, null));
+    lbCoinCollection.setAlignment(Align.center);
+    lbCoinCollection.setPosition(coinCollection.getX() + coinCollection.getWidth()/2 - lbCoinCollection.getWidth()/2 + 20, coinCollection.getY() - 5);
+    lbCoinCollection.setFontScale(.5f);
+
     imgSetting = GUI.createImage(textureAtlas, "setting");
     imgSetting.setScale(1.2f);
     imgSetting.setPosition(coinCollection.getX(), coinCollection.getY() + 100);
 
     gTopUI.addActor(coinCollection);
+    gTopUI.addActor(lbCoinCollection);
     gTopUI.addActor(bgPercentFinished);
     gTopUI.addActor(imgSetting);
     gTopUI.addActor(imgPercentFinished);
