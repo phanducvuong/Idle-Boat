@@ -67,7 +67,7 @@ public class Game implements IMerge, ICollision, IDanger {
     gamePlayUI.initShopAndBtnBuyWeapon();
     gamePlayUI.initTopUI();
 
-    nextBoat();
+//    nextBoat();
   }
 
   private void initLv(int numBoat, String ...boat) {
@@ -98,7 +98,7 @@ public class Game implements IMerge, ICollision, IDanger {
 
   private void initWeapon() {
 
-    Weapon weapon = data.HMWeapon.get("cannon_0").get(0);
+    Weapon weapon = data.HMWeapon.get("cannon_15").get(0);
     weapon.addCannonToScene();
     weapon.setPosWeapon(POS_0);
     weapon.addBulletToScene();
@@ -107,41 +107,41 @@ public class Game implements IMerge, ICollision, IDanger {
     listPosOfWeapon.get(0).setWeapon(weapon);
     listPosOfWeapon.get(0).setEmpty(false);
 
-    Weapon weapon1 = data.HMWeapon.get("cannon_0").get(1);
-    weapon1.addCannonToScene();
-    weapon1.setPosWeapon(POS_1);
-    weapon1.addBulletToScene();
-    weapon1.isOn = true;
-
-    listPosOfWeapon.get(1).setWeapon(weapon1);
-    listPosOfWeapon.get(1).setEmpty(false);
-
-    Weapon weapon2 = data.HMWeapon.get("cannon_0").get(2);
-    weapon2.addCannonToScene();
-    weapon2.setPosWeapon(POS_2);
-    weapon2.addBulletToScene();
-    weapon2.isOn = true;
-
-    listPosOfWeapon.get(2).setWeapon(weapon2);
-    listPosOfWeapon.get(2).setEmpty(false);
-
-    Weapon weapon6 = data.HMWeapon.get("cannon_0").get(6);
-    weapon6.addCannonToScene();
-    weapon6.setPosWeapon(POS_6);
-    weapon6.addBulletToScene();
-    weapon6.isOn = true;
-
-    listPosOfWeapon.get(6).setWeapon(weapon6);
-    listPosOfWeapon.get(6).setEmpty(false);
-
-    Weapon weapon8 = data.HMWeapon.get("cannon_0").get(8);
-    weapon8.addCannonToScene();
-    weapon8.setPosWeapon(POS_8);
-    weapon8.addBulletToScene();
-    weapon8.isOn = true;
-
-    listPosOfWeapon.get(8).setWeapon(weapon8);
-    listPosOfWeapon.get(8).setEmpty(false);
+//    Weapon weapon1 = data.HMWeapon.get("cannon_0").get(1);
+//    weapon1.addCannonToScene();
+//    weapon1.setPosWeapon(POS_1);
+//    weapon1.addBulletToScene();
+//    weapon1.isOn = true;
+//
+//    listPosOfWeapon.get(1).setWeapon(weapon1);
+//    listPosOfWeapon.get(1).setEmpty(false);
+//
+//    Weapon weapon2 = data.HMWeapon.get("cannon_0").get(2);
+//    weapon2.addCannonToScene();
+//    weapon2.setPosWeapon(POS_2);
+//    weapon2.addBulletToScene();
+//    weapon2.isOn = true;
+//
+//    listPosOfWeapon.get(2).setWeapon(weapon2);
+//    listPosOfWeapon.get(2).setEmpty(false);
+//
+//    Weapon weapon6 = data.HMWeapon.get("cannon_0").get(6);
+//    weapon6.addCannonToScene();
+//    weapon6.setPosWeapon(POS_6);
+//    weapon6.addBulletToScene();
+//    weapon6.isOn = true;
+//
+//    listPosOfWeapon.get(6).setWeapon(weapon6);
+//    listPosOfWeapon.get(6).setEmpty(false);
+//
+//    Weapon weapon8 = data.HMWeapon.get("cannon_0").get(8);
+//    weapon8.addCannonToScene();
+//    weapon8.setPosWeapon(POS_8);
+//    weapon8.addBulletToScene();
+//    weapon8.isOn = true;
+//
+//    listPosOfWeapon.get(8).setWeapon(weapon8);
+//    listPosOfWeapon.get(8).setEmpty(false);
   }
 
   private void startBoat(Boat boat) {
