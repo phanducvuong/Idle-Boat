@@ -54,7 +54,7 @@ public class LogicGame {
 
         //todo: particle merge weapon
 
-        Vector2 pos = getPosByIdCannon(pTo.pos, pTo.getWeapon()); //get pos to make effect merge weapon
+        Vector2 pos = new Vector2(pTo.getWeapon().gCannon.getX(), pTo.getWeapon().gCannon.getY()); //get pos to make effect merge weapon
         Weapon w1 = pFrom.getWeapon();
         Weapon w2 = pTo.getWeapon();
 
@@ -66,6 +66,7 @@ public class LogicGame {
 
           int idCannon = pTo.getWeapon().getIdCannon() + 1;
           Weapon weapon = updateWeapon(idCannon);
+          weapon.resetWeapon();
 
           pTo.getWeapon().removeWeapon();
           weapon.isOn = true;
@@ -122,91 +123,6 @@ public class LogicGame {
       if (boat.isAlive)
         return false;
     return true;
-
-  }
-
-  private Vector2 getPosByIdCannon(Vector2 pos, Weapon weapon) {
-
-    Vector2 tempPos = new Vector2();
-
-    switch (weapon.getIdCannon()) {
-
-      case 0: case 1: case 2: case 3: case 20:
-        tempPos.x = pos.x + weapon.getCannon().getWidth()/2 - 25;
-        tempPos.y = pos.y - 20;
-        break;
-      case 4:
-        tempPos.x = pos.x + weapon.getCannon().getWidth()/2 + 5;
-        tempPos.y = pos.y - 60;
-        break;
-      case 5:
-        tempPos.x = pos.x + weapon.getCannon().getWidth()/2;
-        tempPos.y = pos.y - 60;
-        break;
-      case 6:
-        tempPos.x = pos.x + weapon.getCannon().getWidth()/2 - 10;
-        tempPos.y = pos.y - 40;
-        break;
-      case 7:
-        tempPos.x = pos.x + weapon.getCannon().getWidth()/2 - 25;
-        tempPos.y = pos.y - 40;
-        break;
-      case 8:
-        tempPos.x = pos.x + weapon.getCannon().getWidth()/2 - 20;
-        tempPos.y = pos.y - 40;
-        break;
-      case 9:
-        tempPos.x = pos.x + weapon.getCannon().getWidth()/2 - 35;
-        tempPos.y = pos.y - 30;
-        break;
-      case 10:
-        tempPos.x = pos.x + weapon.getCannon().getWidth()/2 - 25;
-        tempPos.y = pos.y - 30;
-        break;
-      case 11:
-        tempPos.x = pos.x + weapon.getCannon().getWidth()/2 - 23;
-        tempPos.y = pos.y - 30;
-        break;
-      case 12: case 13:
-        tempPos.x = pos.x + weapon.getCannon().getWidth()/2 - 30;
-        tempPos.y = pos.y - 25;
-        break;
-      case 14:
-        tempPos.x = pos.x + weapon.getCannon().getWidth()/2 - 45;
-        tempPos.y = pos.y;
-        break;
-      case 15:
-        tempPos.x = pos.x + weapon.getCannon().getWidth()/2 - 45;
-        tempPos.y = pos.y - 15;
-        break;
-      case 16:
-        tempPos.x = pos.x + weapon.getCannon().getWidth()/2 - 25;
-        tempPos.y = pos.y - 50;
-        break;
-      case 17: case 18:
-        tempPos.x = pos.x + weapon.getCannon().getWidth()/2 - 23;
-        tempPos.y = pos.y - 50;
-        break;
-      case 19:
-        tempPos.x = pos.x + weapon.getCannon().getWidth()/2 - 25;
-        tempPos.y = pos.y - 35;
-        break;
-      case 21:
-        tempPos.x = pos.x + weapon.getCannon().getWidth()/2 - 28;
-        tempPos.y = pos.y - 15;
-        break;
-      case 22:
-        tempPos.x = pos.x + weapon.getCannon().getWidth()/2 - 20;
-        tempPos.y = pos.y - 15;
-        break;
-      case 23:
-        tempPos.x = pos.x + weapon.getCannon().getWidth()/2 - 23;
-        tempPos.y = pos.y - 15;
-        break;
-
-    }
-
-    return tempPos;
 
   }
 

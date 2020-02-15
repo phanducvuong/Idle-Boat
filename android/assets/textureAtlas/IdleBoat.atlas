@@ -6,64 +6,78 @@ filter: Nearest,Nearest
 repeat: none
 bg
   rotate: false
-  xy: 2, 205
+  xy: 2, 291
   size: 720, 1280
   orig: 720, 1280
   offset: 0, 0
   index: -1
 bg_percent_finished
   rotate: false
-  xy: 724, 1388
+  xy: 724, 1474
   size: 229, 97
   orig: 229, 97
   offset: 0, 0
   index: -1
+burn
+  rotate: false
+  xy: 2, 2
+  size: 121, 121
+  orig: 121, 121
+  offset: 0, 0
+  index: -1
 coin
   rotate: false
-  xy: 2, 115
+  xy: 2, 201
   size: 326, 88
   orig: 326, 88
   offset: 0, 0
   index: -1
 coin_collection
   rotate: false
-  xy: 2, 39
+  xy: 2, 125
   size: 214, 74
   orig: 214, 74
   offset: 0, 0
   index: -1
 percent_finished
   rotate: false
-  xy: 2, 2
+  xy: 435, 254
   size: 129, 35
   orig: 129, 35
   offset: 0, 0
   index: -1
 pos_weapon
   rotate: false
-  xy: 724, 1300
+  xy: 724, 1263
   size: 86, 86
   orig: 86, 86
   offset: 0, 0
   index: -1
 recycle
   rotate: false
-  xy: 955, 1422
+  xy: 955, 1508
   size: 55, 63
   orig: 55, 63
   offset: 0, 0
   index: -1
 setting
   rotate: false
-  xy: 218, 49
+  xy: 218, 135
   size: 69, 64
   orig: 69, 64
   offset: 0, 0
   index: -1
 shop
   rotate: false
-  xy: 330, 125
+  xy: 330, 211
   size: 103, 78
   orig: 103, 78
+  offset: 0, 0
+  index: -1
+smoke
+  rotate: false
+  xy: 724, 1351
+  size: 149, 121
+  orig: 149, 121
   offset: 0, 0
   index: -1

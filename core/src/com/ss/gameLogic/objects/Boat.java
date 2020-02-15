@@ -8,6 +8,7 @@ import static com.badlogic.gdx.scenes.scene2d.actions.Actions.*;
 
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.utils.Align;
 import com.ss.GMain;
 import com.ss.core.action.exAction.GSimpleAction;
 import com.ss.core.util.GStage;
@@ -27,7 +28,6 @@ public class Boat extends Image {
   public String name;
 
   public boolean isAlive = false;
-  public boolean isDanger = false;
   public int col;
 
   private Game G;
@@ -45,6 +45,7 @@ public class Boat extends Image {
     this.name = boat;
 
     imgBoat = GUI.createImage(boatAtlas, boat);
+    imgBoat.setOrigin(Align.center);
 
     assert imgBoat != null;
     bound = new Rectangle(imgBoat.getX(), imgBoat.getY(), imgBoat.getWidth(), imgBoat.getHeight() - 15);
@@ -109,6 +110,7 @@ public class Boat extends Image {
             GSimpleAction.simpleAction((d, a) -> {
 
               bound.setPosition(imgBoat.getX(), imgBoat.getY());
+
               if (imgBoat.getY() >= 50)
                 iDanger.fire(this);
 

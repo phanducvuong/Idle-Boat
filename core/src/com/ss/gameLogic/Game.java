@@ -5,6 +5,8 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.*;
+
+import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.ss.GMain;
 import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
@@ -17,6 +19,8 @@ import com.ss.gameLogic.Interface.ICollision;
 import com.ss.gameLogic.Interface.IDanger;
 import com.ss.gameLogic.Interface.IMerge;
 import static com.ss.gameLogic.config.Config.*;
+
+import com.ss.gameLogic.effect.EffectGame;
 import com.ss.gameLogic.objects.Boat;
 import com.ss.gameLogic.objects.PosOfWeapon;
 import com.ss.gameLogic.objects.Weapon;
@@ -44,6 +48,7 @@ public class Game implements IMerge, ICollision, IDanger {
 
   private int countTarget = 0;
   private boolean endGame = false;
+  private EffectGame effectGame = EffectGame.getInstance();
 
   public Game() {
     gUI = new Group();
@@ -58,7 +63,7 @@ public class Game implements IMerge, ICollision, IDanger {
     data.initListBoat(this, gUI);
 
     listBoat = new ArrayList<>();
-    initLv(10, "boat_0", "boat_1", "boat_2");
+    initLv(10, "boat_0", "boat_10", "boat_8");
 
     initAsset();
     initPosOfWeapon();
@@ -67,7 +72,7 @@ public class Game implements IMerge, ICollision, IDanger {
     gamePlayUI.initShopAndBtnBuyWeapon();
     gamePlayUI.initTopUI();
 
-//    nextBoat();
+    nextBoat();
   }
 
   private void initLv(int numBoat, String ...boat) {
@@ -98,7 +103,7 @@ public class Game implements IMerge, ICollision, IDanger {
 
   private void initWeapon() {
 
-    Weapon weapon = data.HMWeapon.get("cannon_15").get(0);
+    Weapon weapon = data.HMWeapon.get("cannon_2").get(0);
     weapon.addCannonToScene();
     weapon.setPosWeapon(POS_0);
     weapon.addBulletToScene();
@@ -202,10 +207,22 @@ public class Game implements IMerge, ICollision, IDanger {
         float blood = boat.getBlood() - weapon.getAttackBullet();
         boat.setBlood(blood);
 
+        effectGame.eftBoat(boat);
+
         if (boat.getBlood() <= 0) {
+
+          float x = boat.getImgBoat().getX() - 10;
+          float y = boat.getImgBoat().getY();
+
+          effectGame.eftColiisionBoat(weapon.getImgBurn(), x, y);
           boat.resetBoat();
           countTarget++;
         } //reset boat when boat is destroy
+        else {
+
+
+
+        }
 
         if (!weapon.isDrag)
           weapon.isFight = false;
@@ -262,9 +279,10 @@ public class Game implements IMerge, ICollision, IDanger {
 
     Weapon weapon = null;
 
-    for (Weapon w : data.HMWeapon.get("cannon_"+4))
+    for (Weapon w : data.HMWeapon.get("cannon_"+1))
       if (!w.isOn) {
         w.isOn = true;
+        w.clrActionWeapon();
         weapon = w;
         break;
       }

@@ -11,6 +11,7 @@ import static com.ss.gameLogic.config.Config.*;
 
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.utils.DragListener;
+import com.badlogic.gdx.utils.Align;
 import com.ss.GMain;
 import com.ss.core.action.exAction.GSimpleAction;
 import com.ss.core.action.exAction.GTween;
@@ -24,7 +25,7 @@ import com.ss.gameLogic.ui.GamePlayUI;
 public class Weapon extends Image {
 
   private TextureAtlas weaponAtlas = GMain.weaponAtlas;
-  private Image cannon, cannonFight, bullet;
+  private Image cannon, cannonFight, bullet, imgBurn, imgSmoke;
   private Rectangle bound;
   private float attackBullet, speed;
   private int idCannon;
@@ -33,6 +34,7 @@ public class Weapon extends Image {
   public boolean isEftAttack = false; //flag to appear effect attack bullet
 
   private Group gUI;
+  public Group gCannon;
   private Game G;
   private GamePlayUI gamePlayUI;
   private IMerge iMerge;
@@ -50,31 +52,42 @@ public class Weapon extends Image {
     this.attackBullet = attackBullet;
     this.speed = speed;
 
+    gCannon = new Group();
+
     cannon = GUI.createImage(weaponAtlas, name_cannon);
     bullet = GUI.createImage(weaponAtlas, name_bullet);
 
-    if (weaponAtlas.findRegion(name_cannon+"_fight") != null)
+    if (weaponAtlas.findRegion(name_cannon+"_fight") != null) {
       cannonFight = GUI.createImage(weaponAtlas, name_cannon+"_fight");
+      cannonFight.setScale(2f);
+      cannonFight.setVisible(false);
+      gCannon.addActor(cannonFight);
+    }
+
+    cannon.setScale(2f);
+    gCannon.addActor(cannon);
+    gCannon.setSize(cannon.getWidth(), cannon.getHeight());
 
     cannon.setOrigin(cannon.getWidth()/2, cannon.getHeight());
-
     if (cannonFight != null)
       cannonFight.setOrigin(cannonFight.getWidth()/2, cannonFight.getHeight());
 
     assert bullet != null;
     bound = new Rectangle(bullet.getX(), bullet.getY(), bullet.getWidth(), bullet.getHeight());
 
+    initBurnAndSmoke();
     dragAndDrop();
   }
 
   private void dragAndDrop() {
-    cannon.addListener(new DragListener() {
+
+    gCannon.addListener(new DragListener() {
 
       @Override
       public void dragStart(InputEvent event, float x, float y, int pointer) {
         super.dragStart(event, x, y, pointer);
 
-        cannon.setZIndex(1000);
+        gCannon.setZIndex(1000);
 
       }
 
@@ -85,7 +98,7 @@ public class Weapon extends Image {
         isFight = true;
         isDrag = true;
 
-        cannon.moveBy(x - cannon.getWidth() / 2, y - cannon.getHeight() / 2);
+        gCannon.moveBy(x - cannon.getWidth() / 2, y - cannon.getHeight() / 2);
 
       }
 
@@ -93,15 +106,15 @@ public class Weapon extends Image {
       public void dragStop(InputEvent event, float x, float y, int pointer) {
         super.dragStop(event, x, y, pointer);
 
-        float x1 = gamePlayUI.imgRecycle.getX() - 50;
-        float x2 = gamePlayUI.imgRecycle.getX() + 20;
-        float y1 = gamePlayUI.imgRecycle.getY() - 70;
-        float y2 = gamePlayUI.imgRecycle.getY() + 60;
+        float x1 = gamePlayUI.imgRecycle.getX() - 20;
+        float x2 = gamePlayUI.imgRecycle.getX() + 40;
+        float y1 = gamePlayUI.imgRecycle.getY() - 30;
+        float y2 = gamePlayUI.imgRecycle.getY() + 30;
 
-        if (cannon.getX() >= x1 && cannon.getX() <= x2 && cannon.getY() >= y1 && cannon.getY() <= y2)
+        if (gCannon.getX() >= x1 && gCannon.getX() <= x2 && gCannon.getY() >= y1 && gCannon.getY() <= y2)
           G.delWeapon(Weapon.this);
         else {
-          updatePosWeapon(cannon.getX(), cannon.getY());
+          updatePosWeapon(gCannon.getX(), gCannon.getY());
           isDrag = false;
           isFight = false;
         }
@@ -109,47 +122,22 @@ public class Weapon extends Image {
       }
     });
 
-    if (cannonFight != null)
-      cannonFight.addListener(new DragListener() {
+  }
 
-      @Override
-      public void dragStart(InputEvent event, float x, float y, int pointer) {
-        super.dragStart(event, x, y, pointer);
+  private void initBurnAndSmoke() {
 
-        cannonFight.setZIndex(1000);
+    imgBurn = GUI.createImage(GMain.textureAtlas, "burn");
+    imgBurn.setOrigin(imgBurn.getWidth()/2, imgBurn.getHeight()/2);
 
-      }
+    imgSmoke = GUI.createImage(GMain.textureAtlas, "smoke");
+    imgSmoke.setOrigin(Align.center);
 
-      @Override
-      public void drag(InputEvent event, float x, float y, int pointer) {
-        super.dragStart(event, x, y, pointer);
+    imgBurn.setVisible(false);
+    imgSmoke.setVisible(false);
 
-        isFight = true;
-        isDrag = true;
+    gUI.addActor(imgBurn);
+    gUI.addActor(imgSmoke);
 
-        cannonFight.moveBy(x - cannonFight.getWidth() / 2, y - cannonFight.getHeight() / 2);
-
-      }
-
-      @Override
-      public void dragStop(InputEvent event, float x, float y, int pointer) {
-        super.dragStop(event, x, y, pointer);
-
-        float x1 = gamePlayUI.imgRecycle.getX() - 50;
-        float x2 = gamePlayUI.imgRecycle.getX() + 20;
-        float y1 = gamePlayUI.imgRecycle.getY() - 70;
-        float y2 = gamePlayUI.imgRecycle.getY() + 60;
-
-        if (cannonFight.getX() >= x1 && cannonFight.getX() <= x2 && cannonFight.getY() >= y1 && cannonFight.getY() <= y2)
-          G.delWeapon(Weapon.this);
-        else {
-          updatePosWeapon(cannonFight.getX(), cannonFight.getY());
-          isDrag = false;
-          isFight = false;
-        }
-
-      }
-    });
   }
 
   private void updatePosWeapon(float x, float y) {
@@ -181,123 +169,141 @@ public class Weapon extends Image {
 
     try {
       switch (idCannon) {
-        case 0: case 1: case 2: case 3:
-          cannon.setPosition(vTo.x + cannon.getWidth()/2 - 5, vTo.y + 30);
+        case 0: case 1:
+          gCannon.setPosition(vTo.x + gCannon.getWidth()/2 - 5, vTo.y + 30);
           setPosBullet(vTo);
 
-          cannonFight.setPosition(vTo.x + cannon.getWidth()/2 - 5, vTo.y + 30);
+          break;
+        case 2:
+          gCannon.setPosition(vTo.x + gCannon.getWidth()/2 - 5, vTo.y + 30);
+          setPosBullet(vTo);
+
+          cannonFight.setPosition(-1.5f, -6f);
+
+          break;
+        case 3:
+          gCannon.setPosition(vTo.x + gCannon.getWidth()/2 - 5, vTo.y + 32);
+          setPosBullet(vTo);
+
+          cannonFight.setPosition(0, -2);
           break;
         case 4:
-          cannon.setPosition(vTo.x + cannon.getWidth()/2 + 25, vTo.y);
+          gCannon.setPosition(vTo.x + gCannon.getWidth()/2 + 22, vTo.y);
           setPosBullet(vTo);
-          cannonFight.setPosition(vTo.x + cannon.getWidth()/2 + 24, vTo.y + 20);
+          cannonFight.setPosition(-2, 18);
 
           break;
         case 5:
-          cannon.setPosition(vTo.x + cannon.getWidth()/2 + 15, vTo.y + 10);
+          gCannon.setPosition(vTo.x + gCannon.getWidth()/2 + 15, vTo.y + 10);
           setPosBullet(vTo);
-          cannonFight.setPosition(vTo.x + cannon.getWidth()/2 + 15, vTo.y + 30);
+          cannonFight.setPosition(0, 22);
 
           break;
         case 6:
-          cannon.setPosition(vTo.x + cannon.getWidth()/2 + 8, vTo.y + 20);
+          gCannon.setPosition(vTo.x + gCannon.getWidth()/2 + 8, vTo.y + 20);
           setPosBullet(vTo);
-          cannonFight.setPosition(vTo.x + cannon.getWidth()/2 + 8, vTo.y + 28);
+          cannonFight.setPosition(1, 11);
 
           break;
         case 7:
-          cannon.setPosition(vTo.x + cannon.getWidth()/2, vTo.y + 30);
+          gCannon.setPosition(vTo.x + gCannon.getWidth()/2, vTo.y + 30);
           setPosBullet(vTo);
-          cannonFight.setPosition(vTo.x + cannon.getWidth()/2, vTo.y + 45);
+          cannonFight.setPosition(-1, 13);
 
           break;
         case 8:
-          cannon.setPosition(vTo.x + cannon.getWidth()/2, vTo.y + 20);
+          gCannon.setPosition(vTo.x + gCannon.getWidth()/2, vTo.y + 20);
           setPosBullet(vTo);
-          cannonFight.setPosition(vTo.x + cannon.getWidth()/2, vTo.y + 32);
+          cannonFight.setPosition(0,13);
 
           break;
         case 9:
-          cannon.setPosition(vTo.x + cannon.getWidth()/2 - 8, vTo.y + 25);
+          gCannon.setPosition(vTo.x + gCannon.getWidth()/2 - 8, vTo.y + 25);
           setPosBullet(vTo);
-          cannonFight.setPosition(vTo.x + cannon.getWidth()/2 - 8, vTo.y + 25);
+          cannonFight.setPosition(-1,8);
 
           break;
         case 10:
-          cannon.setPosition(vTo.x + cannon.getWidth()/2 - 5, vTo.y + 30);
+          gCannon.setPosition(vTo.x + gCannon.getWidth()/2 - 2, vTo.y + 30);
           setPosBullet(vTo);
 
           break;
         case 11:
-          cannon.setPosition(vTo.x + cannon.getWidth()/2, vTo.y + 20);
+          gCannon.setPosition(vTo.x + gCannon.getWidth()/2, vTo.y + 20);
           setPosBullet(vTo);
-          cannonFight.setPosition(vTo.x + cannon.getWidth()/2, vTo.y + 20);
+          cannonFight.setPosition(1,0);
 
           break;
-        case 12: case 13:
-          cannon.setPosition(vTo.x + cannon.getWidth()/2 - 5, vTo.y + 25);
+        case 12:
+          cannonFight.setVisible(true);
+          gCannon.setPosition(vTo.x + gCannon.getWidth()/2 - 5, vTo.y + 25);
           setPosBullet(vTo);
-          cannonFight.setPosition(vTo.x + cannon.getWidth()/2 - 5, vTo.y + 25);
+          cannonFight.setPosition(2,0);
+
+          break;
+        case 13:
+          gCannon.setPosition(vTo.x + gCannon.getWidth()/2 - 5, vTo.y + 25);
+          setPosBullet(vTo);
+          cannonFight.setPosition(2,2);
 
           break;
         case 14:
-          cannon.setPosition(vTo.x + cannon.getWidth()/2 - 15, vTo.y + 40);
+          gCannon.setPosition(vTo.x + gCannon.getWidth()/2 - 15, vTo.y + 40);
           setPosBullet(vTo);
-          cannonFight.setPosition(vTo.x + cannon.getWidth()/2 - 15, vTo.y + 52);
+          cannonFight.setPosition(0,15);
 
           break;
         case 15:
-          cannon.setPosition(vTo.x + cannon.getWidth()/2 - 15, vTo.y + 30);
+          gCannon.setPosition(vTo.x + gCannon.getWidth()/2 - 15, vTo.y + 30);
           setPosBullet(vTo);
-          cannonFight.setPosition(vTo.x + cannon.getWidth()/2 - 15, vTo.y + 45);
+          cannonFight.setPosition(0,12);
 
           break;
         case 16:
-          cannon.setPosition(vTo.x + cannon.getWidth()/2 - 25, vTo.y - 50);
+          gCannon.setPosition(vTo.x + gCannon.getWidth()/2 - 5, vTo.y + 10);
           setPosBullet(vTo);
-          cannonFight.setPosition(vTo.x + cannon.getWidth()/2 - 25, vTo.y - 35);
+          cannonFight.setPosition(1,8);
 
           break;
         case 17:
-          cannon.setPosition(vTo.x + cannon.getWidth()/2 - 23, vTo.y - 50);
+          gCannon.setPosition(vTo.x + gCannon.getWidth()/2, vTo.y + 20);
           setPosBullet(vTo);
-          cannonFight.setPosition(vTo.x + cannon.getWidth()/2 - 23, vTo.y - 35);
+          cannonFight.setPosition(-2,7);
 
           break;
         case 18:
-          cannon.setPosition(vTo.x + cannon.getWidth()/2 - 23, vTo.y - 50);
+          gCannon.setPosition(vTo.x + gCannon.getWidth()/2, vTo.y + 15);
           setPosBullet(vTo);
-          cannonFight.setPosition(vTo.x + cannon.getWidth()/2 - 23, vTo.y - 50);
+          cannonFight.setPosition(-1,0);
 
           break;
         case 19:
-          cannon.setPosition(vTo.x + cannon.getWidth()/2 - 25, vTo.y - 35);
+          gCannon.setPosition(vTo.x + gCannon.getWidth()/2 - 2, vTo.y + 20);
           setPosBullet(vTo);
-          cannonFight.setPosition(vTo.x + cannon.getWidth()/2 - 25, vTo.y - 35);
+          cannonFight.setPosition(-1,2);
 
           break;
         case 20:
-          cannon.setPosition(vTo.x + cannon.getWidth()/2 - 25, vTo.y - 20);
+          gCannon.setPosition(vTo.x + gCannon.getWidth()/2 - 5, vTo.y + 25);
           setPosBullet(vTo);
-          cannonFight.setPosition(vTo.x + cannon.getWidth()/2 - 25, vTo.y);
+          cannonFight.setPosition(-1,9);
 
           break;
         case 21:
-          cannon.setPosition(vTo.x + cannon.getWidth()/2 - 28, vTo.y - 15);
+          gCannon.setPosition(vTo.x + gCannon.getWidth()/2 - 5, vTo.y + 35);
           setPosBullet(vTo);
-          cannonFight.setPosition(vTo.x + cannon.getWidth()/2 - 28, vTo.y);
+          cannonFight.setPosition(0.5f,7);
 
           break;
         case 22:
-          cannon.setPosition(vTo.x + cannon.getWidth()/2 - 20, vTo.y - 15);
+          gCannon.setPosition(vTo.x + gCannon.getWidth()/2 + 2, vTo.y + 40);
           setPosBullet(vTo);
-          cannonFight.setPosition(vTo.x + cannon.getWidth()/2 - 20, vTo.y - 15);
 
           break;
         case 23:
-          cannon.setPosition(vTo.x + cannon.getWidth()/2 - 23, vTo.y - 15);
+          gCannon.setPosition(vTo.x + gCannon.getWidth()/2, vTo.y + 30);
           setPosBullet(vTo);
-          cannonFight.setPosition(vTo.x + cannon.getWidth()/2 - 23, vTo.y - 15);
+          cannonFight.setPosition(-1,5);
 
           break;
       }
@@ -309,64 +315,62 @@ public class Weapon extends Image {
     try {
       switch (idCannon) {
         case 0: case 1:
-          bullet.setPosition(cannon.getX() + cannon.getWidth()/2 - 18, cannon.getY() + cannon.getHeight()/2 - 35);
+          bullet.setPosition(gCannon.getX() + gCannon.getWidth()/2 - 18, gCannon.getY() + gCannon.getHeight()/2 - 35);
           break;
         case 2: case 3:
-          bullet.setPosition(cannon.getX() + cannon.getWidth()/2 - 16, cannon.getY() + cannon.getHeight()/2 - 20);
+          bullet.setPosition(gCannon.getX() + gCannon.getWidth()/2 - 16, gCannon.getY() + gCannon.getHeight()/2 - 20);
           break;
         case 4:
-          bullet.setPosition(cannon.getX() + cannon.getWidth()/2 - 15, cannon.getY() + cannon.getHeight()/2 - 120);
+          bullet.setPosition(gCannon.getX() + gCannon.getWidth()/2 - 15, gCannon.getY() + gCannon.getHeight()/2 - 120);
           break;
         case 5:
-          bullet.setPosition(cannon.getX() + cannon.getWidth()/2 - 15, cannon.getY() + cannon.getHeight()/2 - 105);
+          bullet.setPosition(gCannon.getX() + gCannon.getWidth()/2 - 15, gCannon.getY() + gCannon.getHeight()/2 - 105);
           break;
-        case 6: case 16:
-          bullet.setPosition(cannon.getX() + cannon.getWidth()/2 - 18, cannon.getY() + cannon.getHeight()/2 - 95);
+        case 6:
+          bullet.setPosition(gCannon.getX() + gCannon.getWidth()/2 - 18, gCannon.getY() + gCannon.getHeight()/2 - 95);
           break;
         case 7:
-          bullet.setPosition(cannon.getX() + cannon.getWidth()/2 - 30, cannon.getY() + cannon.getHeight()/2 - 100);
+          bullet.setPosition(gCannon.getX() + gCannon.getWidth()/2 - 30, gCannon.getY() + gCannon.getHeight()/2 - 100);
           break;
         case 8:
-          bullet.setPosition(cannon.getX() + cannon.getWidth()/2 - 20, cannon.getY() + cannon.getHeight()/2 - 90);
+        case 23:
+          bullet.setPosition(gCannon.getX() + gCannon.getWidth()/2 - 20, gCannon.getY() + gCannon.getHeight()/2 - 90);
           break;
         case 9:
-          bullet.setPosition(cannon.getX() + cannon.getWidth()/2 - 28, cannon.getY() + cannon.getHeight()/2 - 80);
+          bullet.setPosition(gCannon.getX() + gCannon.getWidth()/2 - 28, gCannon.getY() + gCannon.getHeight()/2 - 80);
           break;
         case 10:
-          bullet.setPosition(cannon.getX() + cannon.getWidth()/2 - 15, cannon.getY() + cannon.getHeight()/2 - 50);
+          bullet.setPosition(gCannon.getX() + gCannon.getWidth()/2 - 15, gCannon.getY() + gCannon.getHeight()/2 - 50);
           break;
         case 11:
-          bullet.setPosition(cannon.getX() + cannon.getWidth()/2 - 20, cannon.getY() + cannon.getHeight()/2 - 85);
+          bullet.setPosition(gCannon.getX() + gCannon.getWidth()/2 - 20, gCannon.getY() + gCannon.getHeight()/2 - 85);
           break;
         case 12: case 13:
-          bullet.setPosition(cannon.getX() + cannon.getWidth()/2 - 5, cannon.getY() + cannon.getHeight()/2 - 50);
+          bullet.setPosition(gCannon.getX() + gCannon.getWidth()/2 - 5, gCannon.getY() + gCannon.getHeight()/2 - 50);
           break;
         case 14:
-          bullet.setPosition(cannon.getX() + cannon.getWidth()/2 - 8, cannon.getY() + cannon.getHeight()/2 - 55);
+          bullet.setPosition(gCannon.getX() + gCannon.getWidth()/2 - 8, gCannon.getY() + gCannon.getHeight()/2 - 55);
           break;
         case 15:
-          bullet.setPosition(cannon.getX() + cannon.getWidth()/2 - 10, cannon.getY() + cannon.getHeight()/2 - 65);
+          bullet.setPosition(gCannon.getX() + gCannon.getWidth()/2 - 10, gCannon.getY() + gCannon.getHeight()/2 - 65);
           break;
-        case 17:
-          bullet.setPosition(cannon.getX() + cannon.getWidth()/2 - 7, cannon.getY() + cannon.getHeight()/2 - 35);
+        case 16: case 17:
+          bullet.setPosition(gCannon.getX() + gCannon.getWidth()/2 - 30, gCannon.getY() + gCannon.getHeight()/2 - 110);
           break;
         case 18:
-          bullet.setPosition(cannon.getX() + cannon.getWidth()/2 + 2, cannon.getY() + cannon.getHeight()/2 - 25);
+          bullet.setPosition(gCannon.getX() + gCannon.getWidth()/2 - 20, gCannon.getY() + gCannon.getHeight()/2 - 80);
           break;
         case 19:
-          bullet.setPosition(cannon.getX() + cannon.getWidth()/2 - 20, cannon.getY() + cannon.getHeight()/2 - 10);
+          bullet.setPosition(gCannon.getX() + gCannon.getWidth()/2 - 45, gCannon.getY() + gCannon.getHeight()/2 - 70);
           break;
         case 20:
-          bullet.setPosition(cannon.getX() + cannon.getWidth()/2 - 20, cannon.getY() + cannon.getHeight()/2 - 25);
+          bullet.setPosition(gCannon.getX() + gCannon.getWidth()/2 - 40, gCannon.getY() + gCannon.getHeight()/2 - 80);
           break;
         case 21:
-          bullet.setPosition(cannon.getX() + cannon.getWidth()/2 - 10, cannon.getY() + cannon.getHeight()/2 - 30);
+          bullet.setPosition(gCannon.getX() + gCannon.getWidth()/2 - 35, gCannon.getY() + gCannon.getHeight()/2 - 85);
           break;
         case 22:
-          bullet.setPosition(cannon.getX() + cannon.getWidth()/2 - 5, cannon.getY() + cannon.getHeight()/2 + 15);
-          break;
-        case 23:
-          bullet.setPosition(cannon.getX() + cannon.getWidth()/2 + 3, cannon.getY() + cannon.getHeight()/2 - 30);
+          bullet.setPosition(gCannon.getX() + gCannon.getWidth()/2 - 28, gCannon.getY() + gCannon.getHeight()/2 - 35);
           break;
       }
       bound.setPosition(bullet.getX(), bullet.getY());
@@ -376,8 +380,6 @@ public class Weapon extends Image {
 
   public void attack(float delay) {
 
-    bullet.setVisible(true);
-
     isFight = true;
     isEftAttack = true;
     GTween.action(bullet,
@@ -385,7 +387,6 @@ public class Weapon extends Image {
             sequence(
               delay(delay),
               parallel(
-
                       moveTo(bullet.getX(), -50, SPEED_BULLET, linear),
                       GSimpleAction.simpleAction((d, a) -> {
 
@@ -414,6 +415,12 @@ public class Weapon extends Image {
 
   }
 
+  public void clrActionWeapon() {
+
+    gCannon.clearActions();
+
+  }
+
   public float getSpeed() {
     return speed;
   }
@@ -436,23 +443,18 @@ public class Weapon extends Image {
 
   public void addCannonToScene() {
 
-    cannon.setScale(2f);
-    gUI.addActor(cannon);
-
-    try {
-      cannonFight.setScale(2f);
-//      cannonFight.setVisible(false);
-      gUI.addActor(cannonFight);
-      cannonFight.debug();
-    }
-    catch (Exception ex) {  }
+    gUI.addActor(gCannon);
 
   }
+
+  public Image getImgBurn() { return imgBurn; }
+
+  public Image getImgSmoke() { return imgSmoke; }
 
   public void addBulletToScene() {
 
     bullet.setScale(2f);
-//    bullet.setVisible(false);
+    bullet.setVisible(false);
     gUI.addActor(bullet);
 
   }
@@ -463,9 +465,7 @@ public class Weapon extends Image {
     isDrag = false;
     isOn = false;
 
-    cannon.remove();
-    if (cannonFight != null)
-      cannonFight.remove();
+    gCannon.remove();
     bullet.remove();
   }
 
