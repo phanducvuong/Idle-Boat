@@ -126,4 +126,25 @@ public class LogicGame {
 
   }
 
+  public String compressCoin(long coin) {
+
+    String s = coin+"";
+    int temp = s.length();
+
+    switch (temp) {
+
+      case 4: s = s.substring(0, 1) + "K"; break;
+      case 5: s = s.substring(0, 2) + "K"; break;
+      case 6: s = s.substring(0, 3) + "K"; break;
+      case 7: s = s.substring(0, 1) + "M"; break;
+      case 8: s = s.substring(0, 2) + "M"; break;
+      case 9: s = s.substring(0, 3) + "M"; break;
+      case 10: s = s.substring(0, 1) + "B"; break;
+      case 11: s = s.substring(0, 2) + "B"; break;
+      case 12: s = s.substring(0, 3) + "B"; break;
+    }
+
+    return s;
+  }
+
 }

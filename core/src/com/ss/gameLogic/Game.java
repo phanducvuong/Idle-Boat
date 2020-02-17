@@ -6,7 +6,6 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.*;
 
-import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.ss.GMain;
 import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
@@ -26,8 +25,6 @@ import com.ss.gameLogic.objects.PosOfWeapon;
 import com.ss.gameLogic.objects.Weapon;
 import com.ss.gameLogic.ui.GamePlayUI;
 
-import org.omg.Messaging.SYNC_WITH_TRANSPORT;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -37,7 +34,7 @@ public class Game implements IMerge, ICollision, IDanger {
   private TextureAtlas textureAtlas = GMain.textureAtlas;
   private Group gUI;
   private Group gBoat;
-  private LogicGame logicGame = LogicGame.getInstance(this);
+  public LogicGame logicGame = LogicGame.getInstance(this);
   private GamePlayUI gamePlayUI;
   private int idCannonPresent = 0;
 
@@ -63,7 +60,7 @@ public class Game implements IMerge, ICollision, IDanger {
     data.initListBoat(this, gUI);
 
     listBoat = new ArrayList<>();
-    initLv(10, "boat_0", "boat_10", "boat_8");
+    initLv(10, "boat_0", "boat_1", "boat_2");
 
     initAsset();
     initPosOfWeapon();
@@ -209,18 +206,19 @@ public class Game implements IMerge, ICollision, IDanger {
 
         effectGame.eftBoat(boat);
 
+        float x = boat.getImgBoat().getX() - 10;
+        float y = boat.getImgBoat().getY();
+
         if (boat.getBlood() <= 0) {
 
-          float x = boat.getImgBoat().getX() - 10;
-          float y = boat.getImgBoat().getY();
-
-          effectGame.eftColiisionBoat(weapon.getImgBurn(), x, y);
+          effectGame.eftBurn(weapon.getImgBurn(), x, y);
+          boat.showCoin();
           boat.resetBoat();
           countTarget++;
         } //reset boat when boat is destroy
         else {
 
-
+          effectGame.eftSmoke(weapon.getImgSmoke(), x-15, y);
 
         }
 
@@ -279,7 +277,7 @@ public class Game implements IMerge, ICollision, IDanger {
 
     Weapon weapon = null;
 
-    for (Weapon w : data.HMWeapon.get("cannon_"+1))
+    for (Weapon w : data.HMWeapon.get("cannon_"+0))
       if (!w.isOn) {
         w.isOn = true;
         w.clrActionWeapon();

@@ -16,6 +16,9 @@ public class BoatJson {
   @SerializedName("id_boat")
   private int idBoat;
 
+  @SerializedName("coin")
+  private int coin;
+
   public String getBoat() {
     return boat;
   }
@@ -46,5 +49,13 @@ public class BoatJson {
 
   public void setIdBoat(int idBoat) {
     this.idBoat = idBoat;
+  }
+
+  public int getCoin() {
+    return coin;
+  }
+
+  public void setCoin(int coin) {
+    this.coin = coin;
   }
 }

@@ -1,9 +1,11 @@
 package com.ss.gameLogic.ui;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
+import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.utils.Align;
@@ -12,7 +14,7 @@ import com.ss.core.util.GStage;
 import com.ss.core.util.GUI;
 import com.ss.gameLogic.Game;
 import com.ss.gameLogic.config.Config;
-import com.ss.gameLogic.objects.Weapon;
+import com.ss.gameLogic.effect.EffectGame;
 
 public class GamePlayUI {
 
@@ -20,6 +22,7 @@ public class GamePlayUI {
   private static final float HEIGHT = GStage.getWorldHeight();
 
   private TextureAtlas textureAtlas = GMain.textureAtlas;
+  private EffectGame effectGame = EffectGame.getInstance();
   private Game G;
   private Group gUI;
 
@@ -27,11 +30,12 @@ public class GamePlayUI {
   private Image btnCoin, iconWeapon;
 
   private Image imgShop;
+  public long coinCollection = 0;
   public Image imgRecycle;
 
   public Group gTopUI;
-  private Image coinCollection, bgPercentFinished, imgPercentFinished, imgSetting;
-  public Label lbCoinCollection;
+  private Image imgCoinCollection, bgPercentFinished, imgPercentFinished, imgSetting;
+  public Label lbCoinCollection, lbLevel, lbCoinBuyWeapon;
 
   public GamePlayUI(Game G, Group gUI) {
 
@@ -45,12 +49,20 @@ public class GamePlayUI {
   public void initShopAndBtnBuyWeapon() {
 
     btnCoin = GUI.createImage(textureAtlas, "coin");
+    btnCoin.setColor(Color.RED);
     iconWeapon = GUI.createImage(GMain.weaponAtlas, "cannon_0");
     iconWeapon.setScale(1.4f);
     iconWeapon.setPosition(gBuyWeapon.getX() + 5, gBuyWeapon.getY());
 
+    lbCoinBuyWeapon = new Label("$358K", new Label.LabelStyle(Config.BITMAP_YELLOW_FONT, null));
+    lbCoinBuyWeapon.setAlignment(Align.center);
+    lbCoinBuyWeapon.setPosition(btnCoin.getX() + btnCoin.getWidth()/2 - lbCoinBuyWeapon.getWidth()/2, btnCoin.getY() + 15);
+    lbCoinBuyWeapon.setFontScale(.7f);
+
     gBuyWeapon.addActor(btnCoin);
     gBuyWeapon.addActor(iconWeapon);
+    gBuyWeapon.addActor(lbCoinBuyWeapon);
+    gBuyWeapon.setOrigin(btnCoin.getWidth()/2, btnCoin.getHeight()/2);
 
     gBuyWeapon.setPosition(WIDTH/2 - btnCoin.getWidth()/2, HEIGHT - btnCoin.getHeight() - 5);
     gBuyWeapon.setOrigin(btnCoin.getWidth()/2, btnCoin.getHeight()/2);
@@ -74,25 +86,31 @@ public class GamePlayUI {
     bgPercentFinished = GUI.createImage(textureAtlas, "bg_percent_finished");
     bgPercentFinished.setPosition(gUI.getWidth()/2 - bgPercentFinished.getWidth()/2, 0);
 
-    coinCollection = GUI.createImage(textureAtlas, "coin_collection");
-    coinCollection.setPosition(0, bgPercentFinished.getHeight()/2 - coinCollection.getHeight()/2);
+    imgCoinCollection = GUI.createImage(textureAtlas, "coin_collection");
+    imgCoinCollection.setPosition(0, bgPercentFinished.getHeight()/2 - imgCoinCollection.getHeight()/2);
 
     imgPercentFinished = GUI.createImage(textureAtlas, "percent_finished");
     float y = bgPercentFinished.getY() + bgPercentFinished.getHeight()/2 - imgPercentFinished.getHeight()/2;
     imgPercentFinished.setPosition(bgPercentFinished.getX() + 92, y);
 
+    lbLevel = new Label("999", new Label.LabelStyle(Config.BITMAP_YELLOW_FONT, null));
+    lbLevel.setAlignment(Align.center);
+    lbLevel.setPosition(bgPercentFinished.getX() - lbLevel.getWidth()/2 + 50, bgPercentFinished.getY() + 25);
+    lbLevel.setFontScale(.45f, .5f);
+
     lbCoinCollection = new Label("25M", new Label.LabelStyle(Config.BITMAP_YELLOW_FONT, null));
     lbCoinCollection.setAlignment(Align.center);
-    lbCoinCollection.setPosition(coinCollection.getX() + coinCollection.getWidth()/2 - lbCoinCollection.getWidth()/2 + 20, coinCollection.getY() - 5);
+    lbCoinCollection.setPosition(imgCoinCollection.getX() + imgCoinCollection.getWidth()/2 - lbCoinCollection.getWidth()/2 + 20, imgCoinCollection.getY() + 10);
     lbCoinCollection.setFontScale(.5f);
 
     imgSetting = GUI.createImage(textureAtlas, "setting");
     imgSetting.setScale(1.2f);
-    imgSetting.setPosition(coinCollection.getX(), coinCollection.getY() + 100);
+    imgSetting.setPosition(imgCoinCollection.getX(), imgCoinCollection.getY() + 100);
 
-    gTopUI.addActor(coinCollection);
+    gTopUI.addActor(imgCoinCollection);
     gTopUI.addActor(lbCoinCollection);
     gTopUI.addActor(bgPercentFinished);
+    gTopUI.addActor(lbLevel);
     gTopUI.addActor(imgSetting);
     gTopUI.addActor(imgPercentFinished);
     gUI.addActor(gTopUI);
@@ -104,7 +122,14 @@ public class GamePlayUI {
     gBuyWeapon.addListener(new InputListener() {
       @Override
       public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-        G.addWeapon(iconWeapon.getX(), iconWeapon.getY());
+
+        gBuyWeapon.setTouchable(Touchable.disabled);
+        Runnable run = () -> {
+          G.addWeapon(iconWeapon.getX(), iconWeapon.getY());
+          gBuyWeapon.setTouchable(Touchable.enabled);
+        };
+        effectGame.eftClick(gBuyWeapon, run);
+
         return super.touchDown(event, x, y, pointer, button);
       }
     });
@@ -160,6 +185,19 @@ public class GamePlayUI {
         iconWeapon.setPosition(gBuyWeapon.getX() + 5, gBuyWeapon.getY() - 15);
         break;
     }
+
+  }
+
+  public void setTextCoinCollection(int coin) {
+
+
+
+  }
+
+  public void lvUp() {
+
+    int tempLv = Integer.parseInt(lbLevel.getText().toString());
+    lbLevel.setText(tempLv+1);
 
   }
 }

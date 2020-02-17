@@ -418,6 +418,7 @@ public class Weapon extends Image {
   public void clrActionWeapon() {
 
     gCannon.clearActions();
+    bullet.clearActions();
 
   }
 

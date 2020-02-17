@@ -97,6 +97,7 @@ public class Data {
       int blood = boat.getBlood();
       float speed = boat.getSpeed();
       int idBoat = boat.getIdBoat();
+      int coin = boat.getCoin();
 
       List<Boat> listBoat = new ArrayList<>();
 
@@ -104,7 +105,7 @@ public class Data {
 
         try {
 
-          listBoat.add(new Boat(G, gUI, imgBoat, speed, blood, idBoat));
+          listBoat.add(new Boat(G, gUI, imgBoat, speed, blood, idBoat, coin));
 
         }
         catch (Exception ex) {}

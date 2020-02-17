@@ -7,7 +7,9 @@ import com.badlogic.gdx.scenes.scene2d.Group;
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.*;
 
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
+import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.utils.Align;
 import com.ss.GMain;
 import com.ss.core.action.exAction.GSimpleAction;
@@ -15,6 +17,8 @@ import com.ss.core.util.GStage;
 import com.ss.core.util.GUI;
 import com.ss.gameLogic.Game;
 import com.ss.gameLogic.Interface.IDanger;
+import com.ss.gameLogic.LogicGame;
+
 import static com.ss.gameLogic.config.Config.*;
 
 public class Boat extends Image {
@@ -26,15 +30,16 @@ public class Boat extends Image {
   private float speed;
   private int idBoat;
   public String name;
-
+  public int coin;
   public boolean isAlive = false;
   public int col;
+  public Label lbCoin;
 
   private Game G;
   private Group gBoat;
   private IDanger iDanger;
 
-  public Boat(Game G, Group gBoat, String boat, float speed, float blood, int idBoat) {
+  public Boat(Game G, Group gBoat, String boat, float speed, float blood, int idBoat, int coin) {
     this.G = G;
     this.gBoat = gBoat;
     this.speed = speed;
@@ -43,9 +48,18 @@ public class Boat extends Image {
     this.idBoat = idBoat;
     this.iDanger = G;
     this.name = boat;
+    this.coin = coin;
 
     imgBoat = GUI.createImage(boatAtlas, boat);
     imgBoat.setOrigin(Align.center);
+
+    lbCoin = new Label("0", new Label.LabelStyle(BITMAP_YELLOW_FONT, null));
+    lbCoin.setVisible(false);
+    lbCoin.setAlignment(Align.center);
+    lbCoin.setFontScale(.6f);
+    gBoat.addActor(lbCoin);
+
+    lbCoin.setText("+" + G.logicGame.compressCoin(coin));
 
     assert imgBoat != null;
     bound = new Rectangle(imgBoat.getX(), imgBoat.getY(), imgBoat.getWidth(), imgBoat.getHeight() - 15);
@@ -120,6 +134,30 @@ public class Boat extends Image {
               return true;
             })
     ));
+  }
+
+  public void showCoin() {
+
+    float x = imgBoat.getX();
+    float y = imgBoat.getY();
+
+    lbCoin.setZIndex(1000);
+    lbCoin.setPosition(x - lbCoin.getWidth()/2 + 50, y);
+    lbCoin.setVisible(true);
+
+    SequenceAction seq = sequence(
+            parallel(
+                    Actions.moveBy(0, -20, .75f, fastSlow),
+                    alpha(0, 1.5f, linear)
+            ),
+            run(() -> {
+              lbCoin.setVisible(false);
+              lbCoin.getColor().a = 1;
+            })
+    );
+
+    lbCoin.addAction(seq);
+
   }
 
   public void resetBoat() {

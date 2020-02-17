@@ -4,10 +4,12 @@ import static com.badlogic.gdx.math.Interpolation.*;
 import com.badlogic.gdx.math.Vector2;
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.*;
 
+import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.actions.ParallelAction;
 import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.utils.Align;
 import com.ss.core.action.exAction.GSimpleAction;
 import com.ss.core.action.exAction.GTween;
@@ -86,7 +88,7 @@ public class EffectGame {
 
   }
 
-  public void eftColiisionBoat(Image image, float x, float y) {
+  public void eftBurn(Image image, float x, float y) {
 
     image.setPosition(x, y);
     image.setScale(0);
@@ -106,6 +108,43 @@ public class EffectGame {
     );
 
     image.addAction(seq);
+
+  }
+
+  public void eftSmoke(Image image, float x, float y) {
+
+    image.setPosition(x, y);
+    image.setScale(0);
+    image.setZIndex(1000);
+    image.getColor().a = .8f;
+    image.setVisible(true);
+
+    SequenceAction seq = sequence(
+            parallel(
+                    scaleTo(1, 1, .25f, fastSlow),
+                    moveBy(0, -20, .25f, fastSlow),
+                    alpha(0, 1f, linear)
+            ),
+            run(() -> {
+              image.setScale(0);
+              image.setVisible(false);
+              image.getColor().a = .8f;
+            })
+    );
+
+    image.addAction(seq);
+
+  }
+
+  public void eftClick(Group btn, Runnable onComplete) {
+
+    SequenceAction seq = sequence(
+      scaleBy(-.1f, -.1f, .05f, fastSlow),
+      scaleBy(.1f, .1f, .05f, fastSlow),
+      run(onComplete)
+    );
+
+    btn.addAction(seq);
 
   }
 
