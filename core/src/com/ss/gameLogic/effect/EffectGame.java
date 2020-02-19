@@ -5,15 +5,11 @@ import com.badlogic.gdx.math.Vector2;
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.*;
 
 import com.badlogic.gdx.scenes.scene2d.Group;
-import com.badlogic.gdx.scenes.scene2d.actions.Actions;
-import com.badlogic.gdx.scenes.scene2d.actions.ParallelAction;
 import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.utils.Align;
-import com.ss.core.action.exAction.GSimpleAction;
 import com.ss.core.action.exAction.GTween;
 import com.ss.gameLogic.objects.Boat;
+import com.ss.gameLogic.objects.PosOfWeapon;
 import com.ss.gameLogic.objects.Weapon;
 
 public class EffectGame {
@@ -145,6 +141,43 @@ public class EffectGame {
     );
 
     btn.addAction(seq);
+
+  }
+
+  public void eftClick(Image btn, Runnable onComplete) {
+
+    SequenceAction seq = sequence(
+            scaleBy(-.1f, -.1f, .05f, fastSlow),
+            scaleBy(.1f, .1f, .05f, fastSlow),
+            run(onComplete)
+    );
+
+    btn.addAction(seq);
+
+  }
+
+  public void eftPercentFinished(Image percent, int target) {
+
+    float deltaScl = 1f / target;
+    float sclX = percent.getScaleX() + deltaScl;
+
+    if (sclX >= 1)
+      percent.setScale(1f);
+    else
+      percent.setScale(sclX, 1f);
+
+  }
+
+  public void eftMerge(PosOfWeapon pos) {
+
+    pos.getImgEftMerge().setVisible(true);
+    pos.getImgEftMerge().setZIndex(1000);
+    SequenceAction seq = sequence(
+            scaleTo(1f, 1f, .5f, fastSlow),
+            run(pos::resetImgMerge)
+    );
+
+    pos.getImgEftMerge().addAction(seq);
 
   }
 

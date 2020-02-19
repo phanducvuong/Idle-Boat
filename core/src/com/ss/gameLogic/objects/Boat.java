@@ -17,7 +17,6 @@ import com.ss.core.util.GStage;
 import com.ss.core.util.GUI;
 import com.ss.gameLogic.Game;
 import com.ss.gameLogic.Interface.IDanger;
-import com.ss.gameLogic.LogicGame;
 
 import static com.ss.gameLogic.config.Config.*;
 
@@ -53,7 +52,7 @@ public class Boat extends Image {
     imgBoat = GUI.createImage(boatAtlas, boat);
     imgBoat.setOrigin(Align.center);
 
-    lbCoin = new Label("0", new Label.LabelStyle(BITMAP_YELLOW_FONT, null));
+    lbCoin = new Label("0", new Label.LabelStyle(BITMAP_WHITE_FONT, null));
     lbCoin.setVisible(false);
     lbCoin.setAlignment(Align.center);
     lbCoin.setFontScale(.6f);
@@ -160,13 +159,18 @@ public class Boat extends Image {
 
   }
 
-  public void resetBoat() {
+  public void resetBoat(int countTarget, int target) {
     isAlive = false;
     blood = tempBlood;
     bound.setPosition(0, 0);
     this.clearActions();
     imgBoat.clear();
     imgBoat.remove();
+
+    if (countTarget < target) {
+      setPosBoat();
+      G.startBoat(this);
+    }
 
     iDanger.chkWin();
   }

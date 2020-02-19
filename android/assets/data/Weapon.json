@@ -3,7 +3,7 @@
     "cannon": "cannon_0",
     "cannon_fight": "cannon_0_fight",
     "bullet": "bullet_0",
-    "attack_bullet": 2,
+    "attack_bullet": 20,
     "id_cannon": 0,
     "speed": 1.5
   },
@@ -11,7 +11,7 @@
     "cannon": "cannon_1",
     "cannon_fight": "cannon_1_fight",
     "bullet": "bullet_0",
-    "attack_bullet": 2,
+    "attack_bullet": 10,
     "id_cannon": 1,
     "speed": 1.5
   },

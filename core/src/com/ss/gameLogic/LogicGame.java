@@ -1,13 +1,11 @@
 package com.ss.gameLogic;
 
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.ss.data.Data;
 import com.ss.gameLogic.effect.EffectGame;
 import com.ss.gameLogic.objects.Boat;
 import com.ss.gameLogic.objects.PosOfWeapon;
 import com.ss.gameLogic.objects.Weapon;
-import com.sun.org.apache.bcel.internal.generic.BREAKPOINT;
 
 import java.util.List;
 
@@ -50,7 +48,7 @@ public class LogicGame {
         pTo.getWeapon().setPosWeapon(pTo.pos);
 
       }
-      else { //idCannon equal => weapon level up and update weapon at vTo, release vFrome
+      else { //idIconCannon equal => weapon level up and update weapon at vTo, release vFrome
 
         //todo: particle merge weapon
 
@@ -75,6 +73,9 @@ public class LogicGame {
           pTo.getWeapon().addBulletToScene();
           pTo.getWeapon().addCannonToScene();
           pTo.getWeapon().setPosWeapon(pTo.pos);
+
+          pTo.startEftMerge();
+          updateIconBuyWeapon(weapon);
 
         };
 
@@ -145,6 +146,26 @@ public class LogicGame {
     }
 
     return s;
+  }
+
+  private void updateIconBuyWeapon(Weapon weapon) {
+
+    int idCannonPre = G.gamePlayUI.idIconCannon;
+    int idCannonMerge = weapon.getIdCannon();
+
+    int idTemp = idCannonMerge - (idCannonPre+4);
+
+    int temp = idTemp >= 0 ? (idCannonMerge - 4): idCannonPre;
+    G.gamePlayUI.updateIdIconCannon(temp);
+
+    if (idCannonMerge > G.gamePlayUI.idNewCannon) {
+
+      G.gamePlayUI.idNewCannon = idCannonMerge;
+      //todo: show effect new weapon
+      System.out.println("LV Up!");
+
+    }
+
   }
 
 }

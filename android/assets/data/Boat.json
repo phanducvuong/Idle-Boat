@@ -4,12 +4,12 @@
     "blood": 5,
     "speed": 20,
     "id_boat": 0,
-    "coin": 10
+    "coin": 500
   },
   {
     "boat": "boat_1",
     "blood": 5,
-    "speed": 25,
+    "speed": 20,
     "id_boat": 1,
     "coin": 10
   },

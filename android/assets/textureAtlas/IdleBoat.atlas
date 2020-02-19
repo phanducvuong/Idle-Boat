@@ -1,21 +1,42 @@
 
 IdleBoat.png
-size: 1024,2048
+size: 2048,2048
 format: RGBA8888
 filter: Nearest,Nearest
 repeat: none
 bg
   rotate: false
-  xy: 2, 291
+  xy: 2, 431
   size: 720, 1280
   orig: 720, 1280
   offset: 0, 0
   index: -1
 bg_percent_finished
   rotate: false
-  xy: 724, 1474
+  xy: 1236, 1614
   size: 229, 97
   orig: 229, 97
+  offset: 0, 0
+  index: -1
+bg_shop
+  rotate: false
+  xy: 724, 894
+  size: 510, 817
+  orig: 510, 817
+  offset: 0, 0
+  index: -1
+bg_weapon
+  rotate: false
+  xy: 2, 287
+  size: 413, 142
+  orig: 413, 142
+  offset: 0, 0
+  index: -1
+btn_buy_weapon
+  rotate: false
+  xy: 417, 339
+  size: 225, 90
+  orig: 225, 90
   offset: 0, 0
   index: -1
 burn
@@ -27,57 +48,85 @@ burn
   index: -1
 coin
   rotate: false
-  xy: 2, 201
+  xy: 724, 804
   size: 326, 88
   orig: 326, 88
   offset: 0, 0
   index: -1
 coin_collection
   rotate: false
-  xy: 2, 125
+  xy: 724, 728
   size: 214, 74
   orig: 214, 74
   offset: 0, 0
   index: -1
+eft_merge_weapon
+  rotate: false
+  xy: 2, 125
+  size: 159, 160
+  orig: 159, 160
+  offset: 0, 0
+  index: -1
+lock
+  rotate: false
+  xy: 1236, 1441
+  size: 38, 48
+  orig: 38, 48
+  offset: 0, 0
+  index: -1
 percent_finished
   rotate: false
-  xy: 435, 254
+  xy: 417, 302
   size: 129, 35
   orig: 129, 35
   offset: 0, 0
   index: -1
 pos_weapon
   rotate: false
-  xy: 724, 1263
+  xy: 724, 640
   size: 86, 86
   orig: 86, 86
   offset: 0, 0
   index: -1
 recycle
   rotate: false
-  xy: 955, 1508
+  xy: 940, 739
   size: 55, 63
   orig: 55, 63
   offset: 0, 0
   index: -1
 setting
   rotate: false
-  xy: 218, 135
+  xy: 644, 365
   size: 69, 64
   orig: 69, 64
   offset: 0, 0
   index: -1
 shop
   rotate: false
-  xy: 330, 211
+  xy: 163, 207
   size: 103, 78
   orig: 103, 78
   offset: 0, 0
   index: -1
 smoke
   rotate: false
-  xy: 724, 1351
+  xy: 1236, 1491
   size: 149, 121
   orig: 149, 121
+  offset: 0, 0
+  index: -1
+sound_off
+  rotate: false
+  xy: 1467, 1623
+  size: 100, 88
+  orig: 100, 88
+  offset: 0, 0
+  index: -1
+sound_on
+  rotate: false
+  xy: 1052, 804
+  size: 100, 88
+  orig: 100, 88
   offset: 0, 0
   index: -1

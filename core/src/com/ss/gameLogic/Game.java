@@ -35,17 +35,16 @@ public class Game implements IMerge, ICollision, IDanger {
   private Group gUI;
   private Group gBoat;
   public LogicGame logicGame = LogicGame.getInstance(this);
-  private GamePlayUI gamePlayUI;
-  private int idCannonPresent = 0;
+  public GamePlayUI gamePlayUI;
 
   public List<PosOfWeapon> listPosOfWeapon;
   private List<Boat> listBoat;
 
+  private EffectGame effectGame = EffectGame.getInstance();
   private Data data = Data.getInstance();
 
   private int countTarget = 0;
-  private boolean endGame = false;
-  private EffectGame effectGame = EffectGame.getInstance();
+  private int target = 30; // target to finished level
 
   public Game() {
     gUI = new Group();
@@ -54,7 +53,6 @@ public class Game implements IMerge, ICollision, IDanger {
 
     GStage.addToLayer(GLayer.ui, gUI);
     gUI.addActor(gBoat);
-    gamePlayUI = new GamePlayUI(this, gUI);
 
     data.initListWeapon(this, gamePlayUI, gUI);
     data.initListBoat(this, gUI);
@@ -66,8 +64,11 @@ public class Game implements IMerge, ICollision, IDanger {
     initPosOfWeapon();
     initWeapon();
 
-    gamePlayUI.initShopAndBtnBuyWeapon();
-    gamePlayUI.initTopUI();
+    //todo: setTextCoinCollection and coinBuyWeapon if first time play game else get it in share preference
+    gamePlayUI = new GamePlayUI(this, gUI);
+    gamePlayUI.setTextCoinCollection(0);
+    gamePlayUI.setIconWeapon(0);
+    gamePlayUI.setTextCoinBuyWeapon(0);
 
     nextBoat();
   }
@@ -146,7 +147,7 @@ public class Game implements IMerge, ICollision, IDanger {
 //    listPosOfWeapon.get(8).setEmpty(false);
   }
 
-  private void startBoat(Boat boat) {
+  public void startBoat(Boat boat) {
     //todo move all boat in listBoat => boat is die reset boat and move boat again
 
     gamePlayUI.gTopUI.setZIndex(1000);
@@ -175,8 +176,9 @@ public class Game implements IMerge, ICollision, IDanger {
 
   private void nextBoat() {
 
-    if (countTarget < 100 && !endGame)
+    if (countTarget < target)
       startBoat(getRandomBoat());
+
   }
 
   private Boat getRandomBoat() {
@@ -212,9 +214,13 @@ public class Game implements IMerge, ICollision, IDanger {
         if (boat.getBlood() <= 0) {
 
           effectGame.eftBurn(weapon.getImgBurn(), x, y);
+          gamePlayUI.setTextCoinCollection(boat.coin);
+
           boat.showCoin();
-          boat.resetBoat();
+          boat.resetBoat(countTarget, target);
           countTarget++;
+
+          effectGame.eftPercentFinished(gamePlayUI.imgPercentFinished, target);
         } //reset boat when boat is destroy
         else {
 
@@ -243,7 +249,6 @@ public class Game implements IMerge, ICollision, IDanger {
   public void endGame() {
 
     System.out.println("END GAME");
-    endGame = true;
     for (Boat boat : listBoat)
       boat.getImgBoat().clear();
 
@@ -252,10 +257,17 @@ public class Game implements IMerge, ICollision, IDanger {
   @Override
   public void fire(Boat boat) {
 
-    for (PosOfWeapon pos : listPosOfWeapon) {
-      if (pos.col == boat.col && !pos.getIsEmpty())
-        if (!pos.getWeapon().isFight)
-          pos.getWeapon().attack(TIME_DELAY_ATTACK);
+    try {
+
+      for (PosOfWeapon pos : listPosOfWeapon) {
+        if (pos.col == boat.col && !pos.getIsEmpty())
+          if (!pos.getWeapon().isFight)
+            pos.getWeapon().attack(TIME_DELAY_ATTACK);
+      }
+
+    }
+    catch (Exception e) {
+      e.printStackTrace();
     }
 
   }
@@ -273,31 +285,29 @@ public class Game implements IMerge, ICollision, IDanger {
 
   }
 
-  public void addWeapon(float x, float y) {
+  public void addWeapon(int idCannon, float x, float y) {
 
-    Weapon weapon = null;
-
-    for (Weapon w : data.HMWeapon.get("cannon_"+0))
+    for (Weapon w : data.HMWeapon.get("cannon_"+idCannon))
       if (!w.isOn) {
-        w.isOn = true;
         w.clrActionWeapon();
-        weapon = w;
-        break;
-      }
 
-    for (PosOfWeapon pos : listPosOfWeapon)
-      if (pos.getIsEmpty()) {
-        pos.setEmpty(false);
-        pos.setWeapon(weapon);
+        for (PosOfWeapon pos : listPosOfWeapon)
+          if (pos.getIsEmpty()) {
+            pos.setEmpty(false);
+            pos.setWeapon(w);
 
-        try {
+            try {
 
-          weapon.setPosWeapon(pos.pos);
-          weapon.addBulletToScene();
-          weapon.addCannonToScene();
+              w.isOn = true;
+              w.setPosWeapon(pos.pos);
+              w.addBulletToScene();
+              w.addCannonToScene();
 
-        }
-        catch (Exception ex) {  }
+            }
+            catch (Exception ex) { ex.printStackTrace(); }
+
+            break;
+          }
 
         break;
       }

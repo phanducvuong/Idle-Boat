@@ -108,8 +108,8 @@ public class Weapon extends Image {
 
         float x1 = gamePlayUI.imgRecycle.getX() - 20;
         float x2 = gamePlayUI.imgRecycle.getX() + 40;
-        float y1 = gamePlayUI.imgRecycle.getY() - 30;
-        float y2 = gamePlayUI.imgRecycle.getY() + 30;
+        float y1 = gamePlayUI.imgRecycle.getY() - 10;
+        float y2 = gamePlayUI.imgRecycle.getY() + 50;
 
         if (gCannon.getX() >= x1 && gCannon.getX() <= x2 && gCannon.getY() >= y1 && gCannon.getY() <= y2)
           G.delWeapon(Weapon.this);

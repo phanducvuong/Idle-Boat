@@ -33,5 +33,6 @@ public class Config {
     public static final float TIME_APPEAR_BOAT = .25f;
 
     //font
-    public static final BitmapFont BITMAP_YELLOW_FONT = GAssetsManager.getBitmapFont("font_white.fnt");
+    public static final BitmapFont BITMAP_WHITE_FONT = GAssetsManager.getBitmapFont("font_white.fnt");
+    public static final BitmapFont BITMAP_YELLOW_FONT = GAssetsManager.getBitmapFont("font_yellow.fnt");
 }
