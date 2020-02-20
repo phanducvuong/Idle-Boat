@@ -40,12 +40,7 @@ public class LogicGame {
     try {
       if (pFrom.getWeapon().getIdCannon() != pTo.getWeapon().getIdCannon()) {
 
-        Weapon weTemp = pTo.getWeapon();
-        pTo.setWeapon(pFrom.getWeapon());
-        pFrom.setWeapon(weTemp);
-
-        pFrom.getWeapon().setPosWeapon(pFrom.pos);
-        pTo.getWeapon().setPosWeapon(pTo.pos);
+        changePosOfWeapon(pFrom, pTo);
 
       }
       else { //idIconCannon equal => weapon level up and update weapon at vTo, release vFrome
@@ -56,15 +51,16 @@ public class LogicGame {
         Weapon w1 = pFrom.getWeapon();
         Weapon w2 = pTo.getWeapon();
 
+        int idCannon = pTo.getWeapon().getIdCannon() + 1;
+        Weapon weapon = updateWeapon(idCannon);
+
         Runnable onComplete = () -> {
+
+          weapon.resetWeapon();
 
           pFrom.getWeapon().removeWeapon();
           pFrom.setWeapon(null);
           pFrom.setEmpty(true);
-
-          int idCannon = pTo.getWeapon().getIdCannon() + 1;
-          Weapon weapon = updateWeapon(idCannon);
-          weapon.resetWeapon();
 
           pTo.getWeapon().removeWeapon();
           weapon.isOn = true;
@@ -79,12 +75,26 @@ public class LogicGame {
 
         };
 
-        effectGame.eftMergeWeapon(pos, w1, w2, onComplete);
+        if (weapon != null)
+          effectGame.eftMergeWeapon(pos, w1, w2, onComplete);
+        else
+          changePosOfWeapon(pFrom, pTo);
 
       }
 
     }
     catch (Exception ex) {  } //error
+
+  }
+
+  private void changePosOfWeapon(PosOfWeapon pFrom, PosOfWeapon pTo) {
+
+    Weapon weTemp = pTo.getWeapon();
+    pTo.setWeapon(pFrom.getWeapon());
+    pFrom.setWeapon(weTemp);
+
+    pFrom.getWeapon().setPosWeapon(pFrom.pos);
+    pTo.getWeapon().setPosWeapon(pTo.pos);
 
   }
 
@@ -111,11 +121,18 @@ public class LogicGame {
 
     Weapon weapon = null;
 
-    for (Weapon w : data.HMWeapon.get("cannon_" + idCannon))
-      if (!w.isOn)
-        weapon = w;
+    if (idCannon >= data.HMWeapon.size())
+      return null;
+    else {
 
-    return weapon;
+      for (Weapon w : data.HMWeapon.get("cannon_" + idCannon))
+        if (!w.isOn) {
+          weapon = w;
+          break;
+        }
+      return weapon;
+
+    }
   }
 
   public boolean chkWinGame(List<Boat> boats) {
@@ -153,19 +170,39 @@ public class LogicGame {
     int idCannonPre = G.gamePlayUI.idIconCannon;
     int idCannonMerge = weapon.getIdCannon();
 
-    int idTemp = idCannonMerge - (idCannonPre+4);
-
-    int temp = idTemp >= 0 ? (idCannonMerge - 4): idCannonPre;
+    int temp = (idCannonMerge - (idCannonPre+4)) >= 0 ? (idCannonMerge - 4): idCannonPre;
     G.gamePlayUI.updateIdIconCannon(temp);
+    G.gamePlayUI.setTextCoinBuyWeapon(data.HMWeapon.get("cannon_"+temp).get(0).getCoin());
 
-    if (idCannonMerge > G.gamePlayUI.idNewCannon) {
+    if (idCannonMerge > G.gamePlayUI.idBestPowerCannon) {
 
-      G.gamePlayUI.idNewCannon = idCannonMerge;
+      G.gamePlayUI.idBestPowerCannon = idCannonMerge;
+      G.gamePlayUI.setStateBtnShop();
       //todo: show effect new weapon
       System.out.println("LV Up!");
 
     }
 
   }
+
+  public PosOfWeapon getPosIsEmpty() {
+
+    for (PosOfWeapon pos : G.listPosOfWeapon)
+      if (pos.getIsEmpty())
+        return pos;
+    return null;
+
+  }
+
+  public boolean chkEmptyListPos() {
+
+    for (PosOfWeapon pos : G.listPosOfWeapon)
+      if (pos.getIsEmpty())
+        return true;
+    return false;
+
+  }
+
+
 
 }

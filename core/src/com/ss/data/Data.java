@@ -22,7 +22,7 @@ public class Data {
   private static final FileHandle fhWeapon = Gdx.files.internal("data/Weapon.json");
   private static final FileHandle fhBoat = Gdx.files.internal("data/Boat.json");
 
-  private List<WeaponJson> listDataWeapon;
+  public List<WeaponJson> listDataWeapon;
   private List<BoatJson> listDataBoat;
 
   public HashMap<String, List<Weapon>> HMWeapon;
@@ -73,13 +73,14 @@ public class Data {
       float attack_bullet = weapon.getAttackBullet();
       int id_cannon = weapon.getIdCannon();
       float speed = weapon.getSpeed();
+      long coin = weapon.getCoin();
 
       List<Weapon> listWeapon = new ArrayList<>();
 
       for (int i=0; i<10; i++) {
 
         try {
-          listWeapon.add(new Weapon(G, gamePlayUI, gUI, cannon, bullet, attack_bullet, speed, id_cannon));
+          listWeapon.add(new Weapon(G, gamePlayUI, gUI, cannon, bullet, attack_bullet, speed, id_cannon, coin));
         }
         catch (Exception ex) {}
 

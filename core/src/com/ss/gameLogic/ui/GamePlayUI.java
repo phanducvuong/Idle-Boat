@@ -8,14 +8,23 @@ import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Align;
 import com.ss.GMain;
 import com.ss.core.util.GStage;
 import com.ss.core.util.GUI;
+import com.ss.data.ItemShop;
+import com.ss.data.WeaponJson;
 import com.ss.gameLogic.Game;
 import com.ss.gameLogic.config.Config;
 import com.ss.gameLogic.effect.EffectGame;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 public class GamePlayUI {
 
@@ -31,9 +40,9 @@ public class GamePlayUI {
   private Image btnCoin, iconWeapon;
 
   private Image imgShop;
-  public long coinCollection = 0;
+  public long coinCollection = 10000000;
   public long coinBuyWeapon = 0;
-  public int idIconCannon = 0, idNewCannon = 0;
+  public int idIconCannon = 0, idBestPowerCannon = 0;
   public Image imgRecycle;
 
   public Group gTopUI;
@@ -42,7 +51,8 @@ public class GamePlayUI {
   public Label lbCoinCollection, lbLevel, lbCoinBuyWeapon;
 
   private Group gShop;
-  private Image bgShop, bgWeapon, btnBuyWeapon, imgLock;
+  private Image bgShop;
+  private List<ItemShop> listItemShop = new ArrayList<>();
 
   public GamePlayUI(Game G, Group gUI) {
 
@@ -145,6 +155,126 @@ public class GamePlayUI {
     gShop.setPosition(gUI.getWidth()/2 - bgShop.getWidth()/2, gUI.getHeight()/2 - bgShop.getHeight()/2);
     gUI.addActor(gShop);
 
+    Group gItem = new Group();
+    gItem.setSize(bgShop.getWidth() - 65, bgShop.getHeight() - 110);
+    gItem.setPosition(35, 75);
+    gItem.setOrigin(Align.center);
+    gItem.setRotation(180);
+
+    gShop.addActor(gItem);
+
+    //init btn_x
+    Image
+
+    //init table
+    Table scrollTable = new Table();
+    for (WeaponJson weapon : G.data.listDataWeapon) {
+
+      Group gTempItem = new Group();
+
+      Image bgWeapon = GUI.createImage(textureAtlas, "bg_weapon");
+      bgWeapon.setOrigin(Align.center);
+      bgWeapon.setRotation(180);
+      gTempItem.setSize(bgWeapon.getWidth(), bgWeapon.getHeight());
+      gTempItem.addActor(bgWeapon);
+
+      //image weapon
+      Image imgWeapon = GUI.createImage(GMain.weaponAtlas, weapon.getCannon());
+      imgWeapon.setPosition(gTempItem.getWidth() - imgWeapon.getWidth() - 50, gTempItem.getHeight()/2 - imgWeapon.getHeight()/2);
+      imgWeapon.setRotation(180);
+      imgWeapon.setScale(2.2f);
+      imgWeapon.setOrigin(Align.center);
+      gTempItem.addActor(imgWeapon);
+
+      //btn off
+      Image btnBuyWeaponOff = GUI.createImage(textureAtlas, "btn_buy_weapon_off");
+      btnBuyWeaponOff.setPosition(10, gTempItem.getHeight()/2 - btnBuyWeaponOff.getHeight()/2);
+      btnBuyWeaponOff.setOrigin(Align.center);
+      btnBuyWeaponOff.setRotation(180);
+
+      gTempItem.addActor(btnBuyWeaponOff);
+
+      //btn on
+      Group gBtnOn = new Group();
+
+      Image btnBuyWeaponOn = GUI.createImage(textureAtlas, "btn_buy_weapon_on");
+      btnBuyWeaponOn.setPosition(10, gTempItem.getHeight()/2 - btnBuyWeaponOff.getHeight()/2);
+
+      gBtnOn.setSize(btnBuyWeaponOn.getWidth(), btnBuyWeaponOn.getHeight());
+      gBtnOn.setOrigin(Align.center);
+      gBtnOn.setPosition(20, 40);
+      gBtnOn.addActor(btnBuyWeaponOn);
+      gBtnOn.setRotation(180);
+
+      String s = G.logicGame.compressCoin(weapon.getCoin());
+      Label lbCoin = new Label(s, new Label.LabelStyle(Config.BITMAP_WHITE_FONT, null));
+      lbCoin.setPosition(gBtnOn.getWidth()/2 - lbCoin.getWidth()/2 - 15, gBtnOn.getHeight()/2 - lbCoin.getHeight()/2 + 12);
+      lbCoin.setAlignment(Align.center);
+      lbCoin.setFontScale(.7f, .8f);
+      gBtnOn.addActor(lbCoin);
+      gBtnOn.setVisible(false);
+
+      gTempItem.addActor(gBtnOn);
+
+      //add item shop into list item
+      ItemShop itemShop = new ItemShop(btnBuyWeaponOff, gBtnOn, weapon.getCoin());
+      listItemShop.add(itemShop);
+
+      scrollTable.add(gTempItem).center().padBottom(10);
+      scrollTable.row();
+
+      eventClickBtnBuyWeaponInShop(gBtnOn, weapon);
+
+    }
+
+    ScrollPane scroller = new ScrollPane(scrollTable);
+    Table table = new Table();
+    table.setFillParent(true);
+    table.add(scroller).fill().expand();
+
+    gItem.addActor(table);
+
+  }
+
+  private void eventClickBtnBuyWeaponInShop(Group gBtn, WeaponJson weapon) {
+    listItemShop.get(0).getgBtnOn().setVisible(true);
+    gBtn.addListener(new ClickListener() {
+
+      @Override
+      public void clicked(InputEvent event, float x, float y) {
+        super.clicked(event, x, y);
+
+        gBtn.setTouchable(Touchable.disabled);
+        Runnable run = () -> {
+
+          if (G.logicGame.chkEmptyListPos()) {
+
+            if (coinCollection >= weapon.getCoin()) {
+
+              G.addWeapon(weapon.getIdCannon(), 0, 0);
+              setTextCoinCollectionBuyWeapon(weapon.getCoin());
+
+            }
+            else {
+              //todo: show label not enough coin
+            }
+
+          }
+          else {
+
+            //todo: show label can not add weapon
+
+          }
+          gBtn.setTouchable(Touchable.enabled);
+
+        };
+
+        effectGame.eftClick(gBtn, run);
+
+      }
+
+    });
+
   }
 
   public void eventClickListener() {
@@ -156,8 +286,16 @@ public class GamePlayUI {
 
           gBuyWeapon.setTouchable(Touchable.disabled);
           Runnable run = () -> {
-            G.addWeapon(idIconCannon, iconWeapon.getX(), iconWeapon.getY());
+
+            if (G.logicGame.chkEmptyListPos())
+              G.addWeapon(idIconCannon, iconWeapon.getX(), iconWeapon.getY());
+            else {
+
+              //todo: show label no enough container
+
+            }
             gBuyWeapon.setTouchable(Touchable.enabled);
+
           };
           effectGame.eftClick(gBuyWeapon, run);
 
@@ -218,6 +356,27 @@ public class GamePlayUI {
           return super.touchDown(event, x, y, pointer, button);
         }
       });
+
+    }
+
+  }
+
+  public void setStateBtnShop() {
+
+    for (int i=0; i<idBestPowerCannon - 4; i++) {
+
+      try {
+
+        ItemShop itemShop = listItemShop.get(i);
+        if (itemShop.getImgOff().isVisible()) {
+
+          itemShop.getImgOff().setVisible(false);
+          itemShop.getgBtnOn().setVisible(true);
+
+        }
+
+      }
+      catch (Exception ex) { ex.printStackTrace(); }
 
     }
 
@@ -405,6 +564,14 @@ public class GamePlayUI {
 
   }
 
+  public void setTextCoinCollectionBuyWeapon(long coin) {
+
+    coinCollection -= coin;
+    String c = G.logicGame.compressCoin(coinCollection);
+    lbCoinCollection.setText("$"+c);
+
+  }
+
   public void setTextCoinBuyWeapon(long coin) {
 
     coinBuyWeapon = coin;
@@ -425,7 +592,7 @@ public class GamePlayUI {
     setIconWeapon(idUpdate);
   }
 
-  public void setIdNewCannon(int idCannon) { idNewCannon = idCannon; }
+  public void setIdBestPowerCannon(int idCannon) { idBestPowerCannon = idCannon; }
 
   public void lvUp() {
 

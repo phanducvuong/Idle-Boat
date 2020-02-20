@@ -35,4 +35,10 @@ public class Config {
     //font
     public static final BitmapFont BITMAP_WHITE_FONT = GAssetsManager.getBitmapFont("font_white.fnt");
     public static final BitmapFont BITMAP_YELLOW_FONT = GAssetsManager.getBitmapFont("font_yellow.fnt");
+
+    //delta coin in order to buy weapon in shop
+    public static long DELTA_COIN = 3;
+
+
+    //todo: save listPosOfWeapon, coinCollection, idCannonPre, idBestPowerCannon
 }

@@ -22,6 +22,9 @@ public class WeaponJson {
   @SerializedName("speed")
   private float speed;
 
+  @SerializedName("coin")
+  private long coin;
+
   public String getCannon() {
     return cannon;
   }
@@ -68,5 +71,13 @@ public class WeaponJson {
 
   public void setSpeed(float speed) {
     this.speed = speed;
+  }
+
+  public long getCoin() {
+    return coin;
+  }
+
+  public void setCoin(long coin) {
+    this.coin = coin;
   }
 }

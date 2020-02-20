@@ -5,7 +5,8 @@
     "bullet": "bullet_0",
     "attack_bullet": 20,
     "id_cannon": 0,
-    "speed": 1.5
+    "speed": 1.5,
+    "coin": 1000
   },
   {
     "cannon": "cannon_1",
@@ -13,7 +14,8 @@
     "bullet": "bullet_0",
     "attack_bullet": 10,
     "id_cannon": 1,
-    "speed": 1.5
+    "speed": 1.5,
+    "coin": 10
   },
   {
     "cannon": "cannon_2",
@@ -21,7 +23,8 @@
     "bullet": "bullet_2",
     "attack_bullet": 2,
     "id_cannon": 2,
-    "speed": 1.5
+    "speed": 1.5,
+    "coin": 10
   },
   {
     "cannon": "cannon_3",
@@ -29,7 +32,8 @@
     "bullet": "bullet_2",
     "attack_bullet": 3,
     "id_cannon": 3,
-    "speed": 1.5
+    "speed": 1.5,
+    "coin": 10
   },
   {
     "cannon": "cannon_4",
@@ -37,7 +41,8 @@
     "bullet": "bullet_4",
     "attack_bullet": 4,
     "id_cannon": 4,
-    "speed": 1.5
+    "speed": 1.5,
+    "coin": 10
   },
   {
     "cannon": "cannon_5",
@@ -45,7 +50,8 @@
     "bullet": "bullet_5",
     "attack_bullet": 5,
     "id_cannon": 5,
-    "speed": 1.5
+    "speed": 1.5,
+    "coin": 10
   },
   {
     "cannon": "cannon_6",
@@ -53,7 +59,8 @@
     "bullet": "bullet_6",
     "attack_bullet": 6,
     "id_cannon": 6,
-    "speed": 1.5
+    "speed": 1.5,
+    "coin": 10
   },
   {
     "cannon": "cannon_7",
@@ -61,7 +68,8 @@
     "bullet": "bullet_7",
     "attack_bullet": 7,
     "id_cannon": 7,
-    "speed": 1.5
+    "speed": 1.5,
+    "coin": 10
   },
   {
     "cannon": "cannon_8",
@@ -69,7 +77,8 @@
     "bullet": "bullet_8",
     "attack_bullet": 8,
     "id_cannon": 8,
-    "speed": 1.5
+    "speed": 1.5,
+    "coin": 10
   },
   {
     "cannon": "cannon_9",
@@ -77,7 +86,8 @@
     "bullet": "bullet_9",
     "attack_bullet": 9,
     "id_cannon": 9,
-    "speed": 1.5
+    "speed": 1.5,
+    "coin": 10
   },
   {
     "cannon": "cannon_10",
@@ -85,7 +95,8 @@
     "bullet": "bullet_10",
     "attack_bullet": 10,
     "id_cannon": 10,
-    "speed": 1.5
+    "speed": 1.5,
+    "coin": 10
   },
   {
     "cannon": "cannon_11",
@@ -93,7 +104,8 @@
     "bullet": "bullet_11",
     "attack_bullet": 11,
     "id_cannon": 11,
-    "speed": 1.5
+    "speed": 1.5,
+    "coin": 10
   },
   {
     "cannon": "cannon_12",
@@ -101,7 +113,8 @@
     "bullet": "bullet_12",
     "attack_bullet": 12,
     "id_cannon": 12,
-    "speed": 1.5
+    "speed": 1.5,
+    "coin": 10
   },
   {
     "cannon": "cannon_13",
@@ -109,7 +122,8 @@
     "bullet": "bullet_13",
     "attack_bullet": 13,
     "id_cannon": 13,
-    "speed": 1.5
+    "speed": 1.5,
+    "coin": 10
   },
   {
     "cannon": "cannon_14",
@@ -117,7 +131,8 @@
     "bullet": "bullet_14",
     "attack_bullet": 14,
     "id_cannon": 14,
-    "speed": 1.5
+    "speed": 1.5,
+    "coin": 10
   },
   {
     "cannon": "cannon_15",
@@ -125,7 +140,8 @@
     "bullet": "bullet_15",
     "attack_bullet": 15,
     "id_cannon": 15,
-    "speed": 1.5
+    "speed": 1.5,
+    "coin": 10
   },
   {
     "cannon": "cannon_16",
@@ -133,7 +149,8 @@
     "bullet": "bullet_16",
     "attack_bullet": 16,
     "id_cannon": 16,
-    "speed": 1.5
+    "speed": 1.5,
+    "coin": 10
   },
   {
     "cannon": "cannon_17",
@@ -141,7 +158,8 @@
     "bullet": "bullet_17",
     "attack_bullet": 17,
     "id_cannon": 17,
-    "speed": 1.5
+    "speed": 1.5,
+    "coin": 10
   },
   {
     "cannon": "cannon_18",
@@ -149,7 +167,8 @@
     "bullet": "bullet_18",
     "attack_bullet": 18,
     "id_cannon": 18,
-    "speed": 1.5
+    "speed": 1.5,
+    "coin": 10
   },
   {
     "cannon": "cannon_19",
@@ -157,7 +176,8 @@
     "bullet": "bullet_19",
     "attack_bullet": 19,
     "id_cannon": 19,
-    "speed": 1.5
+    "speed": 1.5,
+    "coin": 10
   },
   {
     "cannon": "cannon_20",
@@ -165,7 +185,8 @@
     "bullet": "bullet_20",
     "attack_bullet": 20,
     "id_cannon": 20,
-    "speed": 1.5
+    "speed": 1.5,
+    "coin": 10
   },
   {
     "cannon": "cannon_21",
@@ -173,7 +194,8 @@
     "bullet": "bullet_21",
     "attack_bullet": 21,
     "id_cannon": 21,
-    "speed": 1.5
+    "speed": 1.5,
+    "coin": 10
   },
   {
     "cannon": "cannon_22",
@@ -181,7 +203,8 @@
     "bullet": "bullet_22",
     "attack_bullet": 22,
     "id_cannon": 22,
-    "speed": 1.5
+    "speed": 1.5,
+    "coin": 10
   },
   {
     "cannon": "cannon_23",
@@ -189,6 +212,7 @@
     "bullet": "bullet_23",
     "attack_bullet": 23,
     "id_cannon": 23,
-    "speed": 1.5
+    "speed": 1.5,
+    "coin": 10
   }
 ]

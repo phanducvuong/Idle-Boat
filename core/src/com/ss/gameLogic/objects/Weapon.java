@@ -29,6 +29,7 @@ public class Weapon extends Image {
   private Rectangle bound;
   private float attackBullet, speed;
   private int idCannon;
+  private long coin;
   private Vector2 pos;
   public boolean isFight = false, isDrag = false, isOn = false; //isOn: chk weapon is have in screen or not
   public boolean isEftAttack = false; //flag to appear effect attack bullet
@@ -42,7 +43,7 @@ public class Weapon extends Image {
 
   private EffectGame effectGame = EffectGame.getInstance();
 
-  public Weapon(Game G, GamePlayUI gamePlayUI, Group gUI, String name_cannon, String name_bullet, float attackBullet, float speed, int idCannon) {
+  public Weapon(Game G, GamePlayUI gamePlayUI, Group gUI, String name_cannon, String name_bullet, float attackBullet, float speed, int idCannon, long coin) {
     this.gUI = gUI;
     this.idCannon = idCannon;
     this.G = G;
@@ -51,6 +52,7 @@ public class Weapon extends Image {
     this.iCollision = G;
     this.attackBullet = attackBullet;
     this.speed = speed;
+    this.coin = coin;
 
     gCannon = new Group();
 
@@ -106,18 +108,22 @@ public class Weapon extends Image {
       public void dragStop(InputEvent event, float x, float y, int pointer) {
         super.dragStop(event, x, y, pointer);
 
-        float x1 = gamePlayUI.imgRecycle.getX() - 20;
-        float x2 = gamePlayUI.imgRecycle.getX() + 40;
-        float y1 = gamePlayUI.imgRecycle.getY() - 10;
-        float y2 = gamePlayUI.imgRecycle.getY() + 50;
+        try {
 
-        if (gCannon.getX() >= x1 && gCannon.getX() <= x2 && gCannon.getY() >= y1 && gCannon.getY() <= y2)
-          G.delWeapon(Weapon.this);
-        else {
-          updatePosWeapon(gCannon.getX(), gCannon.getY());
-          isDrag = false;
-          isFight = false;
+          float x1 = gamePlayUI.imgRecycle.getX() - 20;
+          float x2 = gamePlayUI.imgRecycle.getX() + 40;
+          float y1 = gamePlayUI.imgRecycle.getY() - 10;
+          float y2 = gamePlayUI.imgRecycle.getY() + 50;
+
+          if (gCannon.getX() >= x1 && gCannon.getX() <= x2 && gCannon.getY() >= y1 && gCannon.getY() <= y2)
+            G.delWeapon(Weapon.this);
+          else {
+            updatePosWeapon(gCannon.getX(), gCannon.getY());
+            isDrag = false;
+            isFight = false;
+          }
         }
+        catch (Exception ex) { GMain.platform.CrashLog(ex.getLocalizedMessage()); }
 
       }
     });
@@ -472,5 +478,13 @@ public class Weapon extends Image {
 
   public Rectangle getBound() {
     return bound;
+  }
+
+  public long getCoin() {
+    return coin;
+  }
+
+  public void setCoin(long coin) {
+    this.coin = coin;
   }
 }

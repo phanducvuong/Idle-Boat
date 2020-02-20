@@ -41,7 +41,7 @@ public class Game implements IMerge, ICollision, IDanger {
   private List<Boat> listBoat;
 
   private EffectGame effectGame = EffectGame.getInstance();
-  private Data data = Data.getInstance();
+  public Data data = Data.getInstance();
 
   private int countTarget = 0;
   private int target = 30; // target to finished level
@@ -54,23 +54,23 @@ public class Game implements IMerge, ICollision, IDanger {
     GStage.addToLayer(GLayer.ui, gUI);
     gUI.addActor(gBoat);
 
+    initAsset();
+    initPosOfWeapon();
+
+    gamePlayUI = new GamePlayUI(this, gUI);
+    //todo: setTextCoinCollection and coinBuyWeapon if first time play game else get it in share preference
+    gamePlayUI.setTextCoinCollection(0);
+    gamePlayUI.setIconWeapon(0);
+    gamePlayUI.setTextCoinBuyWeapon(0);
+
     data.initListWeapon(this, gamePlayUI, gUI);
     data.initListBoat(this, gUI);
 
     listBoat = new ArrayList<>();
     initLv(10, "boat_0", "boat_1", "boat_2");
-
-    initAsset();
-    initPosOfWeapon();
     initWeapon();
 
-    //todo: setTextCoinCollection and coinBuyWeapon if first time play game else get it in share preference
-    gamePlayUI = new GamePlayUI(this, gUI);
-    gamePlayUI.setTextCoinCollection(0);
-    gamePlayUI.setIconWeapon(0);
-    gamePlayUI.setTextCoinBuyWeapon(0);
-
-    nextBoat();
+//    nextBoat();
   }
 
   private void initLv(int numBoat, String ...boat) {
@@ -276,9 +276,14 @@ public class Game implements IMerge, ICollision, IDanger {
 
     for (PosOfWeapon pos : listPosOfWeapon){
       if (pos.getWeapon() == weapon) {
+
         pos.setWeapon(null);
         pos.setEmpty(true);
         weapon.removeWeapon();
+
+        long tempCoin = weapon.getCoin() / 3;
+        gamePlayUI.setTextCoinCollection(tempCoin);
+
         break;
       }
     }
@@ -287,30 +292,37 @@ public class Game implements IMerge, ICollision, IDanger {
 
   public void addWeapon(int idCannon, float x, float y) {
 
-    for (Weapon w : data.HMWeapon.get("cannon_"+idCannon))
-      if (!w.isOn) {
-        w.clrActionWeapon();
+    try {
 
-        for (PosOfWeapon pos : listPosOfWeapon)
-          if (pos.getIsEmpty()) {
-            pos.setEmpty(false);
-            pos.setWeapon(w);
+      for (Weapon w : data.HMWeapon.get("cannon_"+idCannon))
+        if (!w.isOn) {
+          w.clrActionWeapon();
 
-            try {
+          for (PosOfWeapon pos : listPosOfWeapon)
+            if (pos.getIsEmpty()) {
+              pos.setEmpty(false);
+              pos.setWeapon(w);
 
-              w.isOn = true;
-              w.setPosWeapon(pos.pos);
-              w.addBulletToScene();
-              w.addCannonToScene();
+              try {
 
+                w.isOn = true;
+                w.setPosWeapon(pos.pos);
+                w.addBulletToScene();
+                w.addCannonToScene();
+
+                gamePlayUI.setTextCoinCollectionBuyWeapon(w.getCoin());
+
+              }
+              catch (Exception ex) { ex.printStackTrace(); }
+
+              break;
             }
-            catch (Exception ex) { ex.printStackTrace(); }
 
-            break;
-          }
+          break;
+        }
 
-        break;
-      }
+    }
+    catch (Exception ex) { ex.printStackTrace(); }
 
   }
 }
