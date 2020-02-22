@@ -179,7 +179,6 @@ public class LogicGame {
       G.gamePlayUI.idBestPowerCannon = idCannonMerge;
       G.gamePlayUI.setStateBtnShop();
       //todo: show effect new weapon
-      System.out.println("LV Up!");
 
     }
 
@@ -203,6 +202,27 @@ public class LogicGame {
 
   }
 
+  public void resetGame(List<PosOfWeapon> listPos, List<Boat> listBoat) {
 
+    for (Boat boat : listBoat)
+      boat.reset();
+
+    for (PosOfWeapon pos : listPos)
+      if (pos.getWeapon() != null)
+        pos.getWeapon().resetBullet();
+
+  }
+
+  public void saveGame() {
+
+
+
+  }
+
+  public void loadGame() {
+
+
+
+  }
 
 }

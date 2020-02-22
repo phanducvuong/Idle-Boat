@@ -6,141 +6,168 @@ filter: Nearest,Nearest
 repeat: none
 bg
   rotate: false
-  xy: 2, 464
+  xy: 2, 761
+  size: 720, 1280
+  orig: 720, 1280
+  offset: 0, 0
+  index: -1
+bg_black
+  rotate: false
+  xy: 724, 761
   size: 720, 1280
   orig: 720, 1280
   offset: 0, 0
   index: -1
 bg_percent_finished
   rotate: false
-  xy: 452, 365
+  xy: 2, 92
   size: 229, 97
   orig: 229, 97
   offset: 0, 0
   index: -1
 bg_shop
   rotate: false
-  xy: 724, 858
+  xy: 1446, 1155
   size: 554, 886
   orig: 554, 886
   offset: 0, 0
   index: -1
 bg_weapon
   rotate: false
-  xy: 2, 307
+  xy: 1446, 998
   size: 448, 155
   orig: 448, 155
   offset: 0, 0
   index: -1
 btn_buy_weapon_off
   rotate: false
-  xy: 2, 190
+  xy: 1446, 881
   size: 231, 115
   orig: 231, 115
   offset: 0, 0
   index: -1
 btn_buy_weapon_on
   rotate: false
-  xy: 1280, 1629
+  xy: 724, 644
   size: 231, 115
   orig: 231, 115
   offset: 0, 0
   index: -1
 btn_x
   rotate: false
-  xy: 724, 485
-  size: 117, 119
-  orig: 117, 119
+  xy: 1896, 1057
+  size: 94, 96
+  orig: 94, 96
+  offset: 0, 0
+  index: -1
+bulwark
+  rotate: false
+  xy: 2, 279
+  size: 720, 480
+  orig: 720, 480
   offset: 0, 0
   index: -1
 burn
   rotate: false
-  xy: 2, 67
+  xy: 1446, 758
   size: 121, 121
   orig: 121, 121
   offset: 0, 0
   index: -1
 coin
   rotate: false
-  xy: 724, 768
-  size: 326, 88
-  orig: 326, 88
+  xy: 2, 191
+  size: 325, 86
+  orig: 325, 86
   offset: 0, 0
   index: -1
 coin_collection
   rotate: false
-  xy: 1052, 782
+  xy: 329, 203
   size: 214, 74
   orig: 214, 74
   offset: 0, 0
   index: -1
 eft_merge_weapon
   rotate: false
-  xy: 724, 606
+  xy: 724, 482
   size: 159, 160
   orig: 159, 160
   offset: 0, 0
   index: -1
 lock
   rotate: false
-  xy: 125, 135
+  xy: 2002, 1988
   size: 42, 53
   orig: 42, 53
   offset: 0, 0
   index: -1
 percent_finished
   rotate: false
-  xy: 452, 328
+  xy: 545, 242
   size: 129, 35
   orig: 129, 35
   offset: 0, 0
   index: -1
 pos_weapon
   rotate: false
-  xy: 1280, 1418
+  xy: 233, 103
   size: 86, 86
   orig: 86, 86
   offset: 0, 0
   index: -1
 recycle
   rotate: false
-  xy: 2, 2
+  xy: 957, 696
   size: 55, 63
   orig: 55, 63
   offset: 0, 0
   index: -1
 setting
   rotate: false
-  xy: 1431, 1563
+  xy: 885, 578
   size: 69, 64
   orig: 69, 64
   offset: 0, 0
   index: -1
 shop
   rotate: false
-  xy: 885, 688
+  xy: 724, 279
   size: 103, 78
   orig: 103, 78
   offset: 0, 0
   index: -1
 smoke
   rotate: false
-  xy: 1280, 1506
+  xy: 724, 359
   size: 149, 121
   orig: 149, 121
   offset: 0, 0
   index: -1
 sound_off
   rotate: false
-  xy: 235, 217
+  xy: 2, 2
   size: 100, 88
   orig: 100, 88
   offset: 0, 0
   index: -1
 sound_on
   rotate: false
-  xy: 1513, 1656
+  xy: 1679, 908
   size: 100, 88
   orig: 100, 88
+  offset: 0, 0
+  index: -1
+
+IdleBoat2.png
+size: 1024,2048
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+bg_end_game
+  rotate: false
+  xy: 2, 2
+  size: 720, 1280
+  orig: 720, 1280
   offset: 0, 0
   index: -1

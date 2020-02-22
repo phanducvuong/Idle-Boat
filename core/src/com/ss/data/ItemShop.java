@@ -6,12 +6,14 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 public class ItemShop {
 
   private Image imgOff;
+  private Image imgWeapon;
   private Group gBtnOn;
   private long coin;
 
-  public ItemShop(Image imgOff, Group gBtnOn, long coin) {
+  public ItemShop(Image imgOff, Image imgWeapon, Group gBtnOn, long coin) {
 
     this.imgOff = imgOff;
+    this.imgWeapon = imgWeapon;
     this.gBtnOn = gBtnOn;
     this.coin = coin;
 
@@ -39,5 +41,13 @@ public class ItemShop {
 
   public void setCoin(long coin) {
     this.coin = coin;
+  }
+
+  public Image getImgWeapon() {
+    return imgWeapon;
+  }
+
+  public void setImgWeapon(Image imgWeapon) {
+    this.imgWeapon = imgWeapon;
   }
 }

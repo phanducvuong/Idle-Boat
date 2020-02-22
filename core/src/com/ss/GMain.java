@@ -1,5 +1,6 @@
 package com.ss;
 
+import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.platform.IPlatform;
 import com.badlogic.gdx.Gdx;
@@ -23,6 +24,7 @@ public class GMain extends GDirectedGame {
   public static final int testType = 2;
   public static TextureAtlas textureAtlas, weaponAtlas, boatAtlas;
   public static float ratioX, ratioY;
+  public static Preferences pref;
 
   public static IPlatform platform;
   public GMain(IPlatform plat){
@@ -90,6 +92,9 @@ public class GMain extends GDirectedGame {
       textureAtlas = GAssetsManager.getTextureAtlas("IdleBoat.atlas");
       weaponAtlas = GAssetsManager.getTextureAtlas("Weapon.atlas");
       boatAtlas = GAssetsManager.getTextureAtlas("Boat.atlas");
+
+      pref = Gdx.app.getPreferences("data_idle_boat");
+
       this.init();
       C.init();
       Data.getInstance();

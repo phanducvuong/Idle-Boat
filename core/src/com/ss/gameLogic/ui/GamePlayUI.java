@@ -1,11 +1,16 @@
 package com.ss.gameLogic.ui;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import static com.badlogic.gdx.math.Interpolation.*;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
+import static com.badlogic.gdx.scenes.scene2d.actions.Actions.*;
+
+import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
@@ -19,11 +24,11 @@ import com.ss.core.util.GUI;
 import com.ss.data.ItemShop;
 import com.ss.data.WeaponJson;
 import com.ss.gameLogic.Game;
+import com.ss.gameLogic.config.C;
 import com.ss.gameLogic.config.Config;
 import com.ss.gameLogic.effect.EffectGame;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 public class GamePlayUI {
@@ -35,12 +40,20 @@ public class GamePlayUI {
   private EffectGame effectGame = EffectGame.getInstance();
   private Game G;
   private Group gUI;
+  public Image imgBgBlack;
+  public Image imgBgEndGame;
+  public boolean isOnShop = false; //shop on => setZindex gShop = 1000
+
+  public Label lbShowCoinDelWeapon;
+  public Label lbNoEnough;
+  public Label lbEndWinGame;
+  public Label lbNewWave;
 
   private Group gBuyWeapon;
   private Image btnCoin, iconWeapon;
 
   private Image imgShop;
-  public long coinCollection = 10000000;
+  public long coinCollection = 1100000;
   public long coinBuyWeapon = 0;
   public int idIconCannon = 0, idBestPowerCannon = 0;
   public Image imgRecycle;
@@ -50,7 +63,7 @@ public class GamePlayUI {
   public Image imgPercentFinished;
   public Label lbCoinCollection, lbLevel, lbCoinBuyWeapon;
 
-  private Group gShop;
+  public Group gShop;
   private Image bgShop;
   private List<ItemShop> listItemShop = new ArrayList<>();
 
@@ -63,10 +76,50 @@ public class GamePlayUI {
     gShop = new Group();
     gTopUI = new Group();
 
+    imgBgBlack = GUI.createImage(textureAtlas, "bg_black");
+    imgBgBlack.setSize(GStage.getWorldWidth(), GStage.getWorldHeight());
+    imgBgBlack.setVisible(false);
+    gUI.addActor(imgBgBlack);
+
+    imgBgEndGame = GUI.createImage(textureAtlas, "bg_end_game");
+    imgBgEndGame.setSize(GStage.getWorldWidth(), GStage.getWorldHeight());
+    imgBgEndGame.setVisible(false);
+    gUI.addActor(imgBgEndGame);
+
     initShopAndBtnBuyWeapon();
     initTopUI();
     initShop();
     eventClickListener();
+
+    //lb show coin when delete weapon
+    lbShowCoinDelWeapon = new Label("+20k", new Label.LabelStyle(Config.BITMAP_WHITE_FONT, null));
+    lbShowCoinDelWeapon.setAlignment(Align.center);
+    lbShowCoinDelWeapon.setPosition(imgRecycle.getX() - lbShowCoinDelWeapon.getWidth()/2 + 10, imgRecycle.getY());
+    lbShowCoinDelWeapon.setFontScale(.7f);
+    lbShowCoinDelWeapon.getColor().a = 0;
+    gUI.addActor(lbShowCoinDelWeapon);
+
+    //lb show text when pedestal is filled
+    lbNoEnough = new Label(C.lang.noEnoughEmty, new Label.LabelStyle(Config.BITMAP_WHITE_FONT, null));
+    lbNoEnough.setAlignment(Align.center);
+    lbNoEnough.setFontScale(.8f);
+    lbNoEnough.getColor().a = 0;
+    lbNoEnough.setPosition(GStage.getWorldWidth()/2 - lbNoEnough.getWidth()/2, GStage.getHeight()/2 - lbNoEnough.getHeight()/2);
+    gUI.addActor(lbNoEnough);
+
+    //lb show end or win game
+    lbEndWinGame = new Label(C.lang.winGame, new Label.LabelStyle(Config.BITMAP_WHITE_FONT, null));
+    lbEndWinGame.setAlignment(Align.center);
+    lbEndWinGame.setFontScale(.8f);
+    lbEndWinGame.getColor().a = 0;
+    lbEndWinGame.setPosition(GStage.getWorldWidth()/2 - lbEndWinGame.getWidth()/2, GStage.getWorldHeight()/2 - lbEndWinGame.getHeight()/2 - 200);
+    gUI.addActor(lbEndWinGame);
+
+    //lb show new wave
+    lbNewWave = new Label(C.lang.newWave, new Label.LabelStyle(Config.BITMAP_WHITE_FONT, null));
+    lbNewWave.setAlignment(Align.center);
+    lbNewWave.setPosition(-GStage.getWorldWidth()/2 - lbNewWave.getWidth(), GStage.getWorldHeight()/2 - lbNewWave.getHeight()/2 - 200);
+    gUI.addActor(lbNewWave);
 
   }
 
@@ -90,6 +143,7 @@ public class GamePlayUI {
 
     imgShop = GUI.createImage(textureAtlas, "shop");
     imgShop.setPosition(gBuyWeapon.getX() + btnCoin.getWidth() + 20, gBuyWeapon.getY() + 5);
+    imgShop.setOrigin(Align.center);
 
     imgRecycle = GUI.createImage(textureAtlas, "recycle");
     imgRecycle.setScale(1.2f);
@@ -164,7 +218,10 @@ public class GamePlayUI {
     gShop.addActor(gItem);
 
     //init btn_x
-    Image
+    Image btnXShop = GUI.createImage(textureAtlas, "btn_x");
+    btnXShop.setPosition(bgShop.getWidth() - btnXShop.getWidth()/2 - 15, -35);
+    gShop.addActor(btnXShop);
+    eventClickBtnXShop(btnXShop);
 
     //init table
     Table scrollTable = new Table();
@@ -184,6 +241,7 @@ public class GamePlayUI {
       imgWeapon.setRotation(180);
       imgWeapon.setScale(2.2f);
       imgWeapon.setOrigin(Align.center);
+      imgWeapon.setColor(Color.BLACK);
       gTempItem.addActor(imgWeapon);
 
       //btn off
@@ -217,7 +275,7 @@ public class GamePlayUI {
       gTempItem.addActor(gBtnOn);
 
       //add item shop into list item
-      ItemShop itemShop = new ItemShop(btnBuyWeaponOff, gBtnOn, weapon.getCoin());
+      ItemShop itemShop = new ItemShop(btnBuyWeaponOff, imgWeapon, gBtnOn, weapon.getCoin());
       listItemShop.add(itemShop);
 
       scrollTable.add(gTempItem).center().padBottom(10);
@@ -234,10 +292,36 @@ public class GamePlayUI {
 
     gItem.addActor(table);
 
+    gShop.moveBy(0, GStage.getWorldHeight());
+
+    listItemShop.get(0).getgBtnOn().setVisible(true);
+    listItemShop.get(0).getImgOff().setVisible(false);
+    listItemShop.get(0).getImgWeapon().setColor(Color.WHITE);
+
+  }
+
+  private void eventClickBtnXShop(Image btn) {
+
+    btn.addListener(new InputListener() {
+
+      @Override
+      public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+
+        SequenceAction seq = sequence(
+                moveBy(0, GStage.getWorldHeight(), .45f, swingIn),
+                run(() -> imgBgBlack.setVisible(false))
+        );
+
+        gShop.addAction(seq);
+
+        return super.touchDown(event, x, y, pointer, button);
+      }
+    });
+
   }
 
   private void eventClickBtnBuyWeaponInShop(Group gBtn, WeaponJson weapon) {
-    listItemShop.get(0).getgBtnOn().setVisible(true);
+
     gBtn.addListener(new ClickListener() {
 
       @Override
@@ -256,15 +340,20 @@ public class GamePlayUI {
 
             }
             else {
-              //todo: show label not enough coin
+
+              lbNoEnough.setText(C.lang.noEnoughCoin);
+              effectGame.eftShowLbNoEnough(lbNoEnough);
+
             }
 
           }
           else {
 
-            //todo: show label can not add weapon
+            lbNoEnough.setText(C.lang.noEnoughEmty);
+            effectGame.eftShowLbNoEnough(lbNoEnough);
 
           }
+
           gBtn.setTouchable(Touchable.enabled);
 
         };
@@ -287,13 +376,25 @@ public class GamePlayUI {
           gBuyWeapon.setTouchable(Touchable.disabled);
           Runnable run = () -> {
 
-            if (G.logicGame.chkEmptyListPos())
-              G.addWeapon(idIconCannon, iconWeapon.getX(), iconWeapon.getY());
-            else {
+            if (G.logicGame.chkEmptyListPos()) {
 
-              //todo: show label no enough container
+              if (coinCollection >= coinBuyWeapon)
+                G.addWeapon(idIconCannon, iconWeapon.getX(), iconWeapon.getY());
+              else {
+
+                lbNoEnough.setText(C.lang.noEnoughCoin);
+                effectGame.eftShowLbNoEnough(lbNoEnough);
+
+              }
 
             }
+            else {
+
+              lbNoEnough.setText(C.lang.noEnoughEmty);
+              effectGame.eftShowLbNoEnough(lbNoEnough);
+
+            }
+
             gBuyWeapon.setTouchable(Touchable.enabled);
 
           };
@@ -351,7 +452,17 @@ public class GamePlayUI {
         @Override
         public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
 
+          isOnShop = true;
+          Runnable run = () -> {
 
+            imgBgBlack.setVisible(true);
+            imgBgBlack.setZIndex(1000);
+            gShop.setZIndex(1000);
+            gShop.addAction(moveBy(0, -GStage.getWorldHeight(), .65f, swingOut));
+
+          };
+
+          effectGame.eftClick(imgShop, run);
 
           return super.touchDown(event, x, y, pointer, button);
         }
@@ -372,6 +483,7 @@ public class GamePlayUI {
 
           itemShop.getImgOff().setVisible(false);
           itemShop.getgBtnOn().setVisible(true);
+          itemShop.getImgWeapon().setColor(Color.WHITE);
 
         }
 
@@ -554,7 +666,7 @@ public class GamePlayUI {
 
     iconWeapon.setScale(1.4f);
 
-  }
+  } //setIconWeapon for btnBuyWeapon
 
   public void setTextCoinCollection(long coin) {
 
@@ -566,6 +678,7 @@ public class GamePlayUI {
 
   public void setTextCoinCollectionBuyWeapon(long coin) {
 
+    coinBuyWeapon = coin;
     coinCollection -= coin;
     String c = G.logicGame.compressCoin(coinCollection);
     lbCoinCollection.setText("$"+c);
@@ -583,6 +696,15 @@ public class GamePlayUI {
   public void getCoinCollection() {
 
     //check preference if (have) ? coinCollection : 10000
+
+  }
+
+  public void setShowGShop() {
+
+    if (isOnShop) {
+      imgBgBlack.setZIndex(1000);
+      gShop.setZIndex(1000);
+    }
 
   }
 

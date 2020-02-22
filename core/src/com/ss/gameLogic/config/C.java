@@ -4,6 +4,8 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.utils.I18NBundle;
 
+import org.omg.CORBA.PUBLIC_MEMBER;
+
 import java.util.Locale;
 import java.util.MissingResourceException;
 
@@ -20,6 +22,12 @@ public class C {
         private static I18NBundle locale;
         public static String title = "";
         public static String adsTimeLbl = "";
+        public static String noEnoughEmty = "";
+        public static String noEnoughCoin = "";
+        public static String winGame = "";
+        public static String endGame = "";
+        public static String newWave = "";
+
         static void initLocalize() {
             FileHandle specFilehandle = Gdx.files.internal("i18n/lang_" + "col");
             FileHandle baseFileHandle = Gdx.files.internal("i18n/lang");
@@ -33,6 +41,13 @@ public class C {
 
             title = locale.get("title");
             adsTimeLbl = locale.format("adsTime", remote.adsTime);
+
+            noEnoughEmty = locale.get("no_enough_empty");
+            noEnoughCoin = locale.get("no_enough_coin");
+            winGame = locale.get("win");
+            endGame = locale.get("end");
+            newWave = locale.get("new_wave");
+
         }
     }
 

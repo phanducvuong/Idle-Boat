@@ -7,7 +7,10 @@ import static com.badlogic.gdx.scenes.scene2d.actions.Actions.*;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.ss.core.action.exAction.GTween;
+import com.ss.core.util.GStage;
+import com.ss.gameLogic.Game;
 import com.ss.gameLogic.objects.Boat;
 import com.ss.gameLogic.objects.PosOfWeapon;
 import com.ss.gameLogic.objects.Weapon;
@@ -15,6 +18,7 @@ import com.ss.gameLogic.objects.Weapon;
 public class EffectGame {
 
   private static EffectGame instance = null;
+  private Game G;
 
   public static EffectGame getInstance() {
     return instance == null ? instance = new EffectGame() : instance;
@@ -91,8 +95,11 @@ public class EffectGame {
     image.setZIndex(1000);
     image.setVisible(true);
 
+    //setZindex for gShop when shop is show on screen
+    G.gamePlayUI.setShowGShop();
+
     SequenceAction seq = sequence(
-            scaleTo(1, 1, .25f, fastSlow),
+            scaleTo(1.2f, 1.2f, .25f, fastSlow),
             alpha(0, .25f, fastSlow),
             run(() -> {
 
@@ -114,6 +121,8 @@ public class EffectGame {
     image.setZIndex(1000);
     image.getColor().a = .8f;
     image.setVisible(true);
+
+    G.gamePlayUI.setShowGShop();
 
     SequenceAction seq = sequence(
             parallel(
@@ -179,6 +188,95 @@ public class EffectGame {
 
     pos.getImgEftMerge().addAction(seq);
 
+  }
+
+  public void eftShowCoinDelWeapon(Label lbCoin) {
+
+    SequenceAction seq = sequence(
+            alpha(1, .75f, linear),
+            alpha(0, .75f, linear)
+    );
+
+    lbCoin.addAction(seq);
+
+  }
+
+  public void eftShowLbNoEnough(Label lb) {
+
+    lb.clear();
+    lb.setPosition(GStage.getWorldWidth()/2 - lb.getWidth()/2, GStage.getHeight()/2 - lb.getHeight()/2);
+    lb.setZIndex(1000);
+    lb.getColor().a = 0;
+
+    SequenceAction seq = sequence(
+            parallel(
+                    alpha(1f, .25f, linear),
+                    moveBy(0, -150, .75f, linear)
+            ),
+            alpha(0f, .5f, linear),
+            run(() -> lb.moveBy(0, 50))
+    );
+
+    lb.addAction(seq);
+
+  }
+
+  public void eftShowLbWinOrEndGame(Label lb, boolean isWin) {
+
+    lb.clear();
+    lb.setZIndex(1000);
+    lb.getColor().a = 0;
+
+    SequenceAction seq = sequence(
+            alpha(1f, 1f, linear),
+            delay(1f),
+            alpha(0f, 1f, linear),
+            delay(1f),
+            run(() -> eftShowLbNewWaveOrEndGame(G.gamePlayUI.lbNewWave, isWin))
+    );
+
+    lb.addAction(seq);
+
+  }
+
+  private void eftShowLbNewWaveOrEndGame(Label lb, boolean isWin) {
+
+    if (isWin) {
+
+      lb.setZIndex(1000);
+      float x = GStage.getWorldWidth()/2 - lb.getWidth()/2;
+      float y = GStage.getWorldHeight()/2 - lb.getHeight()/2 - 200;
+
+      SequenceAction seq = sequence(
+              moveTo(x, y, .75f, fastSlow),
+              delay(1f),
+              moveTo(GStage.getWorldWidth()/2 + lb.getWidth(), y, .5f, fastSlow),
+              run(() -> {
+
+                lb.setPosition(-GStage.getWorldWidth()/2 - lb.getWidth(), GStage.getWorldHeight()/2 - lb.getHeight()/2 - 200);
+                G.resetWhenLevelUp();
+
+              })
+      );
+
+      lb.addAction(seq);
+
+    }//isWin = true => new wave else setVisible for imgBgEndGame = false
+    else {
+
+      G.gamePlayUI.imgBgEndGame.setVisible(false);
+      G.gamePlayUI.imgPercentFinished.setScale(0);
+      G.resetWhenEndGame();
+
+      //todo: reset game
+      //todo: show ads full screen when pass two level
+
+    }
+
+  }
+
+  public void setGame(Game G) {
+    this.G = G;
   }
 
 }

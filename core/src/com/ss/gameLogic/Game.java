@@ -1,5 +1,6 @@
 package com.ss.gameLogic;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -19,6 +20,7 @@ import com.ss.gameLogic.Interface.IDanger;
 import com.ss.gameLogic.Interface.IMerge;
 import static com.ss.gameLogic.config.Config.*;
 
+import com.ss.gameLogic.config.C;
 import com.ss.gameLogic.effect.EffectGame;
 import com.ss.gameLogic.objects.Boat;
 import com.ss.gameLogic.objects.PosOfWeapon;
@@ -54,6 +56,8 @@ public class Game implements IMerge, ICollision, IDanger {
     GStage.addToLayer(GLayer.ui, gUI);
     gUI.addActor(gBoat);
 
+    effectGame.setGame(this);
+
     initAsset();
     initPosOfWeapon();
 
@@ -70,7 +74,8 @@ public class Game implements IMerge, ICollision, IDanger {
     initLv(10, "boat_0", "boat_1", "boat_2");
     initWeapon();
 
-//    nextBoat();
+    nextBoat();
+
   }
 
   private void initLv(int numBoat, String ...boat) {
@@ -86,6 +91,12 @@ public class Game implements IMerge, ICollision, IDanger {
     assert bg != null;
     bg.setSize(GStage.getWorldWidth(), GStage.getWorldHeight());
     gUI.addActor(bg);
+
+    Image bulwark = GUI.createImage(textureAtlas, "bulwark");
+    assert bulwark != null;
+    bulwark.setWidth(GStage.getWorldWidth());
+    bulwark.setPosition(0, GStage.getWorldHeight() - bulwark.getHeight());
+    gUI.addActor(bulwark);
   }
 
   private void initPosOfWeapon() {
@@ -151,6 +162,7 @@ public class Game implements IMerge, ICollision, IDanger {
     //todo move all boat in listBoat => boat is die reset boat and move boat again
 
     gamePlayUI.gTopUI.setZIndex(1000);
+    gamePlayUI.setShowGShop();
 
     try {
       gBoat.addActor(boat);
@@ -240,17 +252,34 @@ public class Game implements IMerge, ICollision, IDanger {
   @Override
   public void chkWin() {
 
-    if (logicGame.chkWinGame(listBoat))
-      System.out.println("WIN");
+    if (logicGame.chkWinGame(listBoat)) {
+
+      //todo set wave for lbNewWave
+
+      gamePlayUI.lbEndWinGame.setText(C.lang.winGame);
+      effectGame.eftShowLbWinOrEndGame(gamePlayUI.lbEndWinGame, true);
+
+    }
 
   }
 
   @Override
   public void endGame() {
 
-    System.out.println("END GAME");
     for (Boat boat : listBoat)
       boat.getImgBoat().clear();
+
+    for (PosOfWeapon pos : listPosOfWeapon) {
+      if (pos.getWeapon() != null)
+        pos.getWeapon().clrActionWeapon();
+    }
+
+    gamePlayUI.lbEndWinGame.setText(C.lang.endGame);
+    gamePlayUI.imgBgEndGame.setZIndex(1000);
+    gamePlayUI.imgBgEndGame.setVisible(true);
+    effectGame.eftShowLbWinOrEndGame(gamePlayUI.lbEndWinGame, false);
+
+    //todo: reset level present
 
   }
 
@@ -282,6 +311,8 @@ public class Game implements IMerge, ICollision, IDanger {
         weapon.removeWeapon();
 
         long tempCoin = weapon.getCoin() / 3;
+        gamePlayUI.lbShowCoinDelWeapon.setText("+"+logicGame.compressCoin(tempCoin));
+        effectGame.eftShowCoinDelWeapon(gamePlayUI.lbShowCoinDelWeapon);
         gamePlayUI.setTextCoinCollection(tempCoin);
 
         break;
@@ -311,6 +342,8 @@ public class Game implements IMerge, ICollision, IDanger {
                 w.addCannonToScene();
 
                 gamePlayUI.setTextCoinCollectionBuyWeapon(w.getCoin());
+                gamePlayUI.imgBgBlack.setZIndex(1000);
+                gamePlayUI.gShop.setZIndex(1000);
 
               }
               catch (Exception ex) { ex.printStackTrace(); }
@@ -323,6 +356,29 @@ public class Game implements IMerge, ICollision, IDanger {
 
     }
     catch (Exception ex) { ex.printStackTrace(); }
+
+  }
+
+  public void resetWhenEndGame() {
+
+    countTarget = 0;
+    logicGame.resetGame(listPosOfWeapon, listBoat);
+
+    SequenceAction seq = sequence(
+            delay(1.5f),
+            run(this::nextBoat)
+    );
+
+    gUI.addAction(seq);
+
+  }
+
+  public void resetWhenLevelUp() {
+
+    countTarget = 0;
+    gamePlayUI.imgPercentFinished.setScale(0);
+    //todo: init boat in listBoat
+    //todo: update lbLevel
 
   }
 }

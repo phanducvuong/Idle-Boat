@@ -388,6 +388,7 @@ public class Weapon extends Image {
 
     isFight = true;
     isEftAttack = true;
+
     GTween.action(bullet,
 
             sequence(
@@ -418,6 +419,14 @@ public class Weapon extends Image {
     bullet.clearActions();
     bullet.setVisible(false);
     setPosBullet(pos);
+
+  }
+
+  public void resetBullet() {
+
+    isFight = false;
+    bullet.clearActions();
+    setPosWeapon(pos);
 
   }
 

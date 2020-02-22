@@ -127,8 +127,8 @@ public class Boat extends Image {
               if (imgBoat.getY() >= 50)
                 iDanger.fire(this);
 
-//              if (imgBoat.getY() > 500) //end game
-//                iDanger.endGame();
+              if (imgBoat.getY() > 500) //end game
+                iDanger.endGame();
 
               return true;
             })
@@ -143,6 +143,8 @@ public class Boat extends Image {
     lbCoin.setZIndex(1000);
     lbCoin.setPosition(x - lbCoin.getWidth()/2 + 50, y);
     lbCoin.setVisible(true);
+
+    G.gamePlayUI.setShowGShop();
 
     SequenceAction seq = sequence(
             parallel(
@@ -160,12 +162,8 @@ public class Boat extends Image {
   }
 
   public void resetBoat(int countTarget, int target) {
-    isAlive = false;
-    blood = tempBlood;
-    bound.setPosition(0, 0);
-    this.clearActions();
-    imgBoat.clear();
-    imgBoat.remove();
+
+    reset();
 
     if (countTarget < target) {
       setPosBoat();
@@ -173,10 +171,24 @@ public class Boat extends Image {
     }
 
     iDanger.chkWin();
-  }
+
+  }//prefabs boat
+
+  public void reset() {
+
+    isAlive = false;
+    blood = tempBlood;
+    bound.setPosition(0, 0);
+    this.clearActions();
+    imgBoat.clear();
+    imgBoat.remove();
+    imgBoat.setScale(1f);
+
+  }//reset boat for new game
 
   public void addBoatToScene() {
     gBoat.addActor(imgBoat);
+    G.gamePlayUI.setShowGShop();
   }
 
   public Image getImgBoat() {
