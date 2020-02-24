@@ -52,7 +52,7 @@ public class GamePlayUI {
   public Group gBuyWeapon;
   private Image btnCoin, iconWeapon;
 
-  private Image imgShop;
+  public Image imgShop;
   public long coinCollection = 1100000;
   public long coinBuyWeapon = 0;
   public int idIconCannon = 0, idBestPowerCannon = 0;

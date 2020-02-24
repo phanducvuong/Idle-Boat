@@ -324,157 +324,354 @@ public class Weapon extends Image {
     catch (Exception ignored) {  }
   }
 
-  public void moveWeaponToPos(Vector2 vTo) {
+  public void moveWeaponToPos(PosOfWeapon posOfWeapon, Weapon weapon) {
 
-    pos = vTo;
+    pos = posOfWeapon.pos;
+    gCannon.setScale(0);
+    float x,y;
 
     try {
       switch (idCannon) {
         case 0: case 1:
           gCannon.setPosition(G.gamePlayUI.gBuyWeapon.getX() + 20, G.gamePlayUI.gBuyWeapon.getY() + 60);
-          gCannon.setScale(0);
-//          gCannon.setPosition(vTo.x + gCannon.getWidth()/2 - 5, vTo.y + 30);
 
-          float x01 = vTo.x + gCannon.getWidth()/2 - 5;
-          float y01 = vTo.y + 30;
+          x = pos.x + gCannon.getWidth()/2 - 5;
+          y = pos.y + 30;
 
-          Runnable run = () -> setPosBullet(vTo);
+          Runnable run = () -> {
+            setPosBullet(pos);
+            isFight = false;
+          };
 
-          effectGame.eftWhenAddWeapon(gCannon, x01, y01, run);
-
-//          setPosBullet(vTo);
+          effectGame.eftWhenAddWeapon(gCannon, x, y, run);
 
           break;
         case 2:
-          gCannon.setPosition(vTo.x + gCannon.getWidth()/2 - 5, vTo.y + 30);
-          setPosBullet(vTo);
+          gCannon.setPosition(G.gamePlayUI.gBuyWeapon.getX() + 20, G.gamePlayUI.gBuyWeapon.getY() + 60);
 
-          cannonFight.setPosition(-1.5f, -6f);
+          x = pos.x + gCannon.getWidth()/2 - 5;
+          y = pos.y + 30;
+
+          Runnable run2 = () -> {
+            setPosBullet(pos);
+            cannonFight.setPosition(-1.5f, -6f);
+            isFight = false;
+          };
+
+          effectGame.eftWhenAddWeapon(gCannon, x, y, run2);
 
           break;
         case 3:
-          gCannon.setPosition(vTo.x + gCannon.getWidth()/2 - 5, vTo.y + 32);
-          setPosBullet(vTo);
+          gCannon.setPosition(G.gamePlayUI.gBuyWeapon.getX() + 20, G.gamePlayUI.gBuyWeapon.getY() + 60);
 
-          cannonFight.setPosition(0, -2);
+          x = pos.x + gCannon.getWidth()/2 - 5;
+          y = pos.y + 32;
+
+          Runnable run3 = () -> {
+            setPosBullet(pos);
+            cannonFight.setPosition(0, -2);
+            isFight = false;
+          };
+
+          effectGame.eftWhenAddWeapon(gCannon, x, y, run3);
+
           break;
         case 4:
-          gCannon.setPosition(vTo.x + gCannon.getWidth()/2 + 22, vTo.y);
-          setPosBullet(vTo);
-          cannonFight.setPosition(-2, 18);
+          gCannon.setPosition(G.gamePlayUI.gBuyWeapon.getX() + 25, G.gamePlayUI.gBuyWeapon.getY() + 80);
+
+          x = pos.x + gCannon.getWidth()/2 + 22;
+          y = pos.y;
+
+          Runnable run4 = () -> {
+            setPosBullet(pos);
+            cannonFight.setPosition(-2, 18);
+            isFight = false;
+          };
+
+          effectGame.eftWhenAddWeapon(gCannon, x, y, run4);
 
           break;
         case 5:
-          gCannon.setPosition(vTo.x + gCannon.getWidth()/2 + 15, vTo.y + 10);
-          setPosBullet(vTo);
-          cannonFight.setPosition(0, 22);
+          gCannon.setPosition(G.gamePlayUI.gBuyWeapon.getX() + 25, G.gamePlayUI.gBuyWeapon.getY() + 80);
+
+          x = pos.x + gCannon.getWidth()/2 + 15;
+          y = pos.y + 10;
+
+          Runnable run5 = () -> {
+            setPosBullet(pos);
+            cannonFight.setPosition(0, 22);
+            isFight = false;
+          };
+
+          effectGame.eftWhenAddWeapon(gCannon, x, y, run5);
 
           break;
         case 6:
-          gCannon.setPosition(vTo.x + gCannon.getWidth()/2 + 8, vTo.y + 20);
-          setPosBullet(vTo);
-          cannonFight.setPosition(1, 11);
+          gCannon.setPosition(G.gamePlayUI.gBuyWeapon.getX() + 25, G.gamePlayUI.gBuyWeapon.getY() + 80);
+
+          x = pos.x + gCannon.getWidth()/2 + 8;
+          y = pos.y + 20;
+
+          Runnable run6 = () -> {
+            setPosBullet(pos);
+            cannonFight.setPosition(1, 11);
+            isFight = false;
+          };
+
+          effectGame.eftWhenAddWeapon(gCannon, x, y, run6);
 
           break;
         case 7:
-          gCannon.setPosition(vTo.x + gCannon.getWidth()/2, vTo.y + 30);
-          setPosBullet(vTo);
-          cannonFight.setPosition(-1, 13);
+          gCannon.setPosition(G.gamePlayUI.gBuyWeapon.getX() + 25, G.gamePlayUI.gBuyWeapon.getY() + 80);
+
+          x = pos.x + gCannon.getWidth()/2;
+          y = pos.y + 30;
+
+          Runnable run7 = () -> {
+            setPosBullet(pos);
+            cannonFight.setPosition(-1, 13);
+            isFight = false;
+          };
+
+          effectGame.eftWhenAddWeapon(gCannon, x, y, run7);
 
           break;
         case 8:
-          gCannon.setPosition(vTo.x + gCannon.getWidth()/2, vTo.y + 20);
-          setPosBullet(vTo);
-          cannonFight.setPosition(0,13);
+          gCannon.setPosition(G.gamePlayUI.gBuyWeapon.getX() + 25, G.gamePlayUI.gBuyWeapon.getY() + 80);
+
+          x = pos.x + gCannon.getWidth()/2;
+          y = pos.y + 20;
+
+          Runnable run8 = () -> {
+            setPosBullet(pos);
+            cannonFight.setPosition(0,13);
+            isFight = false;
+          };
+
+          effectGame.eftWhenAddWeapon(gCannon, x, y, run8);
 
           break;
         case 9:
-          gCannon.setPosition(vTo.x + gCannon.getWidth()/2 - 8, vTo.y + 25);
-          setPosBullet(vTo);
-          cannonFight.setPosition(-1,8);
+          gCannon.setPosition(G.gamePlayUI.gBuyWeapon.getX() + 20, G.gamePlayUI.gBuyWeapon.getY() + 60);
+
+          x = pos.x + gCannon.getWidth()/2 - 8;
+          y = pos.y + 25;
+
+          Runnable run9 = () -> {
+            setPosBullet(pos);
+            cannonFight.setPosition(-1,8);
+            isFight = false;
+          };
+
+          effectGame.eftWhenAddWeapon(gCannon, x, y, run9);
 
           break;
         case 10:
-          gCannon.setPosition(vTo.x + gCannon.getWidth()/2 - 2, vTo.y + 30);
-          setPosBullet(vTo);
+          gCannon.setPosition(G.gamePlayUI.gBuyWeapon.getX() + 20, G.gamePlayUI.gBuyWeapon.getY() + 20);
+
+          x = pos.x + gCannon.getWidth()/2 - 2;
+          y = pos.y + 30;
+
+          Runnable run10 = () -> {
+            setPosBullet(pos);
+            isFight = false;
+          };
+
+          effectGame.eftWhenAddWeapon(gCannon, x, y, run10);
 
           break;
         case 11:
-          gCannon.setPosition(vTo.x + gCannon.getWidth()/2, vTo.y + 20);
-          setPosBullet(vTo);
-          cannonFight.setPosition(1,0);
+          gCannon.setPosition(G.gamePlayUI.gBuyWeapon.getX() + 20, G.gamePlayUI.gBuyWeapon.getY() + 40);
+
+          x = pos.x + gCannon.getWidth()/2;
+          y = pos.y + 20;
+
+          Runnable run11 = () -> {
+            setPosBullet(pos);
+            cannonFight.setPosition(1,0);
+            isFight = false;
+          };
+
+          effectGame.eftWhenAddWeapon(gCannon, x, y, run11);
 
           break;
         case 12:
-          cannonFight.setVisible(true);
-          gCannon.setPosition(vTo.x + gCannon.getWidth()/2 - 5, vTo.y + 25);
-          setPosBullet(vTo);
-          cannonFight.setPosition(2,0);
+          gCannon.setPosition(G.gamePlayUI.gBuyWeapon.getX() + 20, G.gamePlayUI.gBuyWeapon.getY() + 40);
+
+          x = pos.x + gCannon.getWidth()/2 - 5;
+          y = pos.y + 25;
+
+          Runnable run12 = () -> {
+            setPosBullet(pos);
+            cannonFight.setPosition(2,0);
+            isFight = false;
+          };
+
+          effectGame.eftWhenAddWeapon(gCannon, x, y, run12);
 
           break;
         case 13:
-          gCannon.setPosition(vTo.x + gCannon.getWidth()/2 - 5, vTo.y + 25);
-          setPosBullet(vTo);
-          cannonFight.setPosition(2,2);
+          gCannon.setPosition(G.gamePlayUI.gBuyWeapon.getX() + 20, G.gamePlayUI.gBuyWeapon.getY() + 40);
+
+          x = pos.x + gCannon.getWidth()/2 - 5;
+          y = pos.y + 25;
+
+          Runnable run13 = () -> {
+            setPosBullet(pos);
+            cannonFight.setPosition(2, 2);
+            isFight = false;
+          };
+
+          effectGame.eftWhenAddWeapon(gCannon, x, y, run13);
 
           break;
         case 14:
-          gCannon.setPosition(vTo.x + gCannon.getWidth()/2 - 15, vTo.y + 40);
-          setPosBullet(vTo);
-          cannonFight.setPosition(0,15);
+          gCannon.setPosition(G.gamePlayUI.gBuyWeapon.getX() + 20, G.gamePlayUI.gBuyWeapon.getY() + 40);
+
+          x = pos.x + gCannon.getWidth()/2 - 15;
+          y = pos.y + 40;
+
+          Runnable run14 = () -> {
+            setPosBullet(pos);
+            cannonFight.setPosition(0,15);
+            isFight = false;
+          };
+
+          effectGame.eftWhenAddWeapon(gCannon, x, y, run14);
 
           break;
         case 15:
-          gCannon.setPosition(vTo.x + gCannon.getWidth()/2 - 15, vTo.y + 30);
-          setPosBullet(vTo);
-          cannonFight.setPosition(0,12);
+          gCannon.setPosition(G.gamePlayUI.gBuyWeapon.getX() + 20, G.gamePlayUI.gBuyWeapon.getY() + 40);
+
+          x = pos.x + gCannon.getWidth()/2 - 15;
+          y = pos.y + 30;
+
+          Runnable run15 = () -> {
+            setPosBullet(pos);
+            cannonFight.setPosition(0,12);
+            isFight = false;
+          };
+
+          effectGame.eftWhenAddWeapon(gCannon, x, y, run15);
 
           break;
         case 16:
-          gCannon.setPosition(vTo.x + gCannon.getWidth()/2 - 5, vTo.y + 10);
-          setPosBullet(vTo);
-          cannonFight.setPosition(1,8);
+          gCannon.setPosition(G.gamePlayUI.gBuyWeapon.getX() + 20, G.gamePlayUI.gBuyWeapon.getY() + 40);
+
+          x = pos.x + gCannon.getWidth()/2 - 5;
+          y = pos.y + 10;
+
+          Runnable run16 = () -> {
+            setPosBullet(pos);
+            cannonFight.setPosition(1,8);
+            isFight = false;
+          };
+
+          effectGame.eftWhenAddWeapon(gCannon, x, y, run16);
 
           break;
         case 17:
-          gCannon.setPosition(vTo.x + gCannon.getWidth()/2, vTo.y + 20);
-          setPosBullet(vTo);
-          cannonFight.setPosition(-2,7);
+          gCannon.setPosition(G.gamePlayUI.gBuyWeapon.getX() + 20, G.gamePlayUI.gBuyWeapon.getY() + 40);
+
+          x = pos.x + gCannon.getWidth()/2;
+          y = pos.y + 20;
+
+          Runnable run17 = () -> {
+            setPosBullet(pos);
+            cannonFight.setPosition(-2,7);
+            isFight = false;
+          };
+
+          effectGame.eftWhenAddWeapon(gCannon, x, y, run17);
 
           break;
         case 18:
-          gCannon.setPosition(vTo.x + gCannon.getWidth()/2, vTo.y + 15);
-          setPosBullet(vTo);
-          cannonFight.setPosition(-1,0);
+          gCannon.setPosition(G.gamePlayUI.gBuyWeapon.getX() + 20, G.gamePlayUI.gBuyWeapon.getY() + 40);
+
+          x = pos.x + gCannon.getWidth()/2;
+          y = pos.y + 15;
+
+          Runnable run18 = () -> {
+            setPosBullet(pos);
+            cannonFight.setPosition(-1,0);
+            isFight = false;
+          };
+
+          effectGame.eftWhenAddWeapon(gCannon, x, y, run18);
 
           break;
         case 19:
-          gCannon.setPosition(vTo.x + gCannon.getWidth()/2 - 2, vTo.y + 20);
-          setPosBullet(vTo);
-          cannonFight.setPosition(-1,2);
+          gCannon.setPosition(G.gamePlayUI.gBuyWeapon.getX() + 20, G.gamePlayUI.gBuyWeapon.getY() + 40);
+
+          x = pos.x + gCannon.getWidth()/2 - 2;
+          y = pos.y + 20;
+
+          Runnable run19 = () -> {
+            setPosBullet(pos);
+            cannonFight.setPosition(-1,2);
+            isFight = false;
+          };
+
+          effectGame.eftWhenAddWeapon(gCannon, x, y, run19);
 
           break;
         case 20:
-          gCannon.setPosition(vTo.x + gCannon.getWidth()/2 - 5, vTo.y + 25);
-          setPosBullet(vTo);
-          cannonFight.setPosition(-1,9);
+          gCannon.setPosition(G.gamePlayUI.gBuyWeapon.getX() + 20, G.gamePlayUI.gBuyWeapon.getY() + 40);
+
+          x = pos.x + gCannon.getWidth()/2 - 5;
+          y = pos.y + 25;
+
+          Runnable run20 = () -> {
+            setPosBullet(pos);
+            cannonFight.setPosition(-1,9);
+            isFight = false;
+          };
+
+          effectGame.eftWhenAddWeapon(gCannon, x, y, run20);
 
           break;
         case 21:
-          gCannon.setPosition(vTo.x + gCannon.getWidth()/2 - 5, vTo.y + 35);
-          setPosBullet(vTo);
-          cannonFight.setPosition(0.5f,7);
+          gCannon.setPosition(G.gamePlayUI.gBuyWeapon.getX() + 20, G.gamePlayUI.gBuyWeapon.getY() + 40);
+
+          x = pos.x + gCannon.getWidth()/2 - 5;
+          y = pos.y + 35;
+
+          Runnable run21 = () -> {
+            setPosBullet(pos);
+            cannonFight.setPosition(0.5f,7);
+            isFight = false;
+          };
+
+          effectGame.eftWhenAddWeapon(gCannon, x, y, run21);
 
           break;
         case 22:
-          gCannon.setPosition(vTo.x + gCannon.getWidth()/2 + 2, vTo.y + 40);
-          setPosBullet(vTo);
+          gCannon.setPosition(G.gamePlayUI.gBuyWeapon.getX() + 20, G.gamePlayUI.gBuyWeapon.getY() + 40);
+
+          x = pos.x + gCannon.getWidth()/2 + 2;
+          y = pos.y + 40;
+
+          Runnable run22 = () -> {
+            setPosBullet(pos);
+            isFight = false;
+          };
+
+          effectGame.eftWhenAddWeapon(gCannon, x, y, run22);
 
           break;
         case 23:
-          gCannon.setPosition(vTo.x + gCannon.getWidth()/2, vTo.y + 30);
-          setPosBullet(vTo);
-          cannonFight.setPosition(-1,5);
+          gCannon.setPosition(G.gamePlayUI.gBuyWeapon.getX() + 20, G.gamePlayUI.gBuyWeapon.getY() + 40);
+
+          x = pos.x + gCannon.getWidth()/2;
+          y = pos.y + 30;
+
+          Runnable run23 = () -> {
+            setPosBullet(pos);
+            cannonFight.setPosition(-1,5);
+            isFight = false;
+          };
+
+          effectGame.eftWhenAddWeapon(gCannon, x, y, run23);
 
           break;
       }
@@ -564,6 +761,8 @@ public class Weapon extends Image {
                       GSimpleAction.simpleAction((d, a) -> {
 
                         effectGame.eftWeaponAttack(this);
+                        bullet.setZIndex(1000);
+
                         bound.setPosition(bullet.getX(), bullet.getY());
                         //check collision
                         iCollision.Collision(this);

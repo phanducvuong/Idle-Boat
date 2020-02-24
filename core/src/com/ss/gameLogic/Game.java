@@ -78,7 +78,7 @@ public class Game implements IMerge, ICollision, IDanger {
     initLv(10, "boat_0", "boat_1", "boat_2");
     initWeapon();
 
-//    nextBoat();
+    nextBoat();
 
   }
 
@@ -171,6 +171,10 @@ public class Game implements IMerge, ICollision, IDanger {
 
     gamePlayUI.gTopUI.setZIndex(1000);
     gPos.setZIndex(1000);
+
+    gamePlayUI.gBuyWeapon.setZIndex(1000);
+    gamePlayUI.imgRecycle.setZIndex(1000);
+    gamePlayUI.imgShop.setZIndex(1000);
 
     logicGame.setZindexGCannon(listPosOfWeapon);
 
@@ -337,7 +341,7 @@ public class Game implements IMerge, ICollision, IDanger {
 
     try {
 
-      for (Weapon w : data.HMWeapon.get("cannon_"+0))
+      for (Weapon w : data.HMWeapon.get("cannon_"+22))
         if (!w.isOn) {
           w.clrActionWeapon();
 
@@ -349,7 +353,8 @@ public class Game implements IMerge, ICollision, IDanger {
               try {
 
                 w.isOn = true;
-                w.moveWeaponToPos(pos.pos);
+                w.isFight = true;
+                w.moveWeaponToPos(pos, w);
                 w.addBulletToScene();
                 w.addCannonToScene();
 
