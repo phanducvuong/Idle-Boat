@@ -5,11 +5,13 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.math.Vector2;
 import com.ss.core.util.GAssetsManager;
 import com.ss.core.util.GStage;
+import com.ss.gameLogic.Game;
 
 public class Config {
+
     public static float ratio = Gdx.graphics.getWidth() / 720;
 
-    public static final Vector2 POS_1 = new Vector2(GStage.getWorldWidth()/2 - 44, GStage.getWorldHeight()/2 + 270);
+    public static final Vector2 POS_1 = new Vector2(GStage.getWorldWidth()/2 - 44, Game.yBulwark + 100);
     public static final Vector2 POS_0 = new Vector2(POS_1.x - 115, POS_1.y);
     public static final Vector2 POS_2 = new Vector2(POS_1.x + 115, POS_1.y);
     public static final Vector2 POS_4 = new Vector2(POS_1.x, POS_1.y + 150);

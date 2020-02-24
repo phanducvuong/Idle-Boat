@@ -49,7 +49,7 @@ public class GamePlayUI {
   public Label lbEndWinGame;
   public Label lbNewWave;
 
-  private Group gBuyWeapon;
+  public Group gBuyWeapon;
   private Image btnCoin, iconWeapon;
 
   private Image imgShop;
@@ -66,6 +66,10 @@ public class GamePlayUI {
   public Group gShop;
   private Image bgShop;
   private List<ItemShop> listItemShop = new ArrayList<>();
+
+  public Group gUnlockWeapon, gContinue;
+  public Image imgShineWeapon, imgShineBoat, imgWeaponOrBoat, imgRateDamageOrHitpoint, imgRateRangeOrSpeed, bgUnlock;
+  private Label lbWeaponOrBoat, lbUnlock, lbDamageOrHitpoint;
 
   public GamePlayUI(Game G, Group gUI) {
 
@@ -89,6 +93,7 @@ public class GamePlayUI {
     initShopAndBtnBuyWeapon();
     initTopUI();
     initShop();
+    initUIUnlockWeapon();
     eventClickListener();
 
     //lb show coin when delete weapon
@@ -139,7 +144,6 @@ public class GamePlayUI {
     gBuyWeapon.setOrigin(btnCoin.getWidth()/2, btnCoin.getHeight()/2);
 
     gBuyWeapon.setPosition(WIDTH/2 - btnCoin.getWidth()/2, HEIGHT - btnCoin.getHeight() - 5);
-    gBuyWeapon.setOrigin(btnCoin.getWidth()/2, btnCoin.getHeight()/2);
 
     imgShop = GUI.createImage(textureAtlas, "shop");
     imgShop.setPosition(gBuyWeapon.getX() + btnCoin.getWidth() + 20, gBuyWeapon.getY() + 5);
@@ -297,6 +301,117 @@ public class GamePlayUI {
     listItemShop.get(0).getgBtnOn().setVisible(true);
     listItemShop.get(0).getImgOff().setVisible(false);
     listItemShop.get(0).getImgWeapon().setColor(Color.WHITE);
+
+  }
+
+  private void initUIUnlockWeapon() {
+
+    gUnlockWeapon = new Group();
+
+    bgUnlock = GUI.createImage(textureAtlas, "bg_black");
+    bgUnlock.setSize(GStage.getWorldWidth(), GStage.getWorldHeight());
+    bgUnlock.setVisible(false);
+    gUI.addActor(bgUnlock);
+
+    gUnlockWeapon.setOrigin(bgUnlock.getWidth()/2, bgUnlock.getHeight()/2);
+
+    Image ribbon = GUI.createImage(textureAtlas, "ribbon");
+    ribbon.setPosition(GStage.getWorldWidth()/2 - ribbon.getWidth()/2, 100);
+    gUnlockWeapon.addActor(ribbon);
+
+    lbUnlock = new Label(C.lang.unlock, new Label.LabelStyle(Config.BITMAP_YELLOW_FONT, null));
+    lbUnlock.setAlignment(Align.center);
+    lbUnlock.setFontScale(.8f);
+    lbUnlock.setPosition(ribbon.getX() + ribbon.getWidth()/2 - lbUnlock.getWidth()/2, ribbon.getY() + ribbon.getHeight()/2 - lbUnlock.getHeight());
+    gUnlockWeapon.addActor(lbUnlock);
+
+    imgShineWeapon = GUI.createImage(textureAtlas, "shine_weapon");
+    imgShineWeapon.setOrigin(Align.center);
+    imgShineWeapon.setPosition(GStage.getWorldWidth()/2 - imgShineWeapon.getWidth()/2, GStage.getWorldHeight()/2 - imgShineWeapon.getHeight()/2 - 100);
+    gUnlockWeapon.addActor(imgShineWeapon);
+
+    effectGame.eftImgShine(imgShineWeapon);
+
+    imgShineBoat = GUI.createImage(textureAtlas, "shine_boat");
+    imgShineBoat.setOrigin(Align.center);
+    imgShineBoat.setPosition(GStage.getWorldWidth()/2 - imgShineWeapon.getWidth()/2, GStage.getWorldHeight()/2 - imgShineWeapon.getHeight()/2 - 100);
+    gUnlockWeapon.addActor(imgShineBoat);
+
+    effectGame.eftImgShine(imgShineBoat);
+
+    lbWeaponOrBoat = new Label(C.lang.cannon_1, new Label.LabelStyle(Config.BITMAP_WHITE_FONT, null));
+    lbWeaponOrBoat.setAlignment(Align.center);
+    lbWeaponOrBoat.setFontScale(.7f);
+    lbWeaponOrBoat.setPosition(ribbon.getX() + ribbon.getWidth()/2 - lbWeaponOrBoat.getWidth()/2, ribbon.getY() + ribbon.getHeight());
+    gUnlockWeapon.addActor(lbWeaponOrBoat);
+
+    imgWeaponOrBoat = GUI.createImage(GMain.weaponAtlas, "cannon_1");
+    imgWeaponOrBoat.setScale(4f);
+    imgWeaponOrBoat.setPosition(GStage.getWorldWidth()/2 - imgWeaponOrBoat.getWidth()*4/2, GStage.getWorldHeight()/2 - imgWeaponOrBoat.getHeight()*4/2 - 100);
+    gUnlockWeapon.addActor(imgWeaponOrBoat);
+
+    Image bgRateDamage = GUI.createImage(textureAtlas, "bg_rate");
+    bgRateDamage.setPosition(imgShineWeapon.getX() + imgShineWeapon.getWidth()/2 - bgRateDamage.getWidth()/2, imgShineWeapon.getY() + imgShineWeapon.getHeight() + 20);
+    gUnlockWeapon.addActor(bgRateDamage);
+
+    imgRateDamageOrHitpoint = GUI.createImage(textureAtlas, "rate");
+    imgRateDamageOrHitpoint.setPosition(bgRateDamage.getX() + 1, bgRateDamage.getY() + 7);
+    imgRateDamageOrHitpoint.setScale(0, 1f);
+    gUnlockWeapon.addActor(imgRateDamageOrHitpoint);
+
+    lbDamageOrHitpoint = new Label(C.lang.damage, new Label.LabelStyle(Config.BITMAP_WHITE_FONT, null));
+    lbDamageOrHitpoint.setAlignment(Align.center);
+    lbDamageOrHitpoint.setFontScale(.4f);
+    lbDamageOrHitpoint.setPosition(bgRateDamage.getX() + bgRateDamage.getWidth()/2 - lbDamageOrHitpoint.getWidth()/2, bgRateDamage.getY() - 50);
+    gUnlockWeapon.addActor(lbDamageOrHitpoint);
+
+    Image bgRateRange = GUI.createImage(textureAtlas, "bg_rate");
+    bgRateRange.setPosition(bgRateDamage.getX(), bgRateDamage.getY() + 130);
+    gUnlockWeapon.addActor(bgRateRange);
+
+    imgRateRangeOrSpeed = GUI.createImage(textureAtlas, "rate");
+    imgRateRangeOrSpeed.setPosition(bgRateRange.getX() + 1, bgRateRange.getY() + 7);
+    imgRateRangeOrSpeed.setScale(0, 1f);
+    gUnlockWeapon.addActor(imgRateRangeOrSpeed);
+
+    Label lbRange = new Label(C.lang.range, new Label.LabelStyle(Config.BITMAP_WHITE_FONT, null));
+    lbRange.setAlignment(Align.center);
+    lbRange.setFontScale(.4f);
+    lbRange.setPosition(bgRateRange.getX() + bgRateRange.getWidth()/2 - lbRange.getWidth()/2, bgRateRange.getY() - 50);
+    gUnlockWeapon.addActor(lbRange);
+
+    gContinue = new Group();
+    Image imgBtnContinue = GUI.createImage(textureAtlas, "btn_continue");
+    gContinue.setPosition(GStage.getWorldWidth()/2 - imgBtnContinue.getWidth()/2, bgRateRange.getY() + 100);
+    gContinue.setOrigin(imgBtnContinue.getWidth()/2, imgBtnContinue.getHeight()/2);
+    gContinue.addActor(imgBtnContinue);
+
+    Label lbContinue = new Label(C.lang.textContinue, new Label.LabelStyle(Config.BITMAP_WHITE_FONT, null));
+    lbContinue.setAlignment(Align.center);
+    lbContinue.setFontScale(.6f);
+    lbContinue.setPosition(imgBtnContinue.getX() + imgBtnContinue.getWidth()/2 - lbContinue.getWidth()/2, imgBtnContinue.getY() + imgBtnContinue.getHeight()/2 - lbContinue.getHeight()/2);
+    gContinue.addActor(lbContinue);
+
+    gUnlockWeapon.addActor(gContinue);
+    gUnlockWeapon.setScale(0);
+    gUI.addActor(gUnlockWeapon);
+
+  }
+
+  public void showGUnlockWeaponOrBoat() {
+
+    Runnable run = () -> {
+
+      imgRateDamageOrHitpoint.addAction(scaleTo(1f, 1f, .5f, fastSlow));
+      imgRateRangeOrSpeed.addAction(scaleTo(1f, 1f, .5f, fastSlow));
+
+    };
+
+    bgUnlock.setVisible(true);
+    bgUnlock.setZIndex(1000);
+    gUnlockWeapon.setZIndex(1000);
+
+    effectGame.eftNewWeapon(gUnlockWeapon, run);
 
   }
 
@@ -463,6 +578,37 @@ public class GamePlayUI {
           };
 
           effectGame.eftClick(imgShop, run);
+
+          return super.touchDown(event, x, y, pointer, button);
+        }
+      });
+
+    }
+
+    btn_continue: {
+
+      gContinue.addListener(new InputListener() {
+        @Override
+        public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+
+          gContinue.setTouchable(Touchable.disabled);
+          Runnable run = () -> {
+
+            //todo: hide group unlock weapon
+            imgRateDamageOrHitpoint.setScale(0f, 1f);
+            imgRateRangeOrSpeed.setScale(0f, 1f);
+            gContinue.setTouchable(Touchable.enabled);
+
+            SequenceAction seq = sequence(
+                    scaleTo(0f, 0f, .5f, fastSlow),
+                    run(() -> bgUnlock.setVisible(false))
+            );
+
+            gUnlockWeapon.addAction(seq);
+
+          };
+
+          effectGame.eftClick(gContinue, run);
 
           return super.touchDown(event, x, y, pointer, button);
         }

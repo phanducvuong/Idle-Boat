@@ -127,7 +127,7 @@ public class Boat extends Image {
               if (imgBoat.getY() >= 50)
                 iDanger.fire(this);
 
-              if (imgBoat.getY() > 500) //end game
+              if (imgBoat.getY() >= G.bulwark.getY()) //end game
                 iDanger.endGame();
 
               return true;

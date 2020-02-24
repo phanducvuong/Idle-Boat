@@ -1,6 +1,7 @@
 package com.ss.gameLogic;
 
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.ss.data.Data;
 import com.ss.gameLogic.effect.EffectGame;
 import com.ss.gameLogic.objects.Boat;
@@ -44,8 +45,6 @@ public class LogicGame {
 
       }
       else { //idIconCannon equal => weapon level up and update weapon at vTo, release vFrome
-
-        //todo: particle merge weapon
 
         Vector2 pos = new Vector2(pTo.getWeapon().gCannon.getX(), pTo.getWeapon().gCannon.getY()); //get pos to make effect merge weapon
         Weapon w1 = pFrom.getWeapon();
@@ -160,6 +159,7 @@ public class LogicGame {
       case 10: s = s.substring(0, 1) + "B"; break;
       case 11: s = s.substring(0, 2) + "B"; break;
       case 12: s = s.substring(0, 3) + "B"; break;
+
     }
 
     return s;
@@ -178,9 +178,32 @@ public class LogicGame {
 
       G.gamePlayUI.idBestPowerCannon = idCannonMerge;
       G.gamePlayUI.setStateBtnShop();
+
       //todo: show effect new weapon
+      //todo: particle merge weapon
+      //todo: set item for imgWeaponOrBoat
+      //todo: set lb if new weapon or new boat
+      //todo: calculate rate
+
+      G.gamePlayUI.showGUnlockWeaponOrBoat();
 
     }
+
+  }
+
+  public void disTouchWeapon(List<PosOfWeapon> listPos, Weapon weapon) {
+
+    for (PosOfWeapon pos : listPos)
+      if (pos.getWeapon() != null && pos.getWeapon() != weapon)
+        pos.getWeapon().gCannon.setTouchable(Touchable.disabled);
+
+  }
+
+  public void enTouchWeapon(List<PosOfWeapon> listPos, Weapon weapon) {
+
+    for (PosOfWeapon pos : listPos)
+      if (pos.getWeapon() != null)
+        pos.getWeapon().gCannon.setTouchable(Touchable.enabled);
 
   }
 
@@ -222,6 +245,14 @@ public class LogicGame {
   public void loadGame() {
 
 
+
+  }
+
+  public void setZindexGCannon(List<PosOfWeapon> listPos) {
+
+    for (PosOfWeapon pos : listPos)
+      if (pos.getWeapon() != null)
+        pos.getWeapon().gCannon.setZIndex(1000);
 
   }
 

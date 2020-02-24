@@ -1,6 +1,5 @@
 package com.ss.gameLogic;
 
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -33,11 +32,15 @@ import java.util.List;
 
 public class Game implements IMerge, ICollision, IDanger {
 
+  public static float yBulwark;
+
   private TextureAtlas textureAtlas = GMain.textureAtlas;
   private Group gUI;
+  public Group gPos;
   private Group gBoat;
   public LogicGame logicGame = LogicGame.getInstance(this);
   public GamePlayUI gamePlayUI;
+  public Image bulwark;
 
   public List<PosOfWeapon> listPosOfWeapon;
   private List<Boat> listBoat;
@@ -50,6 +53,7 @@ public class Game implements IMerge, ICollision, IDanger {
 
   public Game() {
     gUI = new Group();
+    gPos = new Group();
     gBoat = new Group();
     gUI.setSize(GStage.getWorldWidth(), GStage.getWorldHeight());
 
@@ -74,7 +78,7 @@ public class Game implements IMerge, ICollision, IDanger {
     initLv(10, "boat_0", "boat_1", "boat_2");
     initWeapon();
 
-    nextBoat();
+//    nextBoat();
 
   }
 
@@ -87,23 +91,27 @@ public class Game implements IMerge, ICollision, IDanger {
   }
 
   private void initAsset() {
+
     Image bg = GUI.createImage(textureAtlas, "bg");
     assert bg != null;
     bg.setSize(GStage.getWorldWidth(), GStage.getWorldHeight());
     gUI.addActor(bg);
 
-    Image bulwark = GUI.createImage(textureAtlas, "bulwark");
+    bulwark = GUI.createImage(textureAtlas, "bulwark");
     assert bulwark != null;
     bulwark.setWidth(GStage.getWorldWidth());
     bulwark.setPosition(0, GStage.getWorldHeight() - bulwark.getHeight());
-    gUI.addActor(bulwark);
+    gPos.addActor(bulwark);
+
+    yBulwark = bulwark.getY();
+
   }
 
   private void initPosOfWeapon() {
     listPosOfWeapon = new ArrayList<>();
 
     for (int i=0; i<10; i++) {
-      PosOfWeapon p = new PosOfWeapon(gUI);
+      PosOfWeapon p = new PosOfWeapon(gUI, gPos);
       p.setPosition(i);
       p.name = i+"";
       listPosOfWeapon.add(p);
@@ -162,6 +170,10 @@ public class Game implements IMerge, ICollision, IDanger {
     //todo move all boat in listBoat => boat is die reset boat and move boat again
 
     gamePlayUI.gTopUI.setZIndex(1000);
+    gPos.setZIndex(1000);
+
+    logicGame.setZindexGCannon(listPosOfWeapon);
+
     gamePlayUI.setShowGShop();
 
     try {
@@ -325,7 +337,7 @@ public class Game implements IMerge, ICollision, IDanger {
 
     try {
 
-      for (Weapon w : data.HMWeapon.get("cannon_"+idCannon))
+      for (Weapon w : data.HMWeapon.get("cannon_"+0))
         if (!w.isOn) {
           w.clrActionWeapon();
 
@@ -337,7 +349,7 @@ public class Game implements IMerge, ICollision, IDanger {
               try {
 
                 w.isOn = true;
-                w.setPosWeapon(pos.pos);
+                w.moveWeaponToPos(pos.pos);
                 w.addBulletToScene();
                 w.addCannonToScene();
 

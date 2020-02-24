@@ -12,6 +12,7 @@ import com.ss.gameLogic.effect.EffectGame;
 public class PosOfWeapon {
 
   private Group gUI;
+  public Group gPos;
   private Image boxContainer;
   public Vector2 pos;
   private Weapon weapon;
@@ -21,24 +22,23 @@ public class PosOfWeapon {
 
   public int col;
 
-  public PosOfWeapon(Group gUI) {
+  public PosOfWeapon(Group gUI, Group gPos) {
     this.gUI = gUI;
+    this.gPos = gPos;
 
     boxContainer = GUI.createImage(GMain.textureAtlas, "pos_weapon");
     assert boxContainer != null;
-    gUI.addActor(boxContainer);
+    gPos.addActor(boxContainer);
 
     imgEftMerge = GUI.createImage(GMain.textureAtlas, "eft_merge_weapon");
     assert imgEftMerge != null;
     imgEftMerge.setOrigin(Align.center);
     imgEftMerge.setScale(0);
     imgEftMerge.setVisible(false);
-    gUI.addActor(imgEftMerge);
-  }
+    gPos.addActor(imgEftMerge);
 
-//  public void setPosition(Vector2 pos) {
-//    boxContainer.setPosition(pos.x - boxContainer.getWidth()/2, pos.y);
-//  }
+    gUI.addActor(gPos);
+  }
 
   public void setPosition(int i) {
     switch (i) {

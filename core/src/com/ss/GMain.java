@@ -99,6 +99,7 @@ public class GMain extends GDirectedGame {
       C.init();
       Data.getInstance();
       this.setScreen(menuScreen());
+
   }
   
   public void dispose()

@@ -114,6 +114,17 @@ public class EffectGame {
 
   }
 
+  public void eftImgShine(Image img) {
+
+    SequenceAction seq = sequence(
+            rotateBy(-10, .25f, linear),
+            run(() -> eftImgShine(img))
+    );
+
+    img.addAction(seq);
+
+  }
+
   public void eftSmoke(Image image, float x, float y) {
 
     image.setPosition(x, y);
@@ -150,6 +161,18 @@ public class EffectGame {
     );
 
     btn.addAction(seq);
+
+  }
+
+  public void eftNewWeapon(Group gNew, Runnable onComplete) {
+
+    SequenceAction seq = sequence(
+            scaleTo(1f, 1f, .75f, swingOut),
+            delay(1f),
+            run(onComplete)
+    );
+
+    gNew.addAction(seq);
 
   }
 
@@ -198,6 +221,20 @@ public class EffectGame {
     );
 
     lbCoin.addAction(seq);
+
+  }
+
+  public void eftWhenAddWeapon(Group gCannon, float x, float y, Runnable onComplete) {
+
+    SequenceAction seq0 = sequence(
+            parallel(
+                    moveTo(x, y, .25f, fastSlow),
+                    scaleTo(1f, 1f, .25f, fastSlow)
+            ),
+            run(onComplete)
+    );
+
+    gCannon.addAction(seq0);
 
   }
 

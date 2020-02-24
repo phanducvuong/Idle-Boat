@@ -27,6 +27,12 @@ public class C {
         public static String winGame = "";
         public static String endGame = "";
         public static String newWave = "";
+        public static String unlock = "";
+        public static String damage = "";
+        public static String range = "";
+        public static String textContinue = "";
+
+        public static String cannon_1 = "";
 
         static void initLocalize() {
             FileHandle specFilehandle = Gdx.files.internal("i18n/lang_" + "col");
@@ -47,6 +53,12 @@ public class C {
             winGame = locale.get("win");
             endGame = locale.get("end");
             newWave = locale.get("new_wave");
+            unlock = locale.get("unlock");
+            damage = locale.get("damage");
+            range = locale.get("range");
+            textContinue = locale.get("continue");
+
+            cannon_1 = locale.get("cannon_1");
 
         }
     }

@@ -2,6 +2,7 @@
   {
     "cannon": "cannon_0",
     "cannon_fight": "cannon_0_fight",
+    "name": "",
     "bullet": "bullet_0",
     "attack_bullet": 20,
     "id_cannon": 0,
