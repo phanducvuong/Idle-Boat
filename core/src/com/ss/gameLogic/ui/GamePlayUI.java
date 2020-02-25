@@ -27,6 +27,7 @@ import com.ss.gameLogic.Game;
 import com.ss.gameLogic.config.C;
 import com.ss.gameLogic.config.Config;
 import com.ss.gameLogic.effect.EffectGame;
+import com.ss.gameLogic.objects.Boat;
 import com.ss.gameLogic.objects.Weapon;
 
 import java.util.ArrayList;
@@ -68,7 +69,7 @@ public class GamePlayUI {
 
   public Group gContinue;
   public Image imgShineWeapon, imgShineBoat, imgWeaponOrBoat, imgRateDamageOrHitpoint, imgRateRangeOrSpeed, bgUnlock;
-  private Label lbWeaponOrBoat, lbUnlock, lbDamageOrHitpoint;
+  private Label lbWeaponOrBoat, lbUnlock, lbDamageOrHitpoint, lbRangeOrSpeed;
 
   public Label lbEndGame;
   public Image bgEndGame;
@@ -338,7 +339,7 @@ public class GamePlayUI {
     ribbon.setPosition(GStage.getWorldWidth()/2 - ribbon.getWidth()/2, 100);
     G.gEffect.addActor(ribbon);
 
-    lbUnlock = new Label(C.lang.unlock, new Label.LabelStyle(Config.BITMAP_YELLOW_FONT, null));
+    lbUnlock = new Label(C.lang.unlock_weapon, new Label.LabelStyle(Config.BITMAP_YELLOW_FONT, null));
     lbUnlock.setAlignment(Align.center);
     lbUnlock.setFontScale(.8f);
     lbUnlock.setPosition(ribbon.getX() + ribbon.getWidth()/2 - lbUnlock.getWidth()/2, ribbon.getY() + ribbon.getHeight()/2 - lbUnlock.getHeight());
@@ -361,7 +362,7 @@ public class GamePlayUI {
     lbWeaponOrBoat = new Label(C.lang.cannon_1, new Label.LabelStyle(Config.BITMAP_WHITE_FONT, null));
     lbWeaponOrBoat.setAlignment(Align.center);
     lbWeaponOrBoat.setFontScale(.7f);
-    lbWeaponOrBoat.setPosition(ribbon.getX() + ribbon.getWidth()/2 - lbWeaponOrBoat.getWidth()/2, ribbon.getY() + ribbon.getHeight());
+    lbWeaponOrBoat.setPosition(ribbon.getX() + ribbon.getWidth()/2 - lbWeaponOrBoat.getWidth()/2, ribbon.getY() + ribbon.getHeight() + 20);
     G.gEffect.addActor(lbWeaponOrBoat);
 
     imgWeaponOrBoat = GUI.createImage(GMain.weaponAtlas, "cannon_1");
@@ -392,11 +393,11 @@ public class GamePlayUI {
     imgRateRangeOrSpeed.setScale(0, 1f);
     G.gEffect.addActor(imgRateRangeOrSpeed);
 
-    Label lbRange = new Label(C.lang.range, new Label.LabelStyle(Config.BITMAP_WHITE_FONT, null));
-    lbRange.setAlignment(Align.center);
-    lbRange.setFontScale(.4f);
-    lbRange.setPosition(bgRateRange.getX() + bgRateRange.getWidth()/2 - lbRange.getWidth()/2, bgRateRange.getY() - 50);
-    G.gEffect.addActor(lbRange);
+    lbRangeOrSpeed = new Label(C.lang.range, new Label.LabelStyle(Config.BITMAP_WHITE_FONT, null));
+    lbRangeOrSpeed.setAlignment(Align.center);
+    lbRangeOrSpeed.setFontScale(.4f);
+    lbRangeOrSpeed.setPosition(bgRateRange.getX() + bgRateRange.getWidth()/2 - lbRangeOrSpeed.getWidth()/2, bgRateRange.getY() - 50);
+    G.gEffect.addActor(lbRangeOrSpeed);
 
     gContinue = new Group();
     Image imgBtnContinue = GUI.createImage(textureAtlas, "btn_continue");
@@ -432,6 +433,39 @@ public class GamePlayUI {
     imgWeaponOrBoat.setDrawable(new TextureRegionDrawable(textureRegion));
     imgWeaponOrBoat.setSize(textureRegion.getRegionWidth(), textureRegion.getRegionHeight());
     imgWeaponOrBoat.setPosition(GStage.getWorldWidth()/2 - imgWeaponOrBoat.getWidth()/2, GStage.getWorldHeight()/2 - imgWeaponOrBoat.getHeight()/2 - 100);
+
+    lbUnlock.setText(C.lang.unlock_weapon);
+    lbWeaponOrBoat.setText(G.logicGame.getStringNewWeapon(weapon.nameWeapon));
+    lbDamageOrHitpoint.setText(C.lang.damage);
+    lbRangeOrSpeed.setText(C.lang.range);
+
+    effectGame.eftNewWeapon(G.gEffect, run);
+
+  }
+
+  public void showGUnlockWeaponOrBoat(Boat boat) {
+
+    Runnable run = () -> {
+
+      float rateHitpoint = (float) Math.round((boat.getBlood() / Config.MAX_HITPOINT)*100)/100;
+      float rateSpeed = (float) Math.round((boat.getSpeed() / Config.MAX_SPEED)*100)/100;
+
+      imgRateDamageOrHitpoint.addAction(scaleTo(rateHitpoint, 1f, .5f, fastSlow));
+      imgRateRangeOrSpeed.addAction(scaleTo(rateSpeed, 1f, .5f, fastSlow));
+
+    };
+
+    bgUnlock.setVisible(true);
+
+    TextureRegion textureRegion = GMain.boatMerge.findRegion(boat.name);
+    imgWeaponOrBoat.setDrawable(new TextureRegionDrawable(textureRegion));
+    imgWeaponOrBoat.setSize(textureRegion.getRegionWidth(), textureRegion.getRegionHeight());
+    imgWeaponOrBoat.setPosition(GStage.getWorldWidth()/2 - imgWeaponOrBoat.getWidth()/2, GStage.getWorldHeight()/2 - imgWeaponOrBoat.getHeight()/2 - 100);
+
+    lbUnlock.setText(C.lang.unlock_boat);
+    lbWeaponOrBoat.setText(G.logicGame.getStringNewBoat(boat.name));
+    lbDamageOrHitpoint.setText(C.lang.hitpoint);
+    lbRangeOrSpeed.setText(C.lang.speed);
 
     effectGame.eftNewWeapon(G.gEffect, run);
 
@@ -611,7 +645,6 @@ public class GamePlayUI {
           gContinue.setTouchable(Touchable.disabled);
           Runnable run = () -> {
 
-            //todo: hide group unlock weapon
             imgRateDamageOrHitpoint.setScale(0f, 1f);
             imgRateRangeOrSpeed.setScale(0f, 1f);
             gContinue.setTouchable(Touchable.enabled);
@@ -860,15 +893,6 @@ public class GamePlayUI {
 
     idIconCannon = idUpdate;
     setIconWeapon(idUpdate);
-
-  }
-
-  public void setIdBestPowerCannon(int idCannon) { idBestPowerCannon = idCannon; }
-
-  public void lvUp() {
-
-    int tempLv = Integer.parseInt(lbLevel.getText().toString());
-    lbLevel.setText(tempLv+1);
 
   }
 

@@ -1,0 +1,132 @@
+
+boat_merge.png
+size: 2048,1024
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+boat_1
+  rotate: false
+  xy: 1572, 371
+  size: 203, 263
+  orig: 203, 263
+  offset: 0, 0
+  index: -1
+boat_10
+  rotate: false
+  xy: 1777, 403
+  size: 201, 236
+  orig: 201, 236
+  offset: 0, 0
+  index: -1
+boat_11
+  rotate: false
+  xy: 1067, 617
+  size: 249, 337
+  orig: 249, 337
+  offset: 0, 0
+  index: -1
+boat_12
+  rotate: false
+  xy: 811, 323
+  size: 273, 250
+  orig: 273, 250
+  offset: 0, 0
+  index: -1
+boat_13
+  rotate: false
+  xy: 812, 575
+  size: 253, 379
+  orig: 253, 379
+  offset: 0, 0
+  index: -1
+boat_14
+  rotate: false
+  xy: 1585, 641
+  size: 244, 313
+  orig: 244, 313
+  offset: 0, 0
+  index: -1
+boat_15
+  rotate: false
+  xy: 1318, 636
+  size: 265, 318
+  orig: 265, 318
+  offset: 0, 0
+  index: -1
+boat_16
+  rotate: false
+  xy: 532, 595
+  size: 278, 359
+  orig: 278, 359
+  offset: 0, 0
+  index: -1
+boat_17
+  rotate: false
+  xy: 2, 504
+  size: 251, 450
+  orig: 251, 450
+  offset: 0, 0
+  index: -1
+boat_18
+  rotate: false
+  xy: 255, 540
+  size: 275, 414
+  orig: 275, 414
+  offset: 0, 0
+  index: -1
+boat_2
+  rotate: false
+  xy: 245, 2
+  size: 239, 232
+  orig: 239, 232
+  offset: 0, 0
+  index: -1
+boat_3
+  rotate: false
+  xy: 1319, 379
+  size: 251, 255
+  orig: 251, 255
+  offset: 0, 0
+  index: -1
+boat_4
+  rotate: false
+  xy: 245, 236
+  size: 222, 266
+  orig: 222, 266
+  offset: 0, 0
+  index: -1
+boat_5
+  rotate: false
+  xy: 1831, 699
+  size: 214, 255
+  orig: 214, 255
+  offset: 0, 0
+  index: -1
+boat_6
+  rotate: false
+  xy: 1086, 344
+  size: 231, 271
+  orig: 231, 271
+  offset: 0, 0
+  index: -1
+boat_7
+  rotate: false
+  xy: 1319, 171
+  size: 206, 206
+  orig: 206, 206
+  offset: 0, 0
+  index: -1
+boat_8
+  rotate: false
+  xy: 2, 61
+  size: 241, 441
+  orig: 241, 441
+  offset: 0, 0
+  index: -1
+boat_9
+  rotate: false
+  xy: 532, 392
+  size: 277, 201
+  orig: 277, 201
+  offset: 0, 0
+  index: -1

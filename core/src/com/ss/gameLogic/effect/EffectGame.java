@@ -256,7 +256,6 @@ public class EffectGame {
 
   public void eftShowLbWinOrEndGame(Label lb, boolean isWin) {
 
-    lb.clear();
     lb.getColor().a = 0;
 
     SequenceAction seq = sequence(
@@ -264,7 +263,7 @@ public class EffectGame {
             delay(1f),
             alpha(0f, 1f, linear),
             delay(1f),
-            run(() -> eftShowLbNewWaveOrEndGame(lb, isWin))
+            run(() -> G.logicGame.chkWinOrEndGame(isWin))
     );
 
     lb.addAction(seq);
@@ -279,49 +278,12 @@ public class EffectGame {
 
     SequenceAction seq = sequence(
             moveTo(xTo, y, 1.25f, fastSlow),
-            delay(1f),
+            delay(.75f),
             moveBy(GStage.getWorldWidth(), 0, .75f, swingIn),
             run(onComplete)
     );
 
     lb.addAction(seq);
-
-  }
-
-  private void eftShowLbNewWaveOrEndGame(Label lb, boolean isWin) {
-
-    if (isWin) {
-
-      lb.setZIndex(1000);
-      float x = GStage.getWorldWidth()/2 - lb.getWidth()/2;
-      float y = GStage.getWorldHeight()/2 - lb.getHeight()/2 - 200;
-
-      SequenceAction seq = sequence(
-              moveTo(x, y, .75f, fastSlow),
-              delay(1f),
-              moveTo(GStage.getWorldWidth()/2 + lb.getWidth(), y, .5f, fastSlow),
-              run(() -> {
-
-                lb.setPosition(-GStage.getWorldWidth()/2 - lb.getWidth(), GStage.getWorldHeight()/2 - lb.getHeight()/2 - 200);
-                G.wave += 1;
-                G.resetWhenLevelUp();
-
-              })
-      );
-
-      lb.addAction(seq);
-
-    }//isWin = true => new wave else setVisible for imgBgEndGame = false
-    else {
-
-      G.gamePlayUI.bgEndGame.setVisible(false);
-      G.gamePlayUI.imgPercentFinished.setScale(0);
-      G.resetWhenEndGame();
-
-      //todo: reset game
-      //todo: show ads full screen when pass two level
-
-    }
 
   }
 

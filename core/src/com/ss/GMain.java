@@ -22,7 +22,7 @@ public class GMain extends GDirectedGame {
   public static int screenHeight = 0;
   public static int screenWidth = 0;
   public static final int testType = 2;
-  public static TextureAtlas textureAtlas, weaponAtlas, boatAtlas, weaponMerge, animAtlas;
+  public static TextureAtlas textureAtlas, weaponAtlas, boatAtlas, weaponMerge, boatMerge, animAtlas;
   public static float ratioX, ratioY;
   public static Preferences pref;
 
@@ -93,6 +93,7 @@ public class GMain extends GDirectedGame {
       weaponAtlas = GAssetsManager.getTextureAtlas("Weapon.atlas");
       boatAtlas = GAssetsManager.getTextureAtlas("Boat.atlas");
       weaponMerge = GAssetsManager.getTextureAtlas("weapon_merge.atlas");
+      boatMerge = GAssetsManager.getTextureAtlas("boat_merge.atlas");
       animAtlas = GAssetsManager.getTextureAtlas("anim.atlas");
 
       pref = Gdx.app.getPreferences("data_idle_boat");

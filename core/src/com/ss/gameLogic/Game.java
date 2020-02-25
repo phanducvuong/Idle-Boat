@@ -1,6 +1,5 @@
 package com.ss.gameLogic;
 
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -49,14 +48,14 @@ public class Game implements IMerge, ICollision, IDanger {
   public Anim animMergeWeapon;
 
   public List<PosOfWeapon> listPosOfWeapon;
-  private List<Boat> listBoat;
+  public List<Boat> listBoat;
 
   private EffectGame effectGame = EffectGame.getInstance();
   public Data data = Data.getInstance();
 
   private int countTarget = 0;
-  public int wave = 1;
-  private int target = 20; // target to finished level
+  public int wave = 1, boatPresent = 0; //boatPresent to check new boat, wave to update level
+  public int target = 10; // target to finished level
 
   public Game() {
     gUI = new Group();
@@ -110,14 +109,12 @@ public class Game implements IMerge, ICollision, IDanger {
 
   }
 
-  private void initLv(int numBoat, String ...boat) {
+  public void initLv(int numBoat, String ...boat) {
 
     for (int i=0; i<numBoat; i++) {
       for (String b : boat)
         listBoat.add(data.HMBoat.get(b).get(i));
     }
-
-    Collections.shuffle(listBoat);
 
   }
 
@@ -428,11 +425,15 @@ public class Game implements IMerge, ICollision, IDanger {
     countTarget = 0;
     gamePlayUI.imgPercentFinished.setScale(0);
 
-    initLv(10, "boat_0", "boat_1", "boat_2");
+    initLv(15, "boat_0");
 
     gamePlayUI.setNewWave(wave);
 
     Runnable run = () -> {
+      logicGame.updateLevel(wave);
+
+      //todo: save game when level up!
+
       gamePlayUI.lbNewWave.setPosition(-GStage.getWorldWidth()/2 - gamePlayUI.lbNewWave.getWidth(), GStage.getWorldHeight()/2 - gamePlayUI.lbNewWave.getHeight()/2 - 200);
       nextBoat();
     };
@@ -440,4 +441,5 @@ public class Game implements IMerge, ICollision, IDanger {
     effectGame.eftShowNewWave(gamePlayUI.lbNewWave, run);
 
   }
+
 }

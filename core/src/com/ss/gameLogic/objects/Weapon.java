@@ -41,9 +41,6 @@ public class Weapon extends Image {
   private GamePlayUI gamePlayUI;
   private IMerge iMerge;
   private ICollision iCollision;
-
-  public Group gWeaponMerge;
-  public Image cannonMerge;
   public String nameWeapon;
 
   private EffectGame effectGame = EffectGame.getInstance();
@@ -749,7 +746,7 @@ public class Weapon extends Image {
       }
       bound.setPosition(bullet.getX(), bullet.getY());
     }
-    catch (Exception ex) { System.out.println("ERR"); }
+    catch (Exception ex) {  }
   }
 
   public void attack(float delay) {
@@ -840,7 +837,7 @@ public class Weapon extends Image {
 
     bullet.setScale(2f);
     bullet.setVisible(false);
-    gUI.addActor(bullet);
+    G.gPos.addActor(bullet);
 
   }
 
