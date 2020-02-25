@@ -125,7 +125,7 @@ percent_finished
   index: -1
 pos_weapon
   rotate: false
-  xy: 1932, 896
+  xy: 1660, 494
   size: 86, 86
   orig: 86, 86
   offset: 0, 0
@@ -133,13 +133,13 @@ pos_weapon
 rate
   rotate: false
   xy: 1443, 536
-  size: 238, 44
-  orig: 238, 44
+  size: 215, 44
+  orig: 215, 44
   offset: 0, 0
   index: -1
 recycle
   rotate: false
-  xy: 1932, 765
+  xy: 1932, 853
   size: 55, 63
   orig: 55, 63
   offset: 0, 0
@@ -153,7 +153,7 @@ ribbon
   index: -1
 setting
   rotate: false
-  xy: 1932, 830
+  xy: 1932, 918
   size: 69, 64
   orig: 69, 64
   offset: 0, 0

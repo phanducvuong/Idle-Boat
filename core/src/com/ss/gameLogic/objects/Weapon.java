@@ -42,6 +42,10 @@ public class Weapon extends Image {
   private IMerge iMerge;
   private ICollision iCollision;
 
+  public Group gWeaponMerge;
+  public Image cannonMerge;
+  public String nameWeapon;
+
   private EffectGame effectGame = EffectGame.getInstance();
 
   public Weapon(Game G, GamePlayUI gamePlayUI, Group gUI, String name_cannon, String name_bullet, float attackBullet, float speed, int idCannon, long coin) {
@@ -54,6 +58,7 @@ public class Weapon extends Image {
     this.attackBullet = attackBullet;
     this.speed = speed;
     this.coin = coin;
+    this.nameWeapon = name_cannon;
 
     gCannon = new Group();
 
@@ -761,7 +766,6 @@ public class Weapon extends Image {
                       GSimpleAction.simpleAction((d, a) -> {
 
                         effectGame.eftWeaponAttack(this);
-                        bullet.setZIndex(1000);
 
                         bound.setPosition(bullet.getX(), bullet.getY());
                         //check collision
@@ -824,7 +828,7 @@ public class Weapon extends Image {
 
   public void addCannonToScene() {
 
-    gUI.addActor(gCannon);
+    G.gPos.addActor(gCannon);
 
   }
 

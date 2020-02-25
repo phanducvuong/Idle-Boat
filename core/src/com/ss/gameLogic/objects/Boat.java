@@ -144,8 +144,6 @@ public class Boat extends Image {
     lbCoin.setPosition(x - lbCoin.getWidth()/2 + 50, y);
     lbCoin.setVisible(true);
 
-    G.gamePlayUI.setShowGShop();
-
     SequenceAction seq = sequence(
             parallel(
                     Actions.moveBy(0, -20, .75f, fastSlow),
@@ -188,7 +186,6 @@ public class Boat extends Image {
 
   public void addBoatToScene() {
     gBoat.addActor(imgBoat);
-    G.gamePlayUI.setShowGShop();
   }
 
   public Image getImgBoat() {

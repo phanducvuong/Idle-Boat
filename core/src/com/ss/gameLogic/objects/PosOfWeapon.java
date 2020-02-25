@@ -37,7 +37,6 @@ public class PosOfWeapon {
     imgEftMerge.setVisible(false);
     gPos.addActor(imgEftMerge);
 
-    gUI.addActor(gPos);
   }
 
   public void setPosition(int i) {

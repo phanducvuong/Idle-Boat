@@ -2,6 +2,7 @@ package com.ss.gameLogic;
 
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.ss.data.Data;
 import com.ss.gameLogic.effect.EffectGame;
 import com.ss.gameLogic.objects.Boat;
@@ -179,15 +180,27 @@ public class LogicGame {
       G.gamePlayUI.idBestPowerCannon = idCannonMerge;
       G.gamePlayUI.setStateBtnShop();
 
-      //todo: show effect new weapon
-      //todo: particle merge weapon
       //todo: set item for imgWeaponOrBoat
       //todo: set lb if new weapon or new boat
       //todo: calculate rate
 
-      G.gamePlayUI.showGUnlockWeaponOrBoat();
+      Image w1 = data.HMMergeWeapon.get(weapon.nameWeapon).get(0);
+      Image w2 = data.HMMergeWeapon.get(weapon.nameWeapon).get(1);
+
+      Runnable run = () -> {
+        G.bgGame.remove();
+        G.gamePlayUI.showGUnlockWeaponOrBoat(weapon);
+      };
+
+      effectGame.eftAniMergeWeapon(w1, w2, run);
 
     }
+
+  }
+
+  public void setPosWeaponMerge(Image cannonMerge, float x, float y) {
+
+    cannonMerge.setPosition(x, y - cannonMerge.getHeight()/2);
 
   }
 
@@ -233,6 +246,12 @@ public class LogicGame {
     for (PosOfWeapon pos : listPos)
       if (pos.getWeapon() != null)
         pos.getWeapon().resetBullet();
+
+  }
+
+  public void updateLevel(int wave) {
+
+
 
   }
 

@@ -1,11 +1,9 @@
 package com.ss.core.effect;
 
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.ss.GMain;
-import java.util.ArrayList;
+
 import java.util.HashMap;
-import java.util.List;
 
 public class AnimationEffect {
 
@@ -14,10 +12,12 @@ public class AnimationEffect {
     public static TextureRegion[] listFrameGirlAnimation;
 
     public static void LoadAnimation() {
-//        listFrameGirlAnimation = new TextureRegion[21];
-//        for (int i = 0; i < 21; i++)
-//            listFrameGirlAnimation[i] = textureAtlas.findRegion("girl", i);
-//
-//        anims.put("girl_anim", listFrameGirlAnimation);
+        listFrameGirlAnimation = new TextureRegion[3];
+        for (int i = 0; i < 3; i++)
+            listFrameGirlAnimation[i] = GMain.animAtlas.findRegion("flash_"+i);
+
+        anims.put("anim_flash", listFrameGirlAnimation);
+
+        System.out.println(anims.get("anim_flash").length);
     }
 }

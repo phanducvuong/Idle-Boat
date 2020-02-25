@@ -27,6 +27,7 @@ import com.ss.gameLogic.Game;
 import com.ss.gameLogic.config.C;
 import com.ss.gameLogic.config.Config;
 import com.ss.gameLogic.effect.EffectGame;
+import com.ss.gameLogic.objects.Weapon;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,19 +42,17 @@ public class GamePlayUI {
   private Game G;
   private Group gUI;
   public Image imgBgBlack;
-  public Image imgBgEndGame;
-  public boolean isOnShop = false; //shop on => setZindex gShop = 1000
 
   public Label lbShowCoinDelWeapon;
   public Label lbNoEnough;
-  public Label lbEndWinGame;
+  public Label lbFinishedWave;
   public Label lbNewWave;
 
   public Group gBuyWeapon;
   private Image btnCoin, iconWeapon;
 
-  public Image imgShop;
-  public long coinCollection = 1100000;
+  public Image imgShop, bgShopp;
+  public long coinCollection = 1000;
   public long coinBuyWeapon = 0;
   public int idIconCannon = 0, idBestPowerCannon = 0;
   public Image imgRecycle;
@@ -67,9 +66,12 @@ public class GamePlayUI {
   private Image bgShop;
   private List<ItemShop> listItemShop = new ArrayList<>();
 
-  public Group gUnlockWeapon, gContinue;
+  public Group gContinue;
   public Image imgShineWeapon, imgShineBoat, imgWeaponOrBoat, imgRateDamageOrHitpoint, imgRateRangeOrSpeed, bgUnlock;
   private Label lbWeaponOrBoat, lbUnlock, lbDamageOrHitpoint;
+
+  public Label lbEndGame;
+  public Image bgEndGame;
 
   public GamePlayUI(Game G, Group gUI) {
 
@@ -78,17 +80,12 @@ public class GamePlayUI {
 
     gBuyWeapon = new Group();
     gShop = new Group();
-    gTopUI = new Group();
+    gTopUI = G.gTopUI;
 
     imgBgBlack = GUI.createImage(textureAtlas, "bg_black");
     imgBgBlack.setSize(GStage.getWorldWidth(), GStage.getWorldHeight());
     imgBgBlack.setVisible(false);
     gUI.addActor(imgBgBlack);
-
-    imgBgEndGame = GUI.createImage(textureAtlas, "bg_end_game");
-    imgBgEndGame.setSize(GStage.getWorldWidth(), GStage.getWorldHeight());
-    imgBgEndGame.setVisible(false);
-    gUI.addActor(imgBgEndGame);
 
     initShopAndBtnBuyWeapon();
     initTopUI();
@@ -102,7 +99,7 @@ public class GamePlayUI {
     lbShowCoinDelWeapon.setPosition(imgRecycle.getX() - lbShowCoinDelWeapon.getWidth()/2 + 10, imgRecycle.getY());
     lbShowCoinDelWeapon.setFontScale(.7f);
     lbShowCoinDelWeapon.getColor().a = 0;
-    gUI.addActor(lbShowCoinDelWeapon);
+    G.gTopUI.addActor(lbShowCoinDelWeapon);
 
     //lb show text when pedestal is filled
     lbNoEnough = new Label(C.lang.noEnoughEmty, new Label.LabelStyle(Config.BITMAP_WHITE_FONT, null));
@@ -110,21 +107,41 @@ public class GamePlayUI {
     lbNoEnough.setFontScale(.8f);
     lbNoEnough.getColor().a = 0;
     lbNoEnough.setPosition(GStage.getWorldWidth()/2 - lbNoEnough.getWidth()/2, GStage.getHeight()/2 - lbNoEnough.getHeight()/2);
-    gUI.addActor(lbNoEnough);
+    G.gTopUI.addActor(lbNoEnough);
 
-    //lb show end or win game
-    lbEndWinGame = new Label(C.lang.winGame, new Label.LabelStyle(Config.BITMAP_WHITE_FONT, null));
-    lbEndWinGame.setAlignment(Align.center);
-    lbEndWinGame.setFontScale(.8f);
-    lbEndWinGame.getColor().a = 0;
-    lbEndWinGame.setPosition(GStage.getWorldWidth()/2 - lbEndWinGame.getWidth()/2, GStage.getWorldHeight()/2 - lbEndWinGame.getHeight()/2 - 200);
-    gUI.addActor(lbEndWinGame);
+    //lb show win game
+    lbFinishedWave = new Label(C.lang.winGame, new Label.LabelStyle(Config.BITMAP_WHITE_FONT, null));
+    lbFinishedWave.setAlignment(Align.center);
+    lbFinishedWave.setFontScale(.8f);
+    lbFinishedWave.getColor().a = 0;
+    lbFinishedWave.setPosition(GStage.getWorldWidth()/2 - lbFinishedWave.getWidth()/2, GStage.getWorldHeight()/2 - lbFinishedWave.getHeight()/2 - 200);
+    G.gTopUI.addActor(lbFinishedWave);
+
+    //lb end game
+    bgEndGame = GUI.createImage(textureAtlas, "bg_end_game");
+    bgEndGame.setSize(GStage.getWorldWidth(), GStage.getWorldHeight());
+    bgEndGame.setVisible(false);
+    G.gEndGame.addActor(bgEndGame);
+
+    lbEndGame = new Label(C.lang.endGame, new Label.LabelStyle(Config.BITMAP_WHITE_FONT, null));
+    lbEndGame.setAlignment(Align.center);
+    lbEndGame.setPosition(GStage.getWorldWidth()/2 - lbEndGame.getWidth()/2, GStage.getWorldHeight()/2 - lbEndGame.getHeight()/2 - 150);
+    lbEndGame.setFontScale(.8f);
+    lbEndGame.getColor().a = 0;
+    G.gEndGame.addActor(lbEndGame);
 
     //lb show new wave
     lbNewWave = new Label(C.lang.newWave, new Label.LabelStyle(Config.BITMAP_WHITE_FONT, null));
     lbNewWave.setAlignment(Align.center);
     lbNewWave.setPosition(-GStage.getWorldWidth()/2 - lbNewWave.getWidth(), GStage.getWorldHeight()/2 - lbNewWave.getHeight()/2 - 200);
-    gUI.addActor(lbNewWave);
+    G.gTopUI.addActor(lbNewWave);
+
+  }
+
+  public void setNewWave(int wave) {
+
+    lbLevel.setText(wave+"");
+    lbNewWave.setText(C.lang.newWave + " " + wave);
 
   }
 
@@ -153,9 +170,9 @@ public class GamePlayUI {
     imgRecycle.setScale(1.2f);
     imgRecycle.setPosition(gBuyWeapon.getX() - 80, gBuyWeapon.getY() + 5);
 
-    gUI.addActor(gBuyWeapon);
-    gUI.addActor(imgShop);
-    gUI.addActor(imgRecycle);
+    G.gPos.addActor(gBuyWeapon);
+    G.gPos.addActor(imgShop);
+    G.gPos.addActor(imgRecycle);
 
   }
 
@@ -195,23 +212,27 @@ public class GamePlayUI {
     imgBtnSoundOff.setOrigin(Align.center);
     imgBtnSoundOff.setVisible(false);
 
-    gTopUI.addActor(imgCoinCollection);
-    gTopUI.addActor(lbCoinCollection);
-    gTopUI.addActor(bgPercentFinished);
-    gTopUI.addActor(lbLevel);
-    gTopUI.addActor(imgBtnSoundOn);
-    gTopUI.addActor(imgBtnSoundOff);
-    gTopUI.addActor(imgPercentFinished);
-    gUI.addActor(gTopUI);
+    G.gTopUI.addActor(imgCoinCollection);
+    G.gTopUI.addActor(lbCoinCollection);
+    G.gTopUI.addActor(bgPercentFinished);
+    G.gTopUI.addActor(lbLevel);
+    G.gTopUI.addActor(imgBtnSoundOn);
+    G.gTopUI.addActor(imgBtnSoundOff);
+    G.gTopUI.addActor(imgPercentFinished);
 
   }
 
   private void initShop() {
 
+    bgShopp = GUI.createImage(textureAtlas, "bg_black");
+    bgShopp.setSize(GStage.getWorldWidth(), GStage.getWorldHeight());
+    bgShopp.setVisible(false);
+    G.gEndGame.addActor(bgShopp);
+
     bgShop = GUI.createImage(textureAtlas, "bg_shop");
     gShop.addActor(bgShop);
     gShop.setPosition(gUI.getWidth()/2 - bgShop.getWidth()/2, gUI.getHeight()/2 - bgShop.getHeight()/2);
-    gUI.addActor(gShop);
+    G.gEndGame.addActor(gShop);
 
     Group gItem = new Group();
     gItem.setSize(bgShop.getWidth() - 65, bgShop.getHeight() - 110);
@@ -306,36 +327,34 @@ public class GamePlayUI {
 
   private void initUIUnlockWeapon() {
 
-    gUnlockWeapon = new Group();
-
     bgUnlock = GUI.createImage(textureAtlas, "bg_black");
     bgUnlock.setSize(GStage.getWorldWidth(), GStage.getWorldHeight());
     bgUnlock.setVisible(false);
-    gUI.addActor(bgUnlock);
+    G.gEffect.addActor(bgUnlock);
 
-    gUnlockWeapon.setOrigin(bgUnlock.getWidth()/2, bgUnlock.getHeight()/2);
+    G.gEffect.setOrigin(bgUnlock.getWidth()/2, bgUnlock.getHeight()/2);
 
     Image ribbon = GUI.createImage(textureAtlas, "ribbon");
     ribbon.setPosition(GStage.getWorldWidth()/2 - ribbon.getWidth()/2, 100);
-    gUnlockWeapon.addActor(ribbon);
+    G.gEffect.addActor(ribbon);
 
     lbUnlock = new Label(C.lang.unlock, new Label.LabelStyle(Config.BITMAP_YELLOW_FONT, null));
     lbUnlock.setAlignment(Align.center);
     lbUnlock.setFontScale(.8f);
     lbUnlock.setPosition(ribbon.getX() + ribbon.getWidth()/2 - lbUnlock.getWidth()/2, ribbon.getY() + ribbon.getHeight()/2 - lbUnlock.getHeight());
-    gUnlockWeapon.addActor(lbUnlock);
+    G.gEffect.addActor(lbUnlock);
 
     imgShineWeapon = GUI.createImage(textureAtlas, "shine_weapon");
     imgShineWeapon.setOrigin(Align.center);
     imgShineWeapon.setPosition(GStage.getWorldWidth()/2 - imgShineWeapon.getWidth()/2, GStage.getWorldHeight()/2 - imgShineWeapon.getHeight()/2 - 100);
-    gUnlockWeapon.addActor(imgShineWeapon);
+    G.gEffect.addActor(imgShineWeapon);
 
     effectGame.eftImgShine(imgShineWeapon);
 
     imgShineBoat = GUI.createImage(textureAtlas, "shine_boat");
     imgShineBoat.setOrigin(Align.center);
     imgShineBoat.setPosition(GStage.getWorldWidth()/2 - imgShineWeapon.getWidth()/2, GStage.getWorldHeight()/2 - imgShineWeapon.getHeight()/2 - 100);
-    gUnlockWeapon.addActor(imgShineBoat);
+    G.gEffect.addActor(imgShineBoat);
 
     effectGame.eftImgShine(imgShineBoat);
 
@@ -343,42 +362,41 @@ public class GamePlayUI {
     lbWeaponOrBoat.setAlignment(Align.center);
     lbWeaponOrBoat.setFontScale(.7f);
     lbWeaponOrBoat.setPosition(ribbon.getX() + ribbon.getWidth()/2 - lbWeaponOrBoat.getWidth()/2, ribbon.getY() + ribbon.getHeight());
-    gUnlockWeapon.addActor(lbWeaponOrBoat);
+    G.gEffect.addActor(lbWeaponOrBoat);
 
     imgWeaponOrBoat = GUI.createImage(GMain.weaponAtlas, "cannon_1");
-    imgWeaponOrBoat.setScale(4f);
-    imgWeaponOrBoat.setPosition(GStage.getWorldWidth()/2 - imgWeaponOrBoat.getWidth()*4/2, GStage.getWorldHeight()/2 - imgWeaponOrBoat.getHeight()*4/2 - 100);
-    gUnlockWeapon.addActor(imgWeaponOrBoat);
+    imgWeaponOrBoat.setPosition(GStage.getWorldWidth()/2 - imgWeaponOrBoat.getWidth()/2, GStage.getWorldHeight()/2 - imgWeaponOrBoat.getHeight()/2 - 100);
+    G.gEffect.addActor(imgWeaponOrBoat);
 
     Image bgRateDamage = GUI.createImage(textureAtlas, "bg_rate");
     bgRateDamage.setPosition(imgShineWeapon.getX() + imgShineWeapon.getWidth()/2 - bgRateDamage.getWidth()/2, imgShineWeapon.getY() + imgShineWeapon.getHeight() + 20);
-    gUnlockWeapon.addActor(bgRateDamage);
+    G.gEffect.addActor(bgRateDamage);
 
     imgRateDamageOrHitpoint = GUI.createImage(textureAtlas, "rate");
-    imgRateDamageOrHitpoint.setPosition(bgRateDamage.getX() + 1, bgRateDamage.getY() + 7);
+    imgRateDamageOrHitpoint.setPosition(bgRateDamage.getX() + 13, bgRateDamage.getY() + 7);
     imgRateDamageOrHitpoint.setScale(0, 1f);
-    gUnlockWeapon.addActor(imgRateDamageOrHitpoint);
+    G.gEffect.addActor(imgRateDamageOrHitpoint);
 
     lbDamageOrHitpoint = new Label(C.lang.damage, new Label.LabelStyle(Config.BITMAP_WHITE_FONT, null));
     lbDamageOrHitpoint.setAlignment(Align.center);
     lbDamageOrHitpoint.setFontScale(.4f);
     lbDamageOrHitpoint.setPosition(bgRateDamage.getX() + bgRateDamage.getWidth()/2 - lbDamageOrHitpoint.getWidth()/2, bgRateDamage.getY() - 50);
-    gUnlockWeapon.addActor(lbDamageOrHitpoint);
+    G.gEffect.addActor(lbDamageOrHitpoint);
 
     Image bgRateRange = GUI.createImage(textureAtlas, "bg_rate");
     bgRateRange.setPosition(bgRateDamage.getX(), bgRateDamage.getY() + 130);
-    gUnlockWeapon.addActor(bgRateRange);
+    G.gEffect.addActor(bgRateRange);
 
     imgRateRangeOrSpeed = GUI.createImage(textureAtlas, "rate");
-    imgRateRangeOrSpeed.setPosition(bgRateRange.getX() + 1, bgRateRange.getY() + 7);
+    imgRateRangeOrSpeed.setPosition(bgRateRange.getX() + 13, bgRateRange.getY() + 7);
     imgRateRangeOrSpeed.setScale(0, 1f);
-    gUnlockWeapon.addActor(imgRateRangeOrSpeed);
+    G.gEffect.addActor(imgRateRangeOrSpeed);
 
     Label lbRange = new Label(C.lang.range, new Label.LabelStyle(Config.BITMAP_WHITE_FONT, null));
     lbRange.setAlignment(Align.center);
     lbRange.setFontScale(.4f);
     lbRange.setPosition(bgRateRange.getX() + bgRateRange.getWidth()/2 - lbRange.getWidth()/2, bgRateRange.getY() - 50);
-    gUnlockWeapon.addActor(lbRange);
+    G.gEffect.addActor(lbRange);
 
     gContinue = new Group();
     Image imgBtnContinue = GUI.createImage(textureAtlas, "btn_continue");
@@ -392,26 +410,30 @@ public class GamePlayUI {
     lbContinue.setPosition(imgBtnContinue.getX() + imgBtnContinue.getWidth()/2 - lbContinue.getWidth()/2, imgBtnContinue.getY() + imgBtnContinue.getHeight()/2 - lbContinue.getHeight()/2);
     gContinue.addActor(lbContinue);
 
-    gUnlockWeapon.addActor(gContinue);
-    gUnlockWeapon.setScale(0);
-    gUI.addActor(gUnlockWeapon);
+    G.gEffect.addActor(gContinue);
+    G.gEffect.setScale(0);
 
   }
 
-  public void showGUnlockWeaponOrBoat() {
+  public void showGUnlockWeaponOrBoat(Weapon weapon) {
 
     Runnable run = () -> {
 
-      imgRateDamageOrHitpoint.addAction(scaleTo(1f, 1f, .5f, fastSlow));
+      float rateDamage = (float) Math.round((weapon.getAttackBullet() / Config.MAX_ATTACK_BULLET)*100)/100;
+
+      imgRateDamageOrHitpoint.addAction(scaleTo(rateDamage, 1f, .5f, fastSlow));
       imgRateRangeOrSpeed.addAction(scaleTo(1f, 1f, .5f, fastSlow));
 
     };
 
     bgUnlock.setVisible(true);
-    bgUnlock.setZIndex(1000);
-    gUnlockWeapon.setZIndex(1000);
 
-    effectGame.eftNewWeapon(gUnlockWeapon, run);
+    TextureRegion textureRegion = GMain.weaponMerge.findRegion(weapon.nameWeapon);
+    imgWeaponOrBoat.setDrawable(new TextureRegionDrawable(textureRegion));
+    imgWeaponOrBoat.setSize(textureRegion.getRegionWidth(), textureRegion.getRegionHeight());
+    imgWeaponOrBoat.setPosition(GStage.getWorldWidth()/2 - imgWeaponOrBoat.getWidth()/2, GStage.getWorldHeight()/2 - imgWeaponOrBoat.getHeight()/2 - 100);
+
+    effectGame.eftNewWeapon(G.gEffect, run);
 
   }
 
@@ -424,7 +446,7 @@ public class GamePlayUI {
 
         SequenceAction seq = sequence(
                 moveBy(0, GStage.getWorldHeight(), .45f, swingIn),
-                run(() -> imgBgBlack.setVisible(false))
+                run(() -> bgShopp.setVisible(false))
         );
 
         gShop.addAction(seq);
@@ -567,14 +589,9 @@ public class GamePlayUI {
         @Override
         public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
 
-          isOnShop = true;
           Runnable run = () -> {
-
-            imgBgBlack.setVisible(true);
-            imgBgBlack.setZIndex(1000);
-            gShop.setZIndex(1000);
+            bgShopp.setVisible(true);
             gShop.addAction(moveBy(0, -GStage.getWorldHeight(), .65f, swingOut));
-
           };
 
           effectGame.eftClick(imgShop, run);
@@ -604,7 +621,7 @@ public class GamePlayUI {
                     run(() -> bgUnlock.setVisible(false))
             );
 
-            gUnlockWeapon.addAction(seq);
+            G.gEffect.addAction(seq);
 
           };
 
@@ -839,25 +856,11 @@ public class GamePlayUI {
 
   }
 
-  public void getCoinCollection() {
-
-    //check preference if (have) ? coinCollection : 10000
-
-  }
-
-  public void setShowGShop() {
-
-    if (isOnShop) {
-      imgBgBlack.setZIndex(1000);
-      gShop.setZIndex(1000);
-    }
-
-  }
-
   public void updateIdIconCannon(int idUpdate) {
 
     idIconCannon = idUpdate;
     setIconWeapon(idUpdate);
+
   }
 
   public void setIdBestPowerCannon(int idCannon) { idBestPowerCannon = idCannon; }
@@ -868,4 +871,5 @@ public class GamePlayUI {
     lbLevel.setText(tempLv+1);
 
   }
+
 }

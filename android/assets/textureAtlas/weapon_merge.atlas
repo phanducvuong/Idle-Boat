@@ -1,0 +1,174 @@
+
+weapon_merge.png
+size: 2048,512
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+cannon_0
+  rotate: false
+  xy: 1011, 105
+  size: 111, 140
+  orig: 111, 140
+  offset: 0, 0
+  index: -1
+cannon_1
+  rotate: false
+  xy: 1124, 109
+  size: 112, 135
+  orig: 112, 135
+  offset: 0, 0
+  index: -1
+cannon_10
+  rotate: false
+  xy: 1059, 257
+  size: 162, 204
+  orig: 162, 204
+  offset: 0, 0
+  index: -1
+cannon_11
+  rotate: false
+  xy: 1651, 244
+  size: 136, 217
+  orig: 136, 217
+  offset: 0, 0
+  index: -1
+cannon_12
+  rotate: false
+  xy: 2, 2
+  size: 188, 231
+  orig: 188, 231
+  offset: 0, 0
+  index: -1
+cannon_13
+  rotate: false
+  xy: 225, 235
+  size: 175, 226
+  orig: 175, 226
+  offset: 0, 0
+  index: -1
+cannon_14
+  rotate: false
+  xy: 1789, 310
+  size: 199, 151
+  orig: 199, 151
+  offset: 0, 0
+  index: -1
+cannon_15
+  rotate: false
+  xy: 2, 235
+  size: 221, 226
+  orig: 221, 226
+  offset: 0, 0
+  index: -1
+cannon_16
+  rotate: false
+  xy: 376, 4
+  size: 126, 229
+  orig: 126, 229
+  offset: 0, 0
+  index: -1
+cannon_17
+  rotate: false
+  xy: 1373, 233
+  size: 139, 228
+  orig: 139, 228
+  offset: 0, 0
+  index: -1
+cannon_18
+  rotate: false
+  xy: 1514, 239
+  size: 135, 222
+  orig: 135, 222
+  offset: 0, 0
+  index: -1
+cannon_19
+  rotate: false
+  xy: 748, 241
+  size: 154, 220
+  orig: 154, 220
+  offset: 0, 0
+  index: -1
+cannon_2
+  rotate: false
+  xy: 1921, 149
+  size: 122, 159
+  orig: 122, 159
+  offset: 0, 0
+  index: -1
+cannon_20
+  rotate: false
+  xy: 402, 240
+  size: 170, 221
+  orig: 170, 221
+  offset: 0, 0
+  index: -1
+cannon_21
+  rotate: false
+  xy: 192, 23
+  size: 182, 210
+  orig: 182, 210
+  offset: 0, 0
+  index: -1
+cannon_22
+  rotate: false
+  xy: 904, 247
+  size: 153, 214
+  orig: 153, 214
+  offset: 0, 0
+  index: -1
+cannon_23
+  rotate: false
+  xy: 574, 245
+  size: 172, 216
+  orig: 172, 216
+  offset: 0, 0
+  index: -1
+cannon_3
+  rotate: false
+  xy: 1789, 136
+  size: 130, 172
+  orig: 130, 172
+  offset: 0, 0
+  index: -1
+cannon_4
+  rotate: false
+  xy: 822, 4
+  size: 59, 235
+  orig: 59, 235
+  offset: 0, 0
+  index: -1
+cannon_5
+  rotate: false
+  xy: 504, 4
+  size: 75, 234
+  orig: 75, 234
+  offset: 0, 0
+  index: -1
+cannon_6
+  rotate: false
+  xy: 712, 20
+  size: 108, 219
+  orig: 108, 219
+  offset: 0, 0
+  index: -1
+cannon_7
+  rotate: false
+  xy: 1223, 246
+  size: 148, 215
+  orig: 148, 215
+  offset: 0, 0
+  index: -1
+cannon_8
+  rotate: false
+  xy: 581, 39
+  size: 129, 204
+  orig: 129, 204
+  offset: 0, 0
+  index: -1
+cannon_9
+  rotate: false
+  xy: 883, 83
+  size: 126, 156
+  orig: 126, 156
+  offset: 0, 0
+  index: -1

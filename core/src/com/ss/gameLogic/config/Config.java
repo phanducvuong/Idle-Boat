@@ -32,7 +32,7 @@ public class Config {
     public static final float SPEED_BULLET = 1f;
     public static final float TIME_DELAY_ATTACK = 1f;
     public static final float TIME_BOAT_MOVE = 15f;
-    public static final float TIME_APPEAR_BOAT = .25f;
+    public static final float TIME_APPEAR_BOAT = .5f;
 
     //font
     public static final BitmapFont BITMAP_WHITE_FONT = GAssetsManager.getBitmapFont("font_white.fnt");
@@ -40,6 +40,9 @@ public class Config {
 
     //delta coin in order to buy weapon in shop
     public static long DELTA_COIN = 3;
+
+    //max
+    public static float MAX_ATTACK_BULLET = 130;
 
 
     //todo: save listPosOfWeapon, coinCollection, idCannonPre, idBestPowerCannon

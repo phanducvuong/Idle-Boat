@@ -8,6 +8,7 @@ import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.google.gson.Gson;
 import com.ss.core.action.exAction.GTween;
 import com.ss.core.util.GStage;
 import com.ss.gameLogic.Game;
@@ -95,9 +96,6 @@ public class EffectGame {
     image.setZIndex(1000);
     image.setVisible(true);
 
-    //setZindex for gShop when shop is show on screen
-    G.gamePlayUI.setShowGShop();
-
     SequenceAction seq = sequence(
             scaleTo(1.2f, 1.2f, .25f, fastSlow),
             alpha(0, .25f, fastSlow),
@@ -132,8 +130,6 @@ public class EffectGame {
     image.setZIndex(1000);
     image.getColor().a = .8f;
     image.setVisible(true);
-
-    G.gamePlayUI.setShowGShop();
 
     SequenceAction seq = sequence(
             parallel(
@@ -261,7 +257,6 @@ public class EffectGame {
   public void eftShowLbWinOrEndGame(Label lb, boolean isWin) {
 
     lb.clear();
-    lb.setZIndex(1000);
     lb.getColor().a = 0;
 
     SequenceAction seq = sequence(
@@ -269,7 +264,24 @@ public class EffectGame {
             delay(1f),
             alpha(0f, 1f, linear),
             delay(1f),
-            run(() -> eftShowLbNewWaveOrEndGame(G.gamePlayUI.lbNewWave, isWin))
+            run(() -> eftShowLbNewWaveOrEndGame(lb, isWin))
+    );
+
+    lb.addAction(seq);
+
+  }
+
+  public void eftShowNewWave(Label lb, Runnable onComplete) {
+
+    float x = -GStage.getWorldWidth()/2 - lb.getWidth();
+    float xTo = GStage.getWorldWidth()/2 - lb.getWidth()/2;
+    float y = GStage.getWorldHeight()/2 - lb.getHeight()/2 - 200;
+
+    SequenceAction seq = sequence(
+            moveTo(xTo, y, 1.25f, fastSlow),
+            delay(1f),
+            moveBy(GStage.getWorldWidth(), 0, .75f, swingIn),
+            run(onComplete)
     );
 
     lb.addAction(seq);
@@ -291,6 +303,7 @@ public class EffectGame {
               run(() -> {
 
                 lb.setPosition(-GStage.getWorldWidth()/2 - lb.getWidth(), GStage.getWorldHeight()/2 - lb.getHeight()/2 - 200);
+                G.wave += 1;
                 G.resetWhenLevelUp();
 
               })
@@ -301,7 +314,7 @@ public class EffectGame {
     }//isWin = true => new wave else setVisible for imgBgEndGame = false
     else {
 
-      G.gamePlayUI.imgBgEndGame.setVisible(false);
+      G.gamePlayUI.bgEndGame.setVisible(false);
       G.gamePlayUI.imgPercentFinished.setScale(0);
       G.resetWhenEndGame();
 
@@ -314,6 +327,62 @@ public class EffectGame {
 
   public void setGame(Game G) {
     this.G = G;
+  }
+
+  public void eftAniMergeWeapon(Image w1, Image w2, Runnable onComplete) {
+
+    float x = GStage.getWorldWidth() - w2.getWidth();
+    float y = GStage.getWorldHeight()/2 - 100;
+
+    float xTo = GStage.getWorldWidth()/2 - w1.getWidth()/2;
+    float yTo = GStage.getWorldHeight()/2 - w1.getHeight()/2 - 100;
+
+    w1.getColor().a = 1f;
+    w2.getColor().a = 1f;
+
+    G.logicGame.setPosWeaponMerge(w1, 0, y);
+    G.logicGame.setPosWeaponMerge(w2, x, y);
+
+    G.gAnimMerWeapon.addActor(G.bgGame);
+    w1.setVisible(true);
+    w2.setVisible(true);
+    w1.setZIndex(1000);
+    w2.setZIndex(1000);
+
+    SequenceAction seq1 = sequence(
+            rotateBy(-10, .1f, fastSlow),
+            rotateBy(20, .1f, fastSlow),
+            rotateBy(-20, .1f, fastSlow),
+            rotateBy(20, .1f, fastSlow),
+            rotateBy(-20, .1f, fastSlow),
+            rotateBy(20, .1f, fastSlow),
+            rotateTo(0, .1f, fastSlow),
+            parallel(
+                    moveTo(xTo, yTo, .5f, fastSlow),
+                    alpha(0, .5f, linear)
+            )
+    );
+
+    SequenceAction seq2 = sequence(
+            rotateBy(10, .1f, fastSlow),
+            rotateBy(-20, .1f, fastSlow),
+            rotateBy(20, .1f, fastSlow),
+            rotateBy(-20, .1f, fastSlow),
+            rotateBy(20, .1f, fastSlow),
+            rotateBy(-20, .1f, fastSlow),
+            rotateTo(0, .1f, fastSlow),
+            parallel(
+                    moveTo(xTo, yTo, .5f, fastSlow),
+                    alpha(0, .5f, linear),
+                    run(() -> G.animMergeWeapon.stop())
+            ),
+            run(onComplete)
+    );
+
+    G.animMergeWeapon.start();
+    w1.addAction(seq1);
+    w2.addAction(seq2);
+
   }
 
 }

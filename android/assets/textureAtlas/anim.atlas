@@ -1,0 +1,27 @@
+
+anim.png
+size: 256,256
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+flash_0
+  rotate: false
+  xy: 2, 133
+  size: 234, 69
+  orig: 234, 69
+  offset: 0, 0
+  index: -1
+flash_1
+  rotate: false
+  xy: 2, 2
+  size: 216, 58
+  orig: 216, 58
+  offset: 0, 0
+  index: -1
+flash_2
+  rotate: false
+  xy: 2, 62
+  size: 233, 69
+  orig: 233, 69
+  offset: 0, 0
+  index: -1

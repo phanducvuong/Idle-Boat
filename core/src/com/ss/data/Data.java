@@ -3,6 +3,7 @@ package com.ss.data;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.scenes.scene2d.Group;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.ss.gameLogic.Game;
@@ -19,6 +20,7 @@ import java.util.List;
 public class Data {
 
   private static Data instance;
+  private Game G;
   private static final FileHandle fhWeapon = Gdx.files.internal("data/Weapon.json");
   private static final FileHandle fhBoat = Gdx.files.internal("data/Boat.json");
 
@@ -27,6 +29,7 @@ public class Data {
 
   public HashMap<String, List<Weapon>> HMWeapon;
   public HashMap<String, List<Boat>> HMBoat;
+  public HashMap<String, List<Image>> HMMergeWeapon;
 
   public static Data getInstance() {
     return instance == null ? instance = new Data() : instance;
@@ -38,9 +41,12 @@ public class Data {
 
     HMWeapon = new HashMap<>();
     HMBoat = new HashMap<>();
+    HMMergeWeapon = new HashMap<>();
 
     initData();
   }
+
+  public void setG(Game G) { this.G = G; }
 
   private void initData() {
     Gson gson = new Gson();
@@ -86,6 +92,13 @@ public class Data {
 
       }
 
+      List<Image> img = new ArrayList<>();
+      for (int i=0; i<2; i++) {
+        Image cannonMerge = G.initWeaponMerge(cannon);
+        img.add(cannonMerge);
+      }
+      HMMergeWeapon.put(cannon, img);
+
       HMWeapon.put(cannon, listWeapon);
     }
   }
@@ -116,4 +129,5 @@ public class Data {
 
     }
   }
+
 }

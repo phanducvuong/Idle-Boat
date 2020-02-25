@@ -1,5 +1,6 @@
 package com.ss.gameLogic;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -7,9 +8,12 @@ import com.badlogic.gdx.scenes.scene2d.Group;
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.*;
 
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.utils.Align;
 import com.ss.GMain;
 import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
 import com.ss.core.action.exAction.GSimpleAction;
+import com.ss.core.effect.Anim;
+import com.ss.core.effect.AnimationEffect;
 import com.ss.core.util.GLayer;
 import com.ss.core.util.GStage;
 import com.ss.core.util.GUI;
@@ -35,12 +39,14 @@ public class Game implements IMerge, ICollision, IDanger {
   public static float yBulwark;
 
   private TextureAtlas textureAtlas = GMain.textureAtlas;
-  private Group gUI;
-  public Group gPos;
+  public Group gUI;
+  public Group gPos, gTopUI, gEffect, gEndGame, gAnimMerWeapon;
   private Group gBoat;
   public LogicGame logicGame = LogicGame.getInstance(this);
   public GamePlayUI gamePlayUI;
-  public Image bulwark;
+  public Image bulwark, bgGame;
+
+  public Anim animMergeWeapon;
 
   public List<PosOfWeapon> listPosOfWeapon;
   private List<Boat> listBoat;
@@ -49,21 +55,36 @@ public class Game implements IMerge, ICollision, IDanger {
   public Data data = Data.getInstance();
 
   private int countTarget = 0;
-  private int target = 30; // target to finished level
+  public int wave = 1;
+  private int target = 20; // target to finished level
 
   public Game() {
     gUI = new Group();
     gPos = new Group();
+    gTopUI = new Group();
     gBoat = new Group();
+    gEndGame = new Group();
+    gEffect = new Group();
+    gAnimMerWeapon = new Group();
     gUI.setSize(GStage.getWorldWidth(), GStage.getWorldHeight());
 
     GStage.addToLayer(GLayer.ui, gUI);
+    GStage.addToLayer(GLayer.ui, gPos);
+    GStage.addToLayer(GLayer.ui, gTopUI);
+    GStage.addToLayer(GLayer.ui, gAnimMerWeapon);
+    GStage.addToLayer(GLayer.ui, gEffect);
+    GStage.addToLayer(GLayer.ui, gEndGame);
+
     gUI.addActor(gBoat);
 
     effectGame.setGame(this);
+    AnimationEffect.LoadAnimation();
+
+    data.setG(this);
 
     initAsset();
     initPosOfWeapon();
+    initAnim();
 
     gamePlayUI = new GamePlayUI(this, gUI);
     //todo: setTextCoinCollection and coinBuyWeapon if first time play game else get it in share preference
@@ -75,18 +96,28 @@ public class Game implements IMerge, ICollision, IDanger {
     data.initListBoat(this, gUI);
 
     listBoat = new ArrayList<>();
-    initLv(10, "boat_0", "boat_1", "boat_2");
     initWeapon();
 
-    nextBoat();
+    resetWhenLevelUp();
+
+  }
+
+  private void initAnim() {
+
+    float x = GStage.getWorldWidth()/2;
+    float y = GStage.getWorldHeight()/2;
+    animMergeWeapon = new Anim(gAnimMerWeapon, "anim_flash", x, y);
 
   }
 
   private void initLv(int numBoat, String ...boat) {
 
-    for (int i=0; i<numBoat; i++)
+    for (int i=0; i<numBoat; i++) {
       for (String b : boat)
         listBoat.add(data.HMBoat.get(b).get(i));
+    }
+
+    Collections.shuffle(listBoat);
 
   }
 
@@ -97,6 +128,8 @@ public class Game implements IMerge, ICollision, IDanger {
     bg.setSize(GStage.getWorldWidth(), GStage.getWorldHeight());
     gUI.addActor(bg);
 
+    bgGame = GUI.createImage(GMain.textureAtlas, "bg_black");
+
     bulwark = GUI.createImage(textureAtlas, "bulwark");
     assert bulwark != null;
     bulwark.setWidth(GStage.getWorldWidth());
@@ -104,6 +137,18 @@ public class Game implements IMerge, ICollision, IDanger {
     gPos.addActor(bulwark);
 
     yBulwark = bulwark.getY();
+
+  }
+
+  //create image weapon to show effect when merge weapon
+  public Image initWeaponMerge(String name_cannon) {
+
+    Image cannonMerge = GUI.createImage(GMain.weaponMerge, name_cannon);
+    cannonMerge.setOrigin(Align.center);
+    cannonMerge.setVisible(false);
+    gAnimMerWeapon.addActor(cannonMerge);
+
+    return cannonMerge;
 
   }
 
@@ -169,17 +214,6 @@ public class Game implements IMerge, ICollision, IDanger {
   public void startBoat(Boat boat) {
     //todo move all boat in listBoat => boat is die reset boat and move boat again
 
-    gamePlayUI.gTopUI.setZIndex(1000);
-    gPos.setZIndex(1000);
-
-    gamePlayUI.gBuyWeapon.setZIndex(1000);
-    gamePlayUI.imgRecycle.setZIndex(1000);
-    gamePlayUI.imgShop.setZIndex(1000);
-
-    logicGame.setZindexGCannon(listPosOfWeapon);
-
-    gamePlayUI.setShowGShop();
-
     try {
       gBoat.addActor(boat);
       boat.addAction(GSimpleAction.simpleAction(this::moveBoat));
@@ -211,14 +245,13 @@ public class Game implements IMerge, ICollision, IDanger {
 
   private Boat getRandomBoat() {
 
-    Collections.shuffle(listBoat);
-
     for (Boat boat : listBoat)
       if (!boat.isAlive) {
         boat.setPosBoat();
         return boat;
       }
     return null;
+
   }
 
   @Override
@@ -272,8 +305,8 @@ public class Game implements IMerge, ICollision, IDanger {
 
       //todo set wave for lbNewWave
 
-      gamePlayUI.lbEndWinGame.setText(C.lang.winGame);
-      effectGame.eftShowLbWinOrEndGame(gamePlayUI.lbEndWinGame, true);
+      gamePlayUI.lbFinishedWave.setText(C.lang.winGame);
+      effectGame.eftShowLbWinOrEndGame(gamePlayUI.lbFinishedWave, true);
 
     }
 
@@ -290,10 +323,8 @@ public class Game implements IMerge, ICollision, IDanger {
         pos.getWeapon().clrActionWeapon();
     }
 
-    gamePlayUI.lbEndWinGame.setText(C.lang.endGame);
-    gamePlayUI.imgBgEndGame.setZIndex(1000);
-    gamePlayUI.imgBgEndGame.setVisible(true);
-    effectGame.eftShowLbWinOrEndGame(gamePlayUI.lbEndWinGame, false);
+    gamePlayUI.bgEndGame.setVisible(true);
+    effectGame.eftShowLbWinOrEndGame(gamePlayUI.lbEndGame, false);
 
     //todo: reset level present
 
@@ -341,7 +372,7 @@ public class Game implements IMerge, ICollision, IDanger {
 
     try {
 
-      for (Weapon w : data.HMWeapon.get("cannon_"+22))
+      for (Weapon w : data.HMWeapon.get("cannon_"+idCannon))
         if (!w.isOn) {
           w.clrActionWeapon();
 
@@ -392,10 +423,21 @@ public class Game implements IMerge, ICollision, IDanger {
 
   public void resetWhenLevelUp() {
 
+    //todo: plus target
+
     countTarget = 0;
     gamePlayUI.imgPercentFinished.setScale(0);
-    //todo: init boat in listBoat
-    //todo: update lbLevel
+
+    initLv(10, "boat_0", "boat_1", "boat_2");
+
+    gamePlayUI.setNewWave(wave);
+
+    Runnable run = () -> {
+      gamePlayUI.lbNewWave.setPosition(-GStage.getWorldWidth()/2 - gamePlayUI.lbNewWave.getWidth(), GStage.getWorldHeight()/2 - gamePlayUI.lbNewWave.getHeight()/2 - 200);
+      nextBoat();
+    };
+
+    effectGame.eftShowNewWave(gamePlayUI.lbNewWave, run);
 
   }
 }
