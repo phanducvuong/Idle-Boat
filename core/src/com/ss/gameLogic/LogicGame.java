@@ -237,23 +237,6 @@ public class LogicGame {
 
     if (isWin) {
 
-//      lb.setZIndex(1000);
-//      float x = GStage.getWorldWidth()/2 - lb.getWidth()/2;
-//      float y = GStage.getWorldHeight()/2 - lb.getHeight()/2 - 200;
-//
-//      SequenceAction seq = sequence(
-//              moveTo(x, y, .75f, fastSlow),
-//              delay(1f),
-//              moveTo(GStage.getWorldWidth()/2 + lb.getWidth(), y, .35f, fastSlow),
-//              run(() -> {
-//
-//
-//
-//              })
-//      );
-//
-//      lb.addAction(seq);
-//      lb.setPosition(-GStage.getWorldWidth()/2 - lb.getWidth(), GStage.getWorldHeight()/2 - lb.getHeight()/2 - 200);
       G.wave += 1;
       G.resetWhenLevelUp();
 
@@ -284,12 +267,17 @@ public class LogicGame {
   //update level when level up (Game call)
   public void updateLevel(int wave) {
 
-    if (wave == 2) {
+    if (wave == 1 || wave == 0) {
+      G.target = 5;
+      G.listBoat.clear();
+      G.initLv(5, "boat_0");
+    }
+    else if (wave == 2) {
 
       G.target += 20;
 
       G.listBoat.clear();
-      G.initLv(15, "boat_0", "boat_1");
+      G.initLv(10, "boat_0", "boat_1");
 
       Boat boat = data.HMBoat.get("boat_1").get(0);
       G.gamePlayUI.showGUnlockWeaponOrBoat(boat);
@@ -306,13 +294,18 @@ public class LogicGame {
         G.gamePlayUI.showGUnlockWeaponOrBoat(boat);
 
       } //unlock boat_2
-      else
+      else {
+
+        G.listBoat.clear();
+        G.initLv(10, "boat_0", "boat_1");
         G.target += 10;
+
+      }
 
     }
     else if (wave > 6 && wave <= 10) {
 
-      if (wave == 9) {
+      if (wave == 10) {
 
         G.listBoat.clear();
         G.initLv(10, "boat_0", "boat_1", "boat_2", "boat_3");
@@ -321,8 +314,13 @@ public class LogicGame {
         G.gamePlayUI.showGUnlockWeaponOrBoat(boat);
 
       } //unlock boat_3
-      else
+      else {
+
+        G.listBoat.clear();
+        G.initLv(10, "boat_0", "boat_1", "boat_2");
         G.target += 10;
+
+      }
 
     }
     else if (wave > 10 && wave <= 15) {
@@ -330,20 +328,26 @@ public class LogicGame {
       if (wave == 15) {
 
         G.listBoat.clear();
-        G.initLv(5, "boat_0", "boat_1");
-        G.initLv(10, "boat_2", "boat_3", "boat_4");
+        G.initLv(5, "boat_0", "boat_1", "boat_4");
+        G.initLv(10, "boat_2", "boat_3");
 
         Boat boat = data.HMBoat.get("boat_4").get(0);
         G.gamePlayUI.showGUnlockWeaponOrBoat(boat);
 
       } //unlock boat_4
-      else
+      else {
+
+        G.listBoat.clear();
+        G.initLv(5, "boat_0", "boat_1");
+        G.initLv(10, "boat_2", "boat_3");
         G.target += 10;
+
+      }
 
     }
     else if (wave > 15 && wave <= 20) {
 
-      if (wave == 18) {
+      if (wave == 20) {
 
         G.listBoat.clear();
         G.initLv(5, "boat_0", "boat_1");
@@ -354,8 +358,15 @@ public class LogicGame {
         G.gamePlayUI.showGUnlockWeaponOrBoat(boat);
 
       } //unlock boat_5
-      else
+      else {
+
+        G.listBoat.clear();
+        G.initLv(5, "boat_0", "boat_1");
+        G.initLv(15, "boat_2", "boat_3");
+        G.initLv(7, "boat_4");
         G.target += 10;
+
+      }
 
     }
     else if (wave > 20 && wave <= 25) {
@@ -371,8 +382,15 @@ public class LogicGame {
         G.gamePlayUI.showGUnlockWeaponOrBoat(boat);
 
       } //unlock boat_6
-      else
+      else {
+
+        G.listBoat.clear();
+        G.initLv(5, "boat_0", "boat_1");
+        G.initLv(15, "boat_2", "boat_3");
+        G.initLv(10, "boat_4", "boat_5");
         G.target += 10;
+
+      }
 
     }
     else if (wave > 25 && wave <= 30) {
@@ -388,13 +406,20 @@ public class LogicGame {
         G.gamePlayUI.showGUnlockWeaponOrBoat(boat);
 
       } //unlock boat_7
-      else
+      else {
+
+        G.listBoat.clear();
+        G.initLv(5, "boat_0", "boat_1");
+        G.initLv(15, "boat_2", "boat_3");
+        G.initLv(10, "boat_4", "boat_5", "boat_6");
         G.target += 10;
+
+      }
 
     }
     else if (wave > 30 && wave <= 35) {
 
-      if (wave == 34) {
+      if (wave == 35) {
 
         G.listBoat.clear();
         G.initLv(5, "boat_0", "boat_1", "boat_8");
@@ -405,8 +430,15 @@ public class LogicGame {
         G.gamePlayUI.showGUnlockWeaponOrBoat(boat);
 
       } //unlock boat_8
-      else
+      else {
+
+        G.listBoat.clear();
+        G.initLv(5, "boat_0", "boat_1");
+        G.initLv(15, "boat_2", "boat_3", "boat_6");
+        G.initLv(10, "boat_4", "boat_5", "boat_7");
         G.target += 10;
+
+      }
 
     }
     else if (wave > 35 && wave <= 40) {
@@ -422,8 +454,15 @@ public class LogicGame {
         G.gamePlayUI.showGUnlockWeaponOrBoat(boat);
 
       } //unlock boat_9
-      else
+      else {
+
+        G.listBoat.clear();
+        G.initLv(5, "boat_8");
+        G.initLv(15, "boat_2", "boat_3", "boat_6");
+        G.initLv(10, "boat_4", "boat_5", "boat_7");
         G.target += 10;
+
+      }
 
     }
     else if (wave > 40 && wave <= 45) {
@@ -439,8 +478,15 @@ public class LogicGame {
         G.gamePlayUI.showGUnlockWeaponOrBoat(boat);
 
       } //unlock boat_10
-      else
+      else {
+
+        G.listBoat.clear();
+        G.initLv(5, "boat_9");
+        G.initLv(15, "boat_3", "boat_6", "boat_8");
+        G.initLv(10, "boat_4", "boat_5", "boat_7");
         G.target += 10;
+
+      }
 
     }
     else if (wave > 45 && wave <= 50) {
@@ -456,13 +502,20 @@ public class LogicGame {
         G.gamePlayUI.showGUnlockWeaponOrBoat(boat);
 
       } //unlock boat_11
-      else
+      else {
+
+        G.listBoat.clear();
+        G.initLv(5, "boat_9");
+        G.initLv(15, "boat_3", "boat_6", "boat_8");
+        G.initLv(10, "boat_4", "boat_5", "boat_7", "boat_10");
         G.target += 10;
+
+      }
 
     }
     else if (wave > 50 && wave <= 60) {
 
-      if (wave == 55) {
+      if (wave == 60) {
 
         G.listBoat.clear();
         G.initLv(5, "boat_9", "boat_11");
@@ -474,13 +527,20 @@ public class LogicGame {
         G.gamePlayUI.showGUnlockWeaponOrBoat(boat);
 
       } //unlock boat_12
-      else
+      else {
+
+        G.listBoat.clear();
+        G.initLv(5, "boat_9", "boat_11");
+        G.initLv(15, "boat_3", "boat_6", "boat_8");
+        G.initLv(10, "boat_4", "boat_5", "boat_7", "boat_10");
         G.target += 10;
+
+      }
 
     }
     else if (wave > 60 && wave <= 66) {
 
-      if (wave == 65) {
+      if (wave == 66) {
 
         G.listBoat.clear();
         G.initLv(5, "boat_4", "boat_9", "boat_11");
@@ -492,13 +552,20 @@ public class LogicGame {
         G.gamePlayUI.showGUnlockWeaponOrBoat(boat);
 
       } //unlock boat_13
-      else
+      else {
+
+        G.listBoat.clear();
+        G.initLv(5, "boat_4", "boat_9", "boat_11");
+        G.initLv(15, "boat_6", "boat_8");
+        G.initLv(10, "boat_7", "boat_10", "boat_12");
         G.target += 10;
+
+      }
 
     }
     else if (wave > 66 && wave <= 75) {
 
-      if (wave == 72) {
+      if (wave == 75) {
 
         G.listBoat.clear();
         G.initLv(5, "boat_9", "boat_11", "boat_13");
@@ -510,8 +577,15 @@ public class LogicGame {
         G.gamePlayUI.showGUnlockWeaponOrBoat(boat);
 
       } //unlock boat_14
-      else
+      else {
+
+        G.listBoat.clear();
+        G.initLv(5, "boat_9", "boat_11", "boat_13");
+        G.initLv(15, "boat_6", "boat_8");
+        G.initLv(10, "boat_7", "boat_10", "boat_12");
         G.target += 10;
+
+      }
 
     }
     else if (wave > 75 && wave <= 80) {
@@ -528,8 +602,15 @@ public class LogicGame {
         G.gamePlayUI.showGUnlockWeaponOrBoat(boat);
 
       } //unlock boat_15
-      else
+      else {
+
+        G.listBoat.clear();
+        G.initLv(5, "boat_9", "boat_11", "boat_13");
+        G.initLv(15, "boat_8", "boat_7");
+        G.initLv(10, "boat_10", "boat_12", "boat_14");
         G.target += 10;
+
+      }
 
     }
     else if (wave > 80 && wave <= 85) {
@@ -545,8 +626,15 @@ public class LogicGame {
         G.gamePlayUI.showGUnlockWeaponOrBoat(boat);
 
       } //unlock boat_16
-      else
+      else {
+
+        G.listBoat.clear();
+        G.initLv(5, "boat_10", "boat_11", "boat_13");
+        G.initLv(15, "boat_8", "boat_9");
+        G.initLv(10, "boat_12", "boat_14", "boat_15");
         G.target += 10;
+
+      }
 
     }
     else if (wave > 85 && wave <= 90) {
@@ -562,13 +650,20 @@ public class LogicGame {
         G.gamePlayUI.showGUnlockWeaponOrBoat(boat);
 
       } //unlock boat_17
-      else
+      else {
+
+        G.listBoat.clear();
+        G.initLv(5, "boat_11", "boat_13", "boat_16");
+        G.initLv(15, "boat_8", "boat_9", "boat_10");
+        G.initLv(10, "boat_12", "boat_14", "boat_15");
         G.target += 10;
+
+      }
 
     }
     else if (wave > 90 && wave <= 100) {
 
-      if (wave == 95) {
+      if (wave == 100) {
 
         G.listBoat.clear();
         G.initLv(5, "boat_11", "boat_13", "boat_16");
@@ -579,13 +674,28 @@ public class LogicGame {
         G.gamePlayUI.showGUnlockWeaponOrBoat(boat);
 
       } //unlock boat_18
-      else
+      else {
+
+        G.listBoat.clear();
+        G.initLv(5, "boat_11", "boat_13", "boat_16");
+        G.initLv(15, "boat_8", "boat_9", "boat_10", "boat_17");
+        G.initLv(10, "boat_12", "boat_14", "boat_15");
         G.target += 10;
+
+      }
 
     }
     else {
+
+      G.listBoat.clear();
+      G.initLv(5, "boat_11", "boat_13", "boat_16");
+      G.initLv(15, "boat_8", "boat_9", "boat_10", "boat_17");
+      G.initLv(10, "boat_12", "boat_14", "boat_15", "boat_18");
+
       if (G.target < 300)
         G.target += 10;
+      else
+        G.target = 300;
     }
 
   }

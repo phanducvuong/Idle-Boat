@@ -20,7 +20,7 @@ public class C {
 
     public static class lang {
         private static I18NBundle locale;
-        public static String title = "";
+        public static String title_shop = "";
         public static String adsTimeLbl = "";
         public static String noEnoughEmty = "";
         public static String noEnoughCoin = "";
@@ -99,7 +99,7 @@ public class C {
                 locale = I18NBundle.createBundle(baseFileHandle, new Locale(""));
             }
 
-            title = locale.get("title");
+            title_shop = locale.get("title_shop");
             adsTimeLbl = locale.format("adsTime", remote.adsTime);
 
             noEnoughEmty = locale.get("no_enough_empty");

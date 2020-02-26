@@ -56,7 +56,7 @@ public class Game implements IMerge, ICollision, IDanger {
 
   private int countTarget = 0;
   public int wave = 1; //boatPresent to check new boat, wave to update level
-  public int target = 10; // target to finished level
+  public int target = 5; // target to finished level
 
   public Game() {
     gUI = new Group();
@@ -90,10 +90,10 @@ public class Game implements IMerge, ICollision, IDanger {
 
     gamePlayUI = new GamePlayUI(this, gUI);
     //todo: setTextCoinCollection and coinBuyWeaponPre if first time play game else get it in share preference
-    gamePlayUI.setTextCoinCollection(0);
+    gamePlayUI.lbCoinCollection.setText(logicGame.compressCoin(gamePlayUI.coinCollection));
     gamePlayUI.setIconWeapon(0);
-    gamePlayUI.setTextCoinBuyWeapon(0);
-    gamePlayUI.coinBuyWeaponPre = 5; //todo: set coinBuyWeaponPre when start game
+    gamePlayUI.coinBuyWeaponPre = 5;
+    gamePlayUI.setTextCoinBuyWeapon(gamePlayUI.coinBuyWeaponPre);
 
     data.initListWeapon(this, gamePlayUI, gUI);
     data.initListBoat(this, gUI);
@@ -101,7 +101,26 @@ public class Game implements IMerge, ICollision, IDanger {
     listBoat = new ArrayList<>();
     initWeapon();
 
+    //load data game
+    loadDataGame();
+
     resetWhenLevelUp(); //start game
+
+  }
+
+  private void loadDataGame() {
+
+    save.loadListItemShop(gamePlayUI.listItemShop);
+    gamePlayUI.loadStateInShop();
+    gamePlayUI.loadIconInBtnBuyWeapon();
+    save.loadListPosOfWeapon(listPosOfWeapon);
+
+    gamePlayUI.idBestPowerCannon = save.loadIdBestPowerCannon();
+    wave = save.loadWave() > 0 ? save.loadWave() : 1;
+    target = save.loadTarget();
+
+    gamePlayUI.coinCollection = save.loadCoinCollection() > 0 ? save.loadCoinCollection() : COIN_START_GAME;
+    gamePlayUI.lbCoinCollection.setText(logicGame.compressCoin(gamePlayUI.coinCollection));
 
   }
 
@@ -168,7 +187,7 @@ public class Game implements IMerge, ICollision, IDanger {
 
   private void initWeapon() {
 
-    Weapon weapon = data.HMWeapon.get("cannon_2").get(0);
+    Weapon weapon = data.HMWeapon.get("cannon_0").get(0);
     weapon.addCannonToScene();
     weapon.setPosWeapon(POS_0);
     weapon.addBulletToScene();
@@ -294,8 +313,6 @@ public class Game implements IMerge, ICollision, IDanger {
     gamePlayUI.bgEndGame.setVisible(true);
     effectGame.eftShowLbWinOrEndGame(gamePlayUI.lbEndGame, false);
 
-    //todo: reset level present
-
   }
 
   @Override
@@ -333,6 +350,8 @@ public class Game implements IMerge, ICollision, IDanger {
         break;
       }
     }
+
+    save.listPosOfWeapon("list_pos_weapon", listPosOfWeapon);save.listPosOfWeapon("list_pos_weapon", listPosOfWeapon);
 
   }
 
@@ -443,24 +462,23 @@ public class Game implements IMerge, ICollision, IDanger {
 
   public void resetWhenLevelUp() {
 
-    //todo: plus target
-
     countTarget = 0;
     gamePlayUI.imgPercentFinished.setScale(0);
-
-    initLv(15, "boat_0");
 
     gamePlayUI.setNewWave(wave);
 
     Runnable run = () -> {
       logicGame.updateLevel(wave);
 
-      //todo: save game when level up!
       save.waveAndTarget("wave", wave);
       save.waveAndTarget("target", target);
 
       gamePlayUI.lbNewWave.setPosition(-GStage.getWorldWidth()/2 - gamePlayUI.lbNewWave.getWidth(), GStage.getWorldHeight()/2 - gamePlayUI.lbNewWave.getHeight()/2 - 200);
+
       nextBoat();
+
+      System.out.println("wave: " + wave);
+      System.out.println("SIZE: " + listBoat.size());
     };
 
     effectGame.eftShowNewWave(gamePlayUI.lbNewWave, run);

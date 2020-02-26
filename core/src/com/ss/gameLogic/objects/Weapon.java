@@ -765,6 +765,7 @@ public class Weapon extends Image {
                         effectGame.eftWeaponAttack(this);
 
                         bound.setPosition(bullet.getX(), bullet.getY());
+
                         //check collision
                         iCollision.Collision(this);
 

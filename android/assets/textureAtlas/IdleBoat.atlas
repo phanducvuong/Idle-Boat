@@ -6,21 +6,21 @@ filter: Nearest,Nearest
 repeat: none
 bg
   rotate: false
-  xy: 2, 760
+  xy: 2, 761
   size: 720, 1280
   orig: 720, 1280
   offset: 0, 0
   index: -1
 bg_black
   rotate: false
-  xy: 724, 760
+  xy: 724, 761
   size: 720, 1280
   orig: 720, 1280
   offset: 0, 0
   index: -1
 bg_percent_finished
   rotate: false
-  xy: 1210, 427
+  xy: 1210, 428
   size: 229, 97
   orig: 229, 97
   offset: 0, 0
@@ -34,42 +34,42 @@ bg_rate
   index: -1
 bg_shop
   rotate: false
-  xy: 1446, 1154
+  xy: 1446, 1155
   size: 554, 886
   orig: 554, 886
   offset: 0, 0
   index: -1
 bg_weapon
   rotate: false
-  xy: 585, 117
+  xy: 585, 118
   size: 448, 155
   orig: 448, 155
   offset: 0, 0
   index: -1
 btn_buy_weapon_off
   rotate: false
-  xy: 1210, 526
+  xy: 1210, 527
   size: 231, 115
   orig: 231, 115
   offset: 0, 0
   index: -1
 btn_buy_weapon_on
   rotate: false
-  xy: 1210, 643
+  xy: 1210, 644
   size: 231, 115
   orig: 231, 115
   offset: 0, 0
   index: -1
 btn_continue
   rotate: false
-  xy: 1443, 582
+  xy: 1443, 583
   size: 303, 84
   orig: 303, 84
   offset: 0, 0
   index: -1
 btn_x
   rotate: false
-  xy: 1333, 253
+  xy: 1333, 254
   size: 94, 96
   orig: 94, 96
   offset: 0, 0
@@ -77,13 +77,13 @@ btn_x
 bulwark
   rotate: false
   xy: 2, 278
-  size: 720, 480
-  orig: 720, 480
+  size: 720, 481
+  orig: 720, 481
   offset: 0, 0
   index: -1
 burn
   rotate: false
-  xy: 1210, 228
+  xy: 1210, 229
   size: 121, 121
   orig: 121, 121
   offset: 0, 0
@@ -97,21 +97,21 @@ coin
   index: -1
 coin_collection
   rotate: false
-  xy: 1210, 351
+  xy: 1210, 352
   size: 214, 74
   orig: 214, 74
   offset: 0, 0
   index: -1
 eft_merge_weapon
   rotate: false
-  xy: 1035, 112
+  xy: 1035, 113
   size: 159, 160
   orig: 159, 160
   offset: 0, 0
   index: -1
 lock
   rotate: false
-  xy: 2002, 1987
+  xy: 2002, 1988
   size: 42, 53
   orig: 42, 53
   offset: 0, 0
@@ -125,21 +125,21 @@ percent_finished
   index: -1
 pos_weapon
   rotate: false
-  xy: 1660, 494
+  xy: 1660, 495
   size: 86, 86
   orig: 86, 86
   offset: 0, 0
   index: -1
 rate
   rotate: false
-  xy: 1443, 536
+  xy: 1443, 537
   size: 215, 44
   orig: 215, 44
   offset: 0, 0
   index: -1
 recycle
   rotate: false
-  xy: 1932, 853
+  xy: 1932, 854
   size: 55, 63
   orig: 55, 63
   offset: 0, 0
@@ -153,49 +153,49 @@ ribbon
   index: -1
 setting
   rotate: false
-  xy: 1932, 918
+  xy: 1932, 919
   size: 69, 64
   orig: 69, 64
   offset: 0, 0
   index: -1
 shine_boat
   rotate: false
-  xy: 724, 274
+  xy: 724, 275
   size: 484, 484
   orig: 484, 484
   offset: 0, 0
   index: -1
 shine_weapon
   rotate: false
-  xy: 1446, 668
+  xy: 1446, 669
   size: 484, 484
   orig: 484, 484
   offset: 0, 0
   index: -1
 shop
   rotate: false
-  xy: 1932, 984
+  xy: 1932, 985
   size: 103, 78
   orig: 103, 78
   offset: 0, 0
   index: -1
 smoke
   rotate: false
-  xy: 1748, 545
+  xy: 1748, 546
   size: 149, 121
   orig: 149, 121
   offset: 0, 0
   index: -1
 sound_off
   rotate: false
-  xy: 1932, 1064
+  xy: 1932, 1065
   size: 100, 88
   orig: 100, 88
   offset: 0, 0
   index: -1
 sound_on
   rotate: false
-  xy: 1196, 138
+  xy: 1196, 139
   size: 100, 88
   orig: 100, 88
   offset: 0, 0

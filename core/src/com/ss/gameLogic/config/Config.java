@@ -40,7 +40,8 @@ public class Config {
     public static final BitmapFont BITMAP_YELLOW_FONT = GAssetsManager.getBitmapFont("font_yellow.fnt");
 
     //delta coin in order to buy weapon in shop
-    public static long DELTA_COIN = 3;
+    public static final long DELTA_COIN = 3;
+    public static final long COIN_START_GAME = 20;
 
     //max
     public static float MAX_ATTACK_BULLET = 130;

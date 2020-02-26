@@ -53,7 +53,7 @@ public class GamePlayUI {
   private Image btnCoin, iconWeapon;
 
   public Image imgShop, bgShopp;
-  public long coinCollection = 1000;
+  public long coinCollection = Config.COIN_START_GAME;
   public long coinBuyWeaponPre = 0;
   public int idIconCannonPreInBuyWeapon = 0, idBestPowerCannon = 0; //1: to setIconBuyWeapon, 2: show effect new weapon
   public Image imgRecycle;
@@ -241,6 +241,12 @@ public class GamePlayUI {
     gItem.setOrigin(Align.center);
     gItem.setRotation(180);
 
+    Label lbTitleShop = new Label(C.lang.title_shop, new Label.LabelStyle(Config.BITMAP_YELLOW_FONT, null));
+    lbTitleShop.setAlignment(Align.center);
+    lbTitleShop.setFontScale(1.2f);
+    lbTitleShop.setPosition(bgShop.getWidth()/2 - lbTitleShop.getWidth()/2, bgShop.getY() - lbTitleShop.getHeight() + 10);
+    gShop.addActor(lbTitleShop);
+
     gShop.addActor(gItem);
 
     //init btn_x
@@ -324,8 +330,6 @@ public class GamePlayUI {
     listItemShop.get(0).getImgOff().setVisible(false);
     listItemShop.get(0).setUnlock(true);
     listItemShop.get(0).getImgWeapon().setColor(Color.WHITE);
-
-    //todo: load price in share for weapon
 
   }
 
@@ -521,7 +525,6 @@ public class GamePlayUI {
 
             if (coinCollection >= itemShop.getCoin()) {
 
-              System.out.println(itemShop.getCoin());
               G.addWeapon(itemShop.getIdCannon(), true, idIconCannonPreInBuyWeapon);
 
             }
@@ -938,6 +941,50 @@ public class GamePlayUI {
 
     idIconCannonPreInBuyWeapon = idUpdate;
     setIconWeapon(idUpdate);
+
+  }
+
+  //load state gBtnOn or imgOff in shop
+  public void loadStateInShop() {
+
+    for (ItemShop item : listItemShop) {
+
+      if (item.isUnlock()) {
+
+        item.getgBtnOn().setVisible(true);
+        item.getImgOff().setVisible(false);
+        item.getImgWeapon().setColor(Color.WHITE);
+
+      }
+
+      String c = G.logicGame.compressCoin(item.getCoin());
+      item.getLbCoin().setText(c);
+
+    }
+
+  }
+
+  public void loadIconInBtnBuyWeapon() {
+
+    try {
+
+      for (int i=listItemShop.size()-1; i>=0; i--) {
+
+        ItemShop item = listItemShop.get(i);
+
+        if (item.isUnlock()) {
+
+          coinBuyWeaponPre = item.getCoin();
+          updateIdIconCannon(item.getIdCannon());
+          setTextCoinBuyWeapon(coinBuyWeaponPre);
+
+          break;
+        }
+
+      }
+
+    }
+    catch (Exception ex) {  }
 
   }
 
