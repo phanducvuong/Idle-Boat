@@ -4,6 +4,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.ss.data.Data;
+import com.ss.data.ItemShop;
 import com.ss.gameLogic.config.C;
 import com.ss.gameLogic.effect.EffectGame;
 import com.ss.gameLogic.objects.Boat;
@@ -46,7 +47,7 @@ public class LogicGame {
         changePosOfWeapon(pFrom, pTo);
 
       }
-      else { //idIconCannon equal => weapon level up and update weapon at vTo, release vFrome
+      else { //idIconCannonPreInBuyWeapon equal => weapon level up and update weapon at vTo, release vFrome
 
         Vector2 pos = new Vector2(pTo.getWeapon().gCannon.getX(), pTo.getWeapon().gCannon.getY()); //get pos to make effect merge weapon
         Weapon w1 = pFrom.getWeapon();
@@ -73,6 +74,8 @@ public class LogicGame {
 
           pTo.startEftMerge();
           updateIconBuyWeapon(weapon);
+
+          G.save.listPosOfWeapon("list_pos_weapon", list);
 
         };
 
@@ -112,9 +115,11 @@ public class LogicGame {
 
         pFrom.setWeapon(null);
         pFrom.setEmpty(true);
+
       }
       else
         chkIdCannonAndMerge(vFrom, vTo, list);
+
     }
   }
 
@@ -169,21 +174,19 @@ public class LogicGame {
 
   private void updateIconBuyWeapon(Weapon weapon) {
 
-    int idCannonPre = G.gamePlayUI.idIconCannon;
+    int idCannonPre = G.gamePlayUI.idIconCannonPreInBuyWeapon;
     int idCannonMerge = weapon.getIdCannon();
 
     int temp = (idCannonMerge - (idCannonPre+4)) >= 0 ? (idCannonMerge - 4): idCannonPre;
     G.gamePlayUI.updateIdIconCannon(temp);
-    G.gamePlayUI.setTextCoinBuyWeapon(data.HMWeapon.get("cannon_"+temp).get(0).getCoin());
 
     if (idCannonMerge > G.gamePlayUI.idBestPowerCannon) {
 
       G.gamePlayUI.idBestPowerCannon = idCannonMerge;
       G.gamePlayUI.setStateBtnShop();
 
-      //todo: set item for imgWeaponOrBoat
-      //todo: set lb if new weapon or new boat
-      //todo: calculate rate
+      //save idBestPowerCannon
+      G.save.idBestPowerCannon("id_best_power_cannon", idCannonMerge);
 
       Image w1 = data.HMMergeWeapon.get(weapon.nameWeapon).get(0);
       Image w2 = data.HMMergeWeapon.get(weapon.nameWeapon).get(1);
@@ -218,15 +221,6 @@ public class LogicGame {
     for (PosOfWeapon pos : listPos)
       if (pos.getWeapon() != null)
         pos.getWeapon().gCannon.setTouchable(Touchable.enabled);
-
-  }
-
-  public PosOfWeapon getPosIsEmpty() {
-
-    for (PosOfWeapon pos : G.listPosOfWeapon)
-      if (pos.getIsEmpty())
-        return pos;
-    return null;
 
   }
 
@@ -292,15 +286,12 @@ public class LogicGame {
 
     if (wave == 2) {
 
-      //todo: show new boat
-      G.boatPresent += 1;
       G.target += 20;
-      String newBoat = "boat_"+G.boatPresent;
 
       G.listBoat.clear();
-      G.initLv(15, "boat_0", newBoat);
+      G.initLv(15, "boat_0", "boat_1");
 
-      Boat boat = data.HMBoat.get(newBoat).get(0);
+      Boat boat = data.HMBoat.get("boat_1").get(0);
       G.gamePlayUI.showGUnlockWeaponOrBoat(boat);
 
     } //unlock boat_1
@@ -308,13 +299,10 @@ public class LogicGame {
 
       if (wave == 6) {
 
-        G.boatPresent += 1;
-        String newBoat = "boat_"+G.boatPresent;
-
         G.listBoat.clear();
-        G.initLv(10, "boat_0", "boat_1", newBoat);
+        G.initLv(10, "boat_0", "boat_1", "boat_2");
 
-        Boat boat = data.HMBoat.get(newBoat).get(0);
+        Boat boat = data.HMBoat.get("boat_2").get(0);
         G.gamePlayUI.showGUnlockWeaponOrBoat(boat);
 
       } //unlock boat_2
@@ -325,14 +313,13 @@ public class LogicGame {
     else if (wave > 6 && wave <= 10) {
 
       if (wave == 9) {
-        G.boatPresent += 1;
-        String newBoat = "boat_"+G.boatPresent;
 
         G.listBoat.clear();
-        G.initLv(10, "boat_0", "boat_1", "boat_2", newBoat);
+        G.initLv(10, "boat_0", "boat_1", "boat_2", "boat_3");
 
-        Boat boat = data.HMBoat.get(newBoat).get(0);
+        Boat boat = data.HMBoat.get("boat_3").get(0);
         G.gamePlayUI.showGUnlockWeaponOrBoat(boat);
+
       } //unlock boat_3
       else
         G.target += 10;
@@ -341,15 +328,14 @@ public class LogicGame {
     else if (wave > 10 && wave <= 15) {
 
       if (wave == 15) {
-        G.boatPresent += 1;
-        String newBoat = "boat_"+G.boatPresent;
 
         G.listBoat.clear();
         G.initLv(5, "boat_0", "boat_1");
-        G.initLv(10, "boat_2", "boat_3", newBoat);
+        G.initLv(10, "boat_2", "boat_3", "boat_4");
 
-        Boat boat = data.HMBoat.get(newBoat).get(0);
+        Boat boat = data.HMBoat.get("boat_4").get(0);
         G.gamePlayUI.showGUnlockWeaponOrBoat(boat);
+
       } //unlock boat_4
       else
         G.target += 10;
@@ -358,16 +344,15 @@ public class LogicGame {
     else if (wave > 15 && wave <= 20) {
 
       if (wave == 18) {
-        G.boatPresent += 1;
-        String newBoat = "boat_"+G.boatPresent;
 
         G.listBoat.clear();
         G.initLv(5, "boat_0", "boat_1");
         G.initLv(15, "boat_2", "boat_3");
-        G.initLv(7, "boat_4", newBoat);
+        G.initLv(7, "boat_4", "boat_5");
 
-        Boat boat = data.HMBoat.get(newBoat).get(0);
+        Boat boat = data.HMBoat.get("boat_5").get(0);
         G.gamePlayUI.showGUnlockWeaponOrBoat(boat);
+
       } //unlock boat_5
       else
         G.target += 10;
@@ -376,16 +361,15 @@ public class LogicGame {
     else if (wave > 20 && wave <= 25) {
 
       if (wave == 25) {
-        G.boatPresent += 1;
-        String newBoat = "boat_"+G.boatPresent;
 
         G.listBoat.clear();
-        G.initLv(5, "boat_0", "boat_1", newBoat);
+        G.initLv(5, "boat_0", "boat_1", "boat_6");
         G.initLv(15, "boat_2", "boat_3");
         G.initLv(10, "boat_4", "boat_5");
 
-        Boat boat = data.HMBoat.get(newBoat).get(0);
+        Boat boat = data.HMBoat.get("boat_6").get(0);
         G.gamePlayUI.showGUnlockWeaponOrBoat(boat);
+
       } //unlock boat_6
       else
         G.target += 10;
@@ -394,16 +378,15 @@ public class LogicGame {
     else if (wave > 25 && wave <= 30) {
 
       if (wave == 30) {
-        G.boatPresent += 1;
-        String newBoat = "boat_"+G.boatPresent;
 
         G.listBoat.clear();
-        G.initLv(5, "boat_0", "boat_1", newBoat);
+        G.initLv(5, "boat_0", "boat_1", "boat_7");
         G.initLv(15, "boat_2", "boat_3");
         G.initLv(10, "boat_4", "boat_5", "boat_6");
 
-        Boat boat = data.HMBoat.get(newBoat).get(0);
+        Boat boat = data.HMBoat.get("boat_7").get(0);
         G.gamePlayUI.showGUnlockWeaponOrBoat(boat);
+
       } //unlock boat_7
       else
         G.target += 10;
@@ -412,16 +395,15 @@ public class LogicGame {
     else if (wave > 30 && wave <= 35) {
 
       if (wave == 34) {
-        G.boatPresent += 1;
-        String newBoat = "boat_"+G.boatPresent;
 
         G.listBoat.clear();
-        G.initLv(5, "boat_0", "boat_1", newBoat);
+        G.initLv(5, "boat_0", "boat_1", "boat_8");
         G.initLv(15, "boat_2", "boat_3", "boat_6");
         G.initLv(10, "boat_4", "boat_5", "boat_7");
 
-        Boat boat = data.HMBoat.get(newBoat).get(0);
+        Boat boat = data.HMBoat.get("boat_8").get(0);
         G.gamePlayUI.showGUnlockWeaponOrBoat(boat);
+
       } //unlock boat_8
       else
         G.target += 10;
@@ -430,16 +412,15 @@ public class LogicGame {
     else if (wave > 35 && wave <= 40) {
 
       if (wave == 40) {
-        G.boatPresent += 1;
-        String newBoat = "boat_"+G.boatPresent;
 
         G.listBoat.clear();
-        G.initLv(5, "boat_8", newBoat);
+        G.initLv(5, "boat_8", "boat_9");
         G.initLv(15, "boat_2", "boat_3", "boat_6");
         G.initLv(10, "boat_4", "boat_5", "boat_7");
 
-        Boat boat = data.HMBoat.get(newBoat).get(0);
+        Boat boat = data.HMBoat.get("boat_9").get(0);
         G.gamePlayUI.showGUnlockWeaponOrBoat(boat);
+
       } //unlock boat_9
       else
         G.target += 10;
@@ -448,16 +429,15 @@ public class LogicGame {
     else if (wave > 40 && wave <= 45) {
 
       if (wave == 45) {
-        G.boatPresent += 1;
-        String newBoat = "boat_"+G.boatPresent;
 
         G.listBoat.clear();
-        G.initLv(5, "boat_9", newBoat);
+        G.initLv(5, "boat_9", "boat_10");
         G.initLv(15, "boat_3", "boat_6", "boat_8");
         G.initLv(10, "boat_4", "boat_5", "boat_7");
 
-        Boat boat = data.HMBoat.get(newBoat).get(0);
+        Boat boat = data.HMBoat.get("boat_10").get(0);
         G.gamePlayUI.showGUnlockWeaponOrBoat(boat);
+
       } //unlock boat_10
       else
         G.target += 10;
@@ -466,16 +446,15 @@ public class LogicGame {
     else if (wave > 45 && wave <= 50) {
 
       if (wave == 50) {
-        G.boatPresent += 1;
-        String newBoat = "boat_"+G.boatPresent;
 
         G.listBoat.clear();
-        G.initLv(5, "boat_9", newBoat);
+        G.initLv(5, "boat_9");
         G.initLv(15, "boat_3", "boat_6", "boat_8");
-        G.initLv(10, "boat_4", "boat_5", "boat_7", "boat_10");
+        G.initLv(10, "boat_4", "boat_5", "boat_7", "boat_10", "boat_11");
 
-        Boat boat = data.HMBoat.get(newBoat).get(0);
+        Boat boat = data.HMBoat.get("boat_11").get(0);
         G.gamePlayUI.showGUnlockWeaponOrBoat(boat);
+
       } //unlock boat_11
       else
         G.target += 10;
@@ -484,17 +463,16 @@ public class LogicGame {
     else if (wave > 50 && wave <= 60) {
 
       if (wave == 55) {
-        G.boatPresent += 1;
-        String newBoat = "boat_"+G.boatPresent;
 
         G.listBoat.clear();
         G.initLv(5, "boat_9", "boat_11");
         G.initLv(15, "boat_3", "boat_6", "boat_8");
         G.initLv(10, "boat_4", "boat_5", "boat_7", "boat_10");
-        G.initLv(7, newBoat);
+        G.initLv(7, "boat_12");
 
-        Boat boat = data.HMBoat.get(newBoat).get(0);
+        Boat boat = data.HMBoat.get("boat_12").get(0);
         G.gamePlayUI.showGUnlockWeaponOrBoat(boat);
+
       } //unlock boat_12
       else
         G.target += 10;
@@ -503,17 +481,16 @@ public class LogicGame {
     else if (wave > 60 && wave <= 66) {
 
       if (wave == 65) {
-        G.boatPresent += 1;
-        String newBoat = "boat_"+G.boatPresent;
 
         G.listBoat.clear();
         G.initLv(5, "boat_4", "boat_9", "boat_11");
         G.initLv(15, "boat_6", "boat_8");
         G.initLv(10, "boat_7", "boat_10", "boat_12");
-        G.initLv(7, newBoat);
+        G.initLv(7, "boat_13");
 
-        Boat boat = data.HMBoat.get(newBoat).get(0);
+        Boat boat = data.HMBoat.get("boat_13").get(0);
         G.gamePlayUI.showGUnlockWeaponOrBoat(boat);
+
       } //unlock boat_13
       else
         G.target += 10;
@@ -522,16 +499,16 @@ public class LogicGame {
     else if (wave > 66 && wave <= 75) {
 
       if (wave == 72) {
-        G.boatPresent += 1;
-        String newBoat = "boat_"+G.boatPresent;
 
         G.listBoat.clear();
-        G.initLv(5, "boat_9", "boat_11", "boat_13", newBoat);
+        G.initLv(5, "boat_9", "boat_11", "boat_13");
         G.initLv(15, "boat_6", "boat_8");
         G.initLv(10, "boat_7", "boat_10", "boat_12");
+        G.initLv(7, "boat_14");
 
-        Boat boat = data.HMBoat.get(newBoat).get(0);
+        Boat boat = data.HMBoat.get("boat_14").get(0);
         G.gamePlayUI.showGUnlockWeaponOrBoat(boat);
+
       } //unlock boat_14
       else
         G.target += 10;
@@ -540,16 +517,16 @@ public class LogicGame {
     else if (wave > 75 && wave <= 80) {
 
       if (wave == 80) {
-        G.boatPresent += 1;
-        String newBoat = "boat_"+G.boatPresent;
 
         G.listBoat.clear();
-        G.initLv(5, "boat_9", "boat_11", "boat_13", newBoat);
+        G.initLv(5, "boat_9", "boat_11", "boat_13");
         G.initLv(15, "boat_8", "boat_7");
         G.initLv(10, "boat_10", "boat_12", "boat_14");
+        G.initLv(7, "boat_15");
 
-        Boat boat = data.HMBoat.get(newBoat).get(0);
+        Boat boat = data.HMBoat.get("boat_15").get(0);
         G.gamePlayUI.showGUnlockWeaponOrBoat(boat);
+
       } //unlock boat_15
       else
         G.target += 10;
@@ -558,16 +535,15 @@ public class LogicGame {
     else if (wave > 80 && wave <= 85) {
 
       if (wave == 85) {
-        G.boatPresent += 1;
-        String newBoat = "boat_"+G.boatPresent;
 
         G.listBoat.clear();
-        G.initLv(5, "boat_10", "boat_11", "boat_13", newBoat);
+        G.initLv(5, "boat_10", "boat_11", "boat_13", "boat_16");
         G.initLv(15, "boat_8", "boat_9");
         G.initLv(10, "boat_12", "boat_14", "boat_15");
 
-        Boat boat = data.HMBoat.get(newBoat).get(0);
+        Boat boat = data.HMBoat.get("boat_16").get(0);
         G.gamePlayUI.showGUnlockWeaponOrBoat(boat);
+
       } //unlock boat_16
       else
         G.target += 10;
@@ -576,16 +552,15 @@ public class LogicGame {
     else if (wave > 85 && wave <= 90) {
 
       if (wave == 90) {
-        G.boatPresent += 1;
-        String newBoat = "boat_"+G.boatPresent;
 
         G.listBoat.clear();
-        G.initLv(5, "boat_11", "boat_13", "boat_16", newBoat);
+        G.initLv(5, "boat_11", "boat_13", "boat_16", "boat_17");
         G.initLv(15, "boat_8", "boat_9", "boat_10");
         G.initLv(10, "boat_12", "boat_14", "boat_15");
 
-        Boat boat = data.HMBoat.get(newBoat).get(0);
+        Boat boat = data.HMBoat.get("boat_17").get(0);
         G.gamePlayUI.showGUnlockWeaponOrBoat(boat);
+
       } //unlock boat_17
       else
         G.target += 10;
@@ -594,16 +569,15 @@ public class LogicGame {
     else if (wave > 90 && wave <= 100) {
 
       if (wave == 95) {
-        G.boatPresent += 1;
-        String newBoat = "boat_"+G.boatPresent;
 
         G.listBoat.clear();
         G.initLv(5, "boat_11", "boat_13", "boat_16");
         G.initLv(15, "boat_8", "boat_9", "boat_10", "boat_17");
-        G.initLv(10, "boat_12", "boat_14", "boat_15", newBoat);
+        G.initLv(10, "boat_12", "boat_14", "boat_15", "boat_18");
 
-        Boat boat = data.HMBoat.get(newBoat).get(0);
+        Boat boat = data.HMBoat.get("boat_18").get(0);
         G.gamePlayUI.showGUnlockWeaponOrBoat(boat);
+
       } //unlock boat_18
       else
         G.target += 10;
@@ -616,15 +590,12 @@ public class LogicGame {
 
   }
 
-  public void saveGame() {
+  public ItemShop getItemShop(int idCannon) {
 
-
-
-  }
-
-  public void loadGame() {
-
-
+    for (ItemShop item : G.gamePlayUI.listItemShop)
+      if (item.getIdCannon() == idCannon)
+        return item;
+    return null;
 
   }
 

@@ -54,8 +54,8 @@ public class GamePlayUI {
 
   public Image imgShop, bgShopp;
   public long coinCollection = 1000;
-  public long coinBuyWeapon = 0;
-  public int idIconCannon = 0, idBestPowerCannon = 0;
+  public long coinBuyWeaponPre = 0;
+  public int idIconCannonPreInBuyWeapon = 0, idBestPowerCannon = 0; //1: to setIconBuyWeapon, 2: show effect new weapon
   public Image imgRecycle;
 
   public Group gTopUI;
@@ -65,7 +65,7 @@ public class GamePlayUI {
 
   public Group gShop;
   private Image bgShop;
-  private List<ItemShop> listItemShop = new ArrayList<>();
+  public List<ItemShop> listItemShop = new ArrayList<>();
 
   public Group gContinue;
   public Image imgShineWeapon, imgShineBoat, imgWeaponOrBoat, imgRateDamageOrHitpoint, imgRateRangeOrSpeed, bgUnlock;
@@ -228,12 +228,12 @@ public class GamePlayUI {
     bgShopp = GUI.createImage(textureAtlas, "bg_black");
     bgShopp.setSize(GStage.getWorldWidth(), GStage.getWorldHeight());
     bgShopp.setVisible(false);
-    G.gEndGame.addActor(bgShopp);
+    G.gItemShop.addActor(bgShopp);
 
     bgShop = GUI.createImage(textureAtlas, "bg_shop");
     gShop.addActor(bgShop);
     gShop.setPosition(gUI.getWidth()/2 - bgShop.getWidth()/2, gUI.getHeight()/2 - bgShop.getHeight()/2);
-    G.gEndGame.addActor(gShop);
+    G.gItemShop.addActor(gShop);
 
     Group gItem = new Group();
     gItem.setSize(bgShop.getWidth() - 65, bgShop.getHeight() - 110);
@@ -301,13 +301,13 @@ public class GamePlayUI {
       gTempItem.addActor(gBtnOn);
 
       //add item shop into list item
-      ItemShop itemShop = new ItemShop(btnBuyWeaponOff, imgWeapon, gBtnOn, weapon.getCoin());
+      ItemShop itemShop = new ItemShop(weapon.getIdCannon(), btnBuyWeaponOff, imgWeapon, gBtnOn, lbCoin, weapon.getCoin(), false);
       listItemShop.add(itemShop);
 
       scrollTable.add(gTempItem).center().padBottom(10);
       scrollTable.row();
 
-      eventClickBtnBuyWeaponInShop(gBtnOn, weapon);
+      eventClickBtnBuyWeaponInShop(gBtnOn, itemShop);
 
     }
 
@@ -322,7 +322,10 @@ public class GamePlayUI {
 
     listItemShop.get(0).getgBtnOn().setVisible(true);
     listItemShop.get(0).getImgOff().setVisible(false);
+    listItemShop.get(0).setUnlock(true);
     listItemShop.get(0).getImgWeapon().setColor(Color.WHITE);
+
+    //todo: load price in share for weapon
 
   }
 
@@ -429,10 +432,16 @@ public class GamePlayUI {
 
     bgUnlock.setVisible(true);
 
+    imgRateDamageOrHitpoint.setScale(0f, 1f);
+    imgRateRangeOrSpeed.setScale(0f, 1f);
+
     TextureRegion textureRegion = GMain.weaponMerge.findRegion(weapon.nameWeapon);
     imgWeaponOrBoat.setDrawable(new TextureRegionDrawable(textureRegion));
     imgWeaponOrBoat.setSize(textureRegion.getRegionWidth(), textureRegion.getRegionHeight());
     imgWeaponOrBoat.setPosition(GStage.getWorldWidth()/2 - imgWeaponOrBoat.getWidth()/2, GStage.getWorldHeight()/2 - imgWeaponOrBoat.getHeight()/2 - 100);
+
+    imgShineBoat.setVisible(true);
+    imgShineWeapon.setVisible(true);
 
     lbUnlock.setText(C.lang.unlock_weapon);
     lbWeaponOrBoat.setText(G.logicGame.getStringNewWeapon(weapon.nameWeapon));
@@ -448,7 +457,7 @@ public class GamePlayUI {
     Runnable run = () -> {
 
       float rateHitpoint = (float) Math.round((boat.getBlood() / Config.MAX_HITPOINT)*100)/100;
-      float rateSpeed = (float) Math.round((boat.getSpeed() / Config.MAX_SPEED)*100)/100;
+      float rateSpeed = 1 - (float) Math.round((boat.getSpeed() / Config.MAX_SPEED)*100)/100;
 
       imgRateDamageOrHitpoint.addAction(scaleTo(rateHitpoint, 1f, .5f, fastSlow));
       imgRateRangeOrSpeed.addAction(scaleTo(rateSpeed, 1f, .5f, fastSlow));
@@ -457,10 +466,16 @@ public class GamePlayUI {
 
     bgUnlock.setVisible(true);
 
+    imgRateDamageOrHitpoint.setScale(0f, 1f);
+    imgRateRangeOrSpeed.setScale(0f, 1f);
+
     TextureRegion textureRegion = GMain.boatMerge.findRegion(boat.name);
     imgWeaponOrBoat.setDrawable(new TextureRegionDrawable(textureRegion));
     imgWeaponOrBoat.setSize(textureRegion.getRegionWidth(), textureRegion.getRegionHeight());
     imgWeaponOrBoat.setPosition(GStage.getWorldWidth()/2 - imgWeaponOrBoat.getWidth()/2, GStage.getWorldHeight()/2 - imgWeaponOrBoat.getHeight()/2 - 100);
+
+    imgShineWeapon.setVisible(false);
+    imgShineBoat.setVisible(true);
 
     lbUnlock.setText(C.lang.unlock_boat);
     lbWeaponOrBoat.setText(G.logicGame.getStringNewBoat(boat.name));
@@ -491,7 +506,7 @@ public class GamePlayUI {
 
   }
 
-  private void eventClickBtnBuyWeaponInShop(Group gBtn, WeaponJson weapon) {
+  private void eventClickBtnBuyWeaponInShop(Group gBtn, ItemShop itemShop) {
 
     gBtn.addListener(new ClickListener() {
 
@@ -504,10 +519,10 @@ public class GamePlayUI {
 
           if (G.logicGame.chkEmptyListPos()) {
 
-            if (coinCollection >= weapon.getCoin()) {
+            if (coinCollection >= itemShop.getCoin()) {
 
-              G.addWeapon(weapon.getIdCannon(), 0, 0);
-              setTextCoinCollectionBuyWeapon(weapon.getCoin());
+              System.out.println(itemShop.getCoin());
+              G.addWeapon(itemShop.getIdCannon(), true, idIconCannonPreInBuyWeapon);
 
             }
             else {
@@ -549,8 +564,8 @@ public class GamePlayUI {
 
             if (G.logicGame.chkEmptyListPos()) {
 
-              if (coinCollection >= coinBuyWeapon)
-                G.addWeapon(idIconCannon, iconWeapon.getX(), iconWeapon.getY());
+              if (coinCollection >= coinBuyWeaponPre)
+                G.addWeapon(idIconCannonPreInBuyWeapon, false, idIconCannonPreInBuyWeapon);
               else {
 
                 lbNoEnough.setText(C.lang.noEnoughCoin);
@@ -645,8 +660,6 @@ public class GamePlayUI {
           gContinue.setTouchable(Touchable.disabled);
           Runnable run = () -> {
 
-            imgRateDamageOrHitpoint.setScale(0f, 1f);
-            imgRateRangeOrSpeed.setScale(0f, 1f);
             gContinue.setTouchable(Touchable.enabled);
 
             SequenceAction seq = sequence(
@@ -670,21 +683,28 @@ public class GamePlayUI {
 
   public void setStateBtnShop() {
 
-    for (int i=0; i<idBestPowerCannon - 4; i++) {
+    for (int i=0; i<idBestPowerCannon - 3; i++) {
 
       try {
 
         ItemShop itemShop = listItemShop.get(i);
-        if (itemShop.getImgOff().isVisible()) {
+        itemShop.getImgOff().setVisible(false);
+        itemShop.getgBtnOn().setVisible(true);
+        itemShop.setUnlock(true);
+        itemShop.getImgWeapon().setColor(Color.WHITE);
 
-          itemShop.getImgOff().setVisible(false);
-          itemShop.getgBtnOn().setVisible(true);
-          itemShop.getImgWeapon().setColor(Color.WHITE);
-
-        }
+        G.save.listItemShop("list_item_shop", listItemShop);
 
       }
       catch (Exception ex) { ex.printStackTrace(); }
+
+    }
+
+    int i = idBestPowerCannon - 4;
+    if (i > 0) {
+
+      coinBuyWeaponPre = G.data.HMWeapon.get("cannon_"+i).get(0).getCoin();
+      setTextCoinBuyWeapon(coinBuyWeaponPre);
 
     }
 
@@ -703,6 +723,7 @@ public class GamePlayUI {
         iconWeapon.setDrawable(new TextureRegionDrawable(t1));
         iconWeapon.setSize(t1.getRegionWidth(), t1.getRegionHeight());
         iconWeapon.setPosition(0, 5);
+
         break;
 
       case 2:
@@ -710,6 +731,7 @@ public class GamePlayUI {
         iconWeapon.setDrawable(new TextureRegionDrawable(t2));
         iconWeapon.setSize(t2.getRegionWidth(), t2.getRegionHeight());
         iconWeapon.setPosition(0, 5);
+
         break;
 
       case 3:
@@ -717,6 +739,7 @@ public class GamePlayUI {
         iconWeapon.setDrawable(new TextureRegionDrawable(t3));
         iconWeapon.setSize(t3.getRegionWidth(), t3.getRegionHeight());
         iconWeapon.setPosition(0, 5);
+
         break;
 
       case 4:
@@ -724,6 +747,7 @@ public class GamePlayUI {
         iconWeapon.setDrawable(new TextureRegionDrawable(t4));
         iconWeapon.setSize(t4.getRegionWidth(), t4.getRegionHeight());
         iconWeapon.setPosition(10, -20);
+
         break;
 
       case 5:
@@ -731,6 +755,7 @@ public class GamePlayUI {
         iconWeapon.setDrawable(new TextureRegionDrawable(t5));
         iconWeapon.setSize(t5.getRegionWidth(), t5.getRegionHeight());
         iconWeapon.setPosition(10, -20);
+
         break;
 
       case 6:
@@ -738,6 +763,7 @@ public class GamePlayUI {
         iconWeapon.setDrawable(new TextureRegionDrawable(t6));
         iconWeapon.setSize(t6.getRegionWidth(), t6.getRegionHeight());
         iconWeapon.setPosition(5, -10);
+
         break;
 
       case 7:
@@ -745,6 +771,7 @@ public class GamePlayUI {
         iconWeapon.setDrawable(new TextureRegionDrawable(t7));
         iconWeapon.setSize(t7.getRegionWidth(), t7.getRegionHeight());
         iconWeapon.setPosition(5, -10);
+
         break;
 
       case 8:
@@ -752,6 +779,7 @@ public class GamePlayUI {
         iconWeapon.setDrawable(new TextureRegionDrawable(t8));
         iconWeapon.setSize(t8.getRegionWidth(), t8.getRegionHeight());
         iconWeapon.setPosition(5, -10);
+
         break;
 
       case 9:
@@ -759,6 +787,7 @@ public class GamePlayUI {
         iconWeapon.setDrawable(new TextureRegionDrawable(t9));
         iconWeapon.setSize(t9.getRegionWidth(), t9.getRegionHeight());
         iconWeapon.setPosition(5, -10);
+
         break;
 
       case 10:
@@ -766,6 +795,7 @@ public class GamePlayUI {
         iconWeapon.setDrawable(new TextureRegionDrawable(t10));
         iconWeapon.setSize(t10.getRegionWidth(), t10.getRegionHeight());
         iconWeapon.setPosition(5, -10);
+
         break;
 
       case 11:
@@ -773,6 +803,7 @@ public class GamePlayUI {
         iconWeapon.setDrawable(new TextureRegionDrawable(t11));
         iconWeapon.setSize(t11.getRegionWidth(), t11.getRegionHeight());
         iconWeapon.setPosition(5, -10);
+
         break;
 
       case 19:
@@ -780,6 +811,7 @@ public class GamePlayUI {
         iconWeapon.setDrawable(new TextureRegionDrawable(t19));
         iconWeapon.setSize(t19.getRegionWidth(), t19.getRegionHeight());
         iconWeapon.setPosition(5, -10);
+
         break;
 
       case 12:
@@ -787,6 +819,7 @@ public class GamePlayUI {
         iconWeapon.setDrawable(new TextureRegionDrawable(t12));
         iconWeapon.setSize(t12.getRegionWidth(), t12.getRegionHeight());
         iconWeapon.setPosition(5, -5);
+
         break;
 
       case 13:
@@ -794,6 +827,7 @@ public class GamePlayUI {
         iconWeapon.setDrawable(new TextureRegionDrawable(t13));
         iconWeapon.setSize(t13.getRegionWidth(), t13.getRegionHeight());
         iconWeapon.setPosition(5, -5);
+
         break;
 
       case 14:
@@ -801,6 +835,7 @@ public class GamePlayUI {
         iconWeapon.setDrawable(new TextureRegionDrawable(t14));
         iconWeapon.setSize(t14.getRegionWidth(), t14.getRegionHeight());
         iconWeapon.setPosition(5, +10);
+
         break;
 
       case 15:
@@ -808,6 +843,7 @@ public class GamePlayUI {
         iconWeapon.setDrawable(new TextureRegionDrawable(t15));
         iconWeapon.setSize(t15.getRegionWidth(), t15.getRegionHeight());
         iconWeapon.setPosition(5, 0);
+
         break;
 
       case 20:
@@ -815,6 +851,7 @@ public class GamePlayUI {
         iconWeapon.setDrawable(new TextureRegionDrawable(t20));
         iconWeapon.setSize(t20.getRegionWidth(), t20.getRegionHeight());
         iconWeapon.setPosition(5, 0);
+
         break;
 
       case 21:
@@ -822,6 +859,7 @@ public class GamePlayUI {
         iconWeapon.setDrawable(new TextureRegionDrawable(t21));
         iconWeapon.setSize(t21.getRegionWidth(), t21.getRegionHeight());
         iconWeapon.setPosition(5, 0);
+
         break;
 
       case 22:
@@ -829,6 +867,7 @@ public class GamePlayUI {
         iconWeapon.setDrawable(new TextureRegionDrawable(t22));
         iconWeapon.setSize(t22.getRegionWidth(), t22.getRegionHeight());
         iconWeapon.setPosition(5, 0);
+
         break;
 
       case 23:
@@ -836,6 +875,7 @@ public class GamePlayUI {
         iconWeapon.setDrawable(new TextureRegionDrawable(t23));
         iconWeapon.setSize(t23.getRegionWidth(), t23.getRegionHeight());
         iconWeapon.setPosition(5, 0);
+
         break;
 
       case 16:
@@ -843,6 +883,7 @@ public class GamePlayUI {
         iconWeapon.setDrawable(new TextureRegionDrawable(t16));
         iconWeapon.setSize(t16.getRegionWidth(), t16.getRegionHeight());
         iconWeapon.setPosition(5, -15);
+
         break;
 
       case 17:
@@ -850,6 +891,7 @@ public class GamePlayUI {
         iconWeapon.setDrawable(new TextureRegionDrawable(t17));
         iconWeapon.setSize(t17.getRegionWidth(), t17.getRegionHeight());
         iconWeapon.setPosition(5, -15);
+
         break;
 
       case 18:
@@ -857,6 +899,7 @@ public class GamePlayUI {
         iconWeapon.setDrawable(new TextureRegionDrawable(t18));
         iconWeapon.setSize(t18.getRegionWidth(), t18.getRegionHeight());
         iconWeapon.setPosition(5, -15);
+
         break;
     }
 
@@ -868,30 +911,32 @@ public class GamePlayUI {
 
     coinCollection += coin;
     String c = G.logicGame.compressCoin(coinCollection);
-    lbCoinCollection.setText("$"+c);
+    lbCoinCollection.setText(c);
+
+    G.save.coinCollection("coin_collection", coinCollection);
 
   }
 
   public void setTextCoinCollectionBuyWeapon(long coin) {
 
-    coinBuyWeapon = coin;
     coinCollection -= coin;
     String c = G.logicGame.compressCoin(coinCollection);
-    lbCoinCollection.setText("$"+c);
+    lbCoinCollection.setText(c);
+
+    G.save.coinCollection("coin_collection", coinCollection);
 
   }
 
   public void setTextCoinBuyWeapon(long coin) {
 
-    coinBuyWeapon = coin;
-    String s = G.logicGame.compressCoin(coinBuyWeapon);
-    lbCoinBuyWeapon.setText("$"+s);
+    String s = G.logicGame.compressCoin(coin);
+    lbCoinBuyWeapon.setText(s);
 
   }
 
   public void updateIdIconCannon(int idUpdate) {
 
-    idIconCannon = idUpdate;
+    idIconCannonPreInBuyWeapon = idUpdate;
     setIconWeapon(idUpdate);
 
   }

@@ -17,6 +17,7 @@ import com.ss.core.util.GLayer;
 import com.ss.core.util.GStage;
 import com.ss.core.util.GUI;
 import com.ss.data.Data;
+import com.ss.data.ItemShop;
 import com.ss.gameLogic.Interface.ICollision;
 import com.ss.gameLogic.Interface.IDanger;
 import com.ss.gameLogic.Interface.IMerge;
@@ -30,7 +31,6 @@ import com.ss.gameLogic.objects.Weapon;
 import com.ss.gameLogic.ui.GamePlayUI;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 public class Game implements IMerge, ICollision, IDanger {
@@ -39,7 +39,7 @@ public class Game implements IMerge, ICollision, IDanger {
 
   private TextureAtlas textureAtlas = GMain.textureAtlas;
   public Group gUI;
-  public Group gPos, gTopUI, gEffect, gEndGame, gAnimMerWeapon;
+  public Group gPos, gTopUI, gEffect, gEndGame, gAnimMerWeapon, gItemShop;
   private Group gBoat;
   public LogicGame logicGame = LogicGame.getInstance(this);
   public GamePlayUI gamePlayUI;
@@ -52,9 +52,10 @@ public class Game implements IMerge, ICollision, IDanger {
 
   private EffectGame effectGame = EffectGame.getInstance();
   public Data data = Data.getInstance();
+  public SaveState save = SaveState.getInstance();
 
   private int countTarget = 0;
-  public int wave = 1, boatPresent = 0; //boatPresent to check new boat, wave to update level
+  public int wave = 1; //boatPresent to check new boat, wave to update level
   public int target = 10; // target to finished level
 
   public Game() {
@@ -65,6 +66,7 @@ public class Game implements IMerge, ICollision, IDanger {
     gEndGame = new Group();
     gEffect = new Group();
     gAnimMerWeapon = new Group();
+    gItemShop = new Group();
     gUI.setSize(GStage.getWorldWidth(), GStage.getWorldHeight());
 
     GStage.addToLayer(GLayer.ui, gUI);
@@ -72,6 +74,7 @@ public class Game implements IMerge, ICollision, IDanger {
     GStage.addToLayer(GLayer.ui, gTopUI);
     GStage.addToLayer(GLayer.ui, gAnimMerWeapon);
     GStage.addToLayer(GLayer.ui, gEffect);
+    GStage.addToLayer(GLayer.ui, gItemShop);
     GStage.addToLayer(GLayer.ui, gEndGame);
 
     gUI.addActor(gBoat);
@@ -86,10 +89,11 @@ public class Game implements IMerge, ICollision, IDanger {
     initAnim();
 
     gamePlayUI = new GamePlayUI(this, gUI);
-    //todo: setTextCoinCollection and coinBuyWeapon if first time play game else get it in share preference
+    //todo: setTextCoinCollection and coinBuyWeaponPre if first time play game else get it in share preference
     gamePlayUI.setTextCoinCollection(0);
     gamePlayUI.setIconWeapon(0);
     gamePlayUI.setTextCoinBuyWeapon(0);
+    gamePlayUI.coinBuyWeaponPre = 5; //todo: set coinBuyWeaponPre when start game
 
     data.initListWeapon(this, gamePlayUI, gUI);
     data.initListBoat(this, gUI);
@@ -97,7 +101,7 @@ public class Game implements IMerge, ICollision, IDanger {
     listBoat = new ArrayList<>();
     initWeapon();
 
-    resetWhenLevelUp();
+    resetWhenLevelUp(); //start game
 
   }
 
@@ -150,6 +154,7 @@ public class Game implements IMerge, ICollision, IDanger {
   }
 
   private void initPosOfWeapon() {
+
     listPosOfWeapon = new ArrayList<>();
 
     for (int i=0; i<10; i++) {
@@ -158,6 +163,7 @@ public class Game implements IMerge, ICollision, IDanger {
       p.name = i+"";
       listPosOfWeapon.add(p);
     }
+
   }
 
   private void initWeapon() {
@@ -171,41 +177,6 @@ public class Game implements IMerge, ICollision, IDanger {
     listPosOfWeapon.get(0).setWeapon(weapon);
     listPosOfWeapon.get(0).setEmpty(false);
 
-//    Weapon weapon1 = data.HMWeapon.get("cannon_0").get(1);
-//    weapon1.addCannonToScene();
-//    weapon1.setPosWeapon(POS_1);
-//    weapon1.addBulletToScene();
-//    weapon1.isOn = true;
-//
-//    listPosOfWeapon.get(1).setWeapon(weapon1);
-//    listPosOfWeapon.get(1).setEmpty(false);
-//
-//    Weapon weapon2 = data.HMWeapon.get("cannon_0").get(2);
-//    weapon2.addCannonToScene();
-//    weapon2.setPosWeapon(POS_2);
-//    weapon2.addBulletToScene();
-//    weapon2.isOn = true;
-//
-//    listPosOfWeapon.get(2).setWeapon(weapon2);
-//    listPosOfWeapon.get(2).setEmpty(false);
-//
-//    Weapon weapon6 = data.HMWeapon.get("cannon_0").get(6);
-//    weapon6.addCannonToScene();
-//    weapon6.setPosWeapon(POS_6);
-//    weapon6.addBulletToScene();
-//    weapon6.isOn = true;
-//
-//    listPosOfWeapon.get(6).setWeapon(weapon6);
-//    listPosOfWeapon.get(6).setEmpty(false);
-//
-//    Weapon weapon8 = data.HMWeapon.get("cannon_0").get(8);
-//    weapon8.addCannonToScene();
-//    weapon8.setPosWeapon(POS_8);
-//    weapon8.addBulletToScene();
-//    weapon8.isOn = true;
-//
-//    listPosOfWeapon.get(8).setWeapon(weapon8);
-//    listPosOfWeapon.get(8).setEmpty(false);
   }
 
   public void startBoat(Boat boat) {
@@ -365,7 +336,7 @@ public class Game implements IMerge, ICollision, IDanger {
 
   }
 
-  public void addWeapon(int idCannon, float x, float y) {
+  public void addWeapon(int idCannon, boolean isInShop, int idCannonPre) {
 
     try {
 
@@ -386,9 +357,15 @@ public class Game implements IMerge, ICollision, IDanger {
                 w.addBulletToScene();
                 w.addCannonToScene();
 
-                gamePlayUI.setTextCoinCollectionBuyWeapon(w.getCoin());
+                gamePlayUI.setTextCoinCollectionBuyWeapon(gamePlayUI.coinBuyWeaponPre);
+                chkShopShowOrHide(w, isInShop, idCannonPre);
+
                 gamePlayUI.imgBgBlack.setZIndex(1000);
                 gamePlayUI.gShop.setZIndex(1000);
+
+                //save sate list item in shop
+                save.listItemShop("list_item_shop", gamePlayUI.listItemShop);
+                save.listPosOfWeapon("list_pos_weapon", listPosOfWeapon);
 
               }
               catch (Exception ex) { ex.printStackTrace(); }
@@ -401,6 +378,52 @@ public class Game implements IMerge, ICollision, IDanger {
 
     }
     catch (Exception ex) { ex.printStackTrace(); }
+
+  }
+
+  //update coin in shop and btnBuyWeapon
+  private void chkShopShowOrHide(Weapon w, boolean isInShop, int idCannonPre) {
+
+    if (isInShop) {
+
+      if (idCannonPre == w.getIdCannon()) {
+        gamePlayUI.coinBuyWeaponPre += w.getCoin()/2;
+        gamePlayUI.setTextCoinBuyWeapon(gamePlayUI.coinBuyWeaponPre);
+
+        ItemShop itemShop = logicGame.getItemShop(idCannonPre);
+        if (itemShop != null) {
+          itemShop.setCoin(gamePlayUI.coinBuyWeaponPre);
+          String c = logicGame.compressCoin(itemShop.getCoin());
+          itemShop.getLbCoin().setText(c);
+        }
+
+      }
+      else {
+
+        ItemShop itemShop = logicGame.getItemShop(w.getIdCannon());
+        if (itemShop != null) {
+          itemShop.setCoin(itemShop.getCoin() + w.getCoin()/2);
+          String c = logicGame.compressCoin(itemShop.getCoin());
+          itemShop.getLbCoin().setText(c);
+        }
+        //todo: update coin in shop with idCannonPre
+        //todo: save listItem
+      }
+
+    }
+    else {
+
+      gamePlayUI.coinBuyWeaponPre += w.getCoin()/2;
+      gamePlayUI.setTextCoinBuyWeapon(gamePlayUI.coinBuyWeaponPre);
+
+      ItemShop itemShop = logicGame.getItemShop(w.getIdCannon());
+      if (itemShop != null) {
+        itemShop.setCoin(gamePlayUI.coinBuyWeaponPre);
+        String c = logicGame.compressCoin(itemShop.getCoin());
+        itemShop.getLbCoin().setText(c);
+      }
+
+    }
 
   }
 
@@ -433,6 +456,8 @@ public class Game implements IMerge, ICollision, IDanger {
       logicGame.updateLevel(wave);
 
       //todo: save game when level up!
+      save.waveAndTarget("wave", wave);
+      save.waveAndTarget("target", target);
 
       gamePlayUI.lbNewWave.setPosition(-GStage.getWorldWidth()/2 - gamePlayUI.lbNewWave.getWidth(), GStage.getWorldHeight()/2 - gamePlayUI.lbNewWave.getHeight()/2 - 200);
       nextBoat();

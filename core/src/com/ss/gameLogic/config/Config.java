@@ -48,5 +48,5 @@ public class Config {
     public static float MAX_SPEED = 55;
 
 
-    //todo: save listPosOfWeapon, coinCollection, idCannonPre, idBestPowerCannon
+    //todo: save listPosOfWeapon(done!), coinCollection(done!), idBestPowerCannon(done!), listItemShop(idCannon, coin)(done!), wave(done!), target(done
 }
