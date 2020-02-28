@@ -39,6 +39,11 @@ public class SoundEffects {
         s.put("wave_start", Gdx.audio.newSound(wave_start));
         s.put("whoosh", Gdx.audio.newSound(whoosh));
         s.put("click_button", Gdx.audio.newSound(click_button));
+        s.put("merge_cannon", Gdx.audio.newSound(merge_cannon));
+        s.put("burn", Gdx.audio.newSound(burn));
+        s.put("smoke", Gdx.audio.newSound(smoke));
+        s.put("buy_cannon", Gdx.audio.newSound(buy_cannon));
+        s.put("cannon_shot", Gdx.audio.newSound(cannon_shot));
 
     }
 
@@ -55,12 +60,19 @@ public class SoundEffects {
         music.stop();
     }
 
-    public static void start(String music) {
+    public static void start(String sound) {
 
       if (!isMute)
-        s.get(music).play();
+        s.get(sound).play();
 
     }
+
+  public static void start(String sound, float volume) {
+
+    if (!isMute)
+      s.get(sound).play(volume);
+
+  }
 
     public static void stop(String music) {
 

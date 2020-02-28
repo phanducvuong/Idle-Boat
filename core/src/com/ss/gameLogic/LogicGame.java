@@ -94,8 +94,7 @@ public class LogicGame {
 
   private void changePosOfWeapon(PosOfWeapon pFrom, PosOfWeapon pTo) {
 
-//    SoundEffects.stop(pFrom.mWhoosh);
-//    SoundEffects.start(pFrom.mWhoosh);
+    SoundEffects.start("whoosh");
 
     Weapon weTemp = pTo.getWeapon();
     pTo.setWeapon(pFrom.getWeapon());
@@ -198,7 +197,6 @@ public class LogicGame {
       Runnable run = () -> {
         G.bgGame.remove();
 
-        SoundEffects.stop("unlock_cannon");
         SoundEffects.start("unlock_cannon");
 
         G.gamePlayUI.showGUnlockWeaponOrBoat(weapon);

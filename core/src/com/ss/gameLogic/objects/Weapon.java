@@ -785,12 +785,7 @@ public class Weapon extends Image {
 
                         return true;
                       }),//simple action check collision
-                      run(() -> {
-
-//                        mShot.stop();
-//                        mShot.play(.1f);
-
-                      })
+                      run(() -> SoundEffects.start("cannon_shot", .1f))
               )//parallel action
             ),
             () -> {

@@ -11,125 +11,125 @@
     "blood": 30,
     "speed": 45,
     "id_boat": 1,
-    "coin": 12
+    "coin": 10
   },
   {
     "boat": "boat_2",
     "blood": 40,
     "speed": 30,
     "id_boat": 2,
-    "coin": 18
+    "coin": 15
   },
   {
     "boat": "boat_3",
     "blood": 50,
     "speed": 30,
     "id_boat": 3,
-    "coin": 25
+    "coin": 20
   },
   {
     "boat": "boat_4",
     "blood": 60,
     "speed": 45,
     "id_boat": 4,
-    "coin": 30
+    "coin": 25
   },
   {
     "boat": "boat_5",
     "blood": 70,
     "speed": 50,
     "id_boat": 5,
-    "coin": 37
+    "coin": 30
   },
   {
     "boat": "boat_6",
     "blood": 80,
     "speed": 20,
     "id_boat": 6,
-    "coin": 43
+    "coin": 35
   },
   {
     "boat": "boat_7",
     "blood": 90,
     "speed": 10,
     "id_boat": 7,
-    "coin": 50
+    "coin": 40
   },
   {
     "boat": "boat_8",
     "blood": 100,
     "speed": 55,
     "id_boat": 8,
-    "coin": 64
+    "coin": 45
   },
   {
     "boat": "boat_9",
     "blood": 115,
     "speed": 45,
     "id_boat": 9,
-    "coin": 75
+    "coin": 50
   },
   {
     "boat": "boat_10",
     "blood": 125,
     "speed": 17,
     "id_boat": 10,
-    "coin": 85
+    "coin": 55
   },
   {
     "boat": "boat_11",
     "blood": 130,
     "speed": 36,
     "id_boat": 11,
-    "coin": 89
+    "coin": 60
   },
   {
     "boat": "boat_12",
     "blood": 140,
     "speed": 42,
     "id_boat": 12,
-    "coin": 94
+    "coin": 65
   },
   {
     "boat": "boat_13",
     "blood": 150,
     "speed": 22,
     "id_boat": 13,
-    "coin": 100
+    "coin": 75
   },
   {
     "boat": "boat_14",
     "blood": 170,
     "speed": 28,
     "id_boat": 14,
-    "coin": 110
+    "coin": 85
   },
   {
     "boat": "boat_15",
     "blood": 200,
     "speed": 29,
     "id_boat": 15,
-    "coin": 124
+    "coin": 90
   },
   {
     "boat": "boat_16",
     "blood": 230,
     "speed": 39,
     "id_boat": 16,
-    "coin": 129
+    "coin": 110
   },
   {
     "boat": "boat_17",
     "blood": 250,
     "speed": 23,
     "id_boat": 17,
-    "coin": 135
+    "coin": 120
   },
   {
     "boat": "boat_18",
     "blood": 300,
     "speed": 47,
     "id_boat": 18,
-    "coin": 150
+    "coin": 130
   }
 ]

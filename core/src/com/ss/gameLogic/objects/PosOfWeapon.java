@@ -25,7 +25,6 @@ public class PosOfWeapon {
   private Image imgEftMerge;
 
   public int col;
-//  public Sound mMergeCannon, mWhoosh;
 
   public PosOfWeapon(Group gUI, Group gPos) {
     this.gUI = gUI;
@@ -41,9 +40,6 @@ public class PosOfWeapon {
     imgEftMerge.setScale(0);
     imgEftMerge.setVisible(false);
     gPos.addActor(imgEftMerge);
-
-//    mMergeCannon = Gdx.audio.newSound(SoundEffects.merge_cannon);
-//    mWhoosh = Gdx.audio.newSound(SoundEffects.whoosh);
 
   }
 

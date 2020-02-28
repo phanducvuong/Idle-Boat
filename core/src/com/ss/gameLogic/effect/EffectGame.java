@@ -103,8 +103,7 @@ public class EffectGame {
                     scaleTo(1.2f, 1.2f, .25f, fastSlow),
                     run(() -> {
 
-//                      SoundEffects.stop(boat.burn);
-//                      SoundEffects.start(boat.burn);
+                      SoundEffects.start("burn");
 
                     })
             ),
@@ -149,7 +148,7 @@ public class EffectGame {
                     run(() -> {
 
 //                      SoundEffects.stop(boat.smoke);
-//                      SoundEffects.start(boat.smoke);
+                      SoundEffects.start("smoke");
 
                     })
             ),
@@ -219,12 +218,7 @@ public class EffectGame {
     SequenceAction seq = sequence(
             parallel(
                     scaleTo(1f, 1f, .5f, fastSlow),
-                    run(() -> {
-
-//                      SoundEffects.stop(pos.mMergeCannon);
-//                      SoundEffects.start(pos.mMergeCannon);
-
-                    })
+                    run(() -> SoundEffects.start("merge_cannon"))
             ),
             run(pos::resetImgMerge)
     );
@@ -317,9 +311,8 @@ public class EffectGame {
             parallel(
                     moveTo(xTo, y, 1.25f, fastSlow),
                     run(() -> {
-
+                      SoundEffects.stop("wave_start");
                       SoundEffects.start("wave_start");
-
                     })
             ),
             delay(.75f),
@@ -412,16 +405,13 @@ public class EffectGame {
             parallel(
                     moveTo(xTo, yTo, .5f, fastSlow),
                     alpha(0, .5f, linear),
-                    run(() -> {
-
-                      G.animMergeWeapon.stop();
-                      SoundEffects.stop("unlock_cannon_intro");
-                      SoundEffects.start("unlock_cannon_intro");
-
-                    })
+                    run(() -> G.animMergeWeapon.stop())
             ),
             run(onComplete)
     );
+
+    SoundEffects.stop("unlock_cannon_intro");
+    SoundEffects.start("unlock_cannon_intro");
 
     G.animMergeWeapon.start();
     w1.addAction(seq1);

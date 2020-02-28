@@ -32,7 +32,6 @@ import com.ss.gameLogic.objects.Weapon;
 import com.ss.gameLogic.ui.GamePlayUI;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 public class Game implements IMerge, ICollision, IDanger {
@@ -394,8 +393,7 @@ public class Game implements IMerge, ICollision, IDanger {
 
               try {
 
-//                SoundEffects.stop(w.mAddWeapon);
-//                SoundEffects.start(w.mAddWeapon);
+                SoundEffects.start("buy_cannon");
 
                 w.isOn = true;
                 w.isFight = true;
