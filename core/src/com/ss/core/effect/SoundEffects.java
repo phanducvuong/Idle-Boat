@@ -9,49 +9,63 @@ import java.util.HashMap;
 
 public class SoundEffects {
 
-    public static HashMap<String, Music> s;
-//    private static FileHandle background = Gdx.files.internal("sound/background.mp3");
-//    private static FileHandle out_card = Gdx.files.internal("sound/out_card.mp3");
-//    private static FileHandle get_card = Gdx.files.internal("sound/get_card.mp3");
-//    private static FileHandle funny_bomb = Gdx.files.internal("sound/funny_bomb.mp3");
-//    private static FileHandle funny_egg = Gdx.files.internal("sound/funny_egg.mp3");
-//    private static FileHandle funny_knife = Gdx.files.internal("sound/funny_knife.mp3");
-//    private static FileHandle funny_tomato = Gdx.files.internal("sound/funny_tomato.mp3");
-//    private static FileHandle click_button = Gdx.files.internal("sound/click_button.mp3");
-//    private static FileHandle u_bai = Gdx.files.internal("sound/u_bai.mp3");
-//    private static FileHandle laser_off = Gdx.files.internal("sound/laseroff.mp3");
-//    private static FileHandle divide_card = Gdx.files.internal("sound/divide_card.mp3");
-//    private static FileHandle sort_card = Gdx.files.internal("sound/sap_bai.mp3");
-//    private static FileHandle ha_phom = Gdx.files.internal("sound/ha_phom.mp3");
-//    private static FileHandle win = Gdx.files.internal("sound/win.mp3");
-//    private static FileHandle lose = Gdx.files.internal("sound/lose.mp3");
-//    private static FileHandle door_bell = Gdx.files.internal("sound/doorbell.mp3");
-//    private static FileHandle tick_chip = Gdx.files.internal("sound/tick_chip.mp3");
-//    private static FileHandle eat_card = Gdx.files.internal("sound/eat_card.mp3");
-//    private static FileHandle ohh = Gdx.files.internal("sound/ohh.mp3");
+    public static HashMap<String, Sound> s;
+
+    public static FileHandle burn = Gdx.files.internal("sound/burn.mp3");
+    public static FileHandle buy_cannon = Gdx.files.internal("sound/buy_cannon.mp3");
+    public static FileHandle cannon_shot = Gdx.files.internal("sound/cannon_shot.mp3");
+    public static FileHandle merge_cannon = Gdx.files.internal("sound/merge_cannon.mp3");
+    public static FileHandle smoke = Gdx.files.internal("sound/smoke.mp3");
+    public static FileHandle unlock_cannon = Gdx.files.internal("sound/unlock_cannon.mp3");
+    public static FileHandle unlock_cannon_intro = Gdx.files.internal("sound/unlock_cannon_intro.mp3");
+    public static FileHandle unlock_enemy = Gdx.files.internal("sound/unlock_enemy.mp3");
+    public static FileHandle wave_failed = Gdx.files.internal("sound/wave_failed.mp3");
+    public static FileHandle wave_finished = Gdx.files.internal("sound/wave_finished.mp3");
+    public static FileHandle wave_start = Gdx.files.internal("sound/wave_start.mp3");
+    public static FileHandle whoosh = Gdx.files.internal("sound/whoosh.mp3");
+    public static FileHandle click_button = Gdx.files.internal("sound/click_button.mp3");
 
     public static boolean isMute = false;
 
     public static void initSound() {
+
         s = new HashMap<>();
-//        s.put("sound_background", Gdx.audio.newMusic(background));
-//        s.put("get_card", Gdx.audio.newMusic(get_card));
-//        s.put("out_card", Gdx.audio.newMusic(out_card));
-//        s.put("funny_bomb", Gdx.audio.newMusic(funny_bomb));
-//        s.put("funny_egg", Gdx.audio.newMusic(funny_egg));
-//        s.put("funny_knife", Gdx.audio.newMusic(funny_knife));
-//        s.put("funny_tomato", Gdx.audio.newMusic(funny_tomato));
-//        s.put("click_button", Gdx.audio.newMusic(click_button));
-//        s.put("u_bai", Gdx.audio.newMusic(u_bai));
-//        s.put("laser_off", Gdx.audio.newMusic(laser_off));
-//        s.put("divide_card", Gdx.audio.newMusic(divide_card));
-//        s.put("sort_card", Gdx.audio.newMusic(sort_card));
-//        s.put("ha_phom", Gdx.audio.newMusic(ha_phom));
-//        s.put("win", Gdx.audio.newMusic(win));
-//        s.put("lose", Gdx.audio.newMusic(lose));
-//        s.put("door_bell", Gdx.audio.newMusic(door_bell));
-//        s.put("tick_chip", Gdx.audio.newMusic(tick_chip));
-//        s.put("eat_card", Gdx.audio.newMusic(eat_card));
-//        s.put("ohh", Gdx.audio.newMusic(ohh));
+
+        s.put("unlock_cannon", Gdx.audio.newSound(unlock_cannon));
+        s.put("unlock_cannon_intro", Gdx.audio.newSound(unlock_cannon_intro));
+        s.put("unlock_enemy", Gdx.audio.newSound(unlock_enemy));
+        s.put("wave_failed", Gdx.audio.newSound(wave_failed));
+        s.put("wave_finished", Gdx.audio.newSound(wave_finished));
+        s.put("wave_start", Gdx.audio.newSound(wave_start));
+        s.put("whoosh", Gdx.audio.newSound(whoosh));
+        s.put("click_button", Gdx.audio.newSound(click_button));
+
+    }
+
+    public static void start(Sound music) {
+
+      if (!isMute)
+        music.play();
+
+    }
+
+    public static void stop(Sound music) {
+
+      if (!isMute)
+        music.stop();
+    }
+
+    public static void start(String music) {
+
+      if (!isMute)
+        s.get(music).play();
+
+    }
+
+    public static void stop(String music) {
+
+      if (!isMute)
+        s.get(music).stop();
+
     }
 }

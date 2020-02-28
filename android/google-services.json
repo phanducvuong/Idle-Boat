@@ -1,34 +1,34 @@
 {
   "project_info": {
-    "project_number": "707532446921",
-    "firebase_url": "https://color-match-db982.firebaseio.com",
-    "project_id": "color-match-db982",
-    "storage_bucket": "color-match-db982.appspot.com"
+    "project_number": "580441862822",
+    "firebase_url": "https://jkwarship-eacf6.firebaseio.com",
+    "project_id": "jkwarship-eacf6",
+    "storage_bucket": "jkwarship-eacf6.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:707532446921:android:d31348002d773f15584118",
+        "mobilesdk_app_id": "1:580441862822:android:7f4eb8dcfb028d2a6c3a67",
         "android_client_info": {
-          "package_name": "jk.colormatch"
+          "package_name": "jk.warship"
         }
       },
       "oauth_client": [
         {
-          "client_id": "707532446921-ej9nfrhuasd4tqjdtvrvjf8fmnr02r08.apps.googleusercontent.com",
+          "client_id": "580441862822-d5l9edh49gqv9p7j34sdt53on4qs6c9m.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyDj4_sCTGLaY3wkQ_xMtBNlttwGsGQFKq8"
+          "current_key": "AIzaSyAc2FhB-KIovuZDA04wSbd_PZDEgD0Ywsc"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "707532446921-ej9nfrhuasd4tqjdtvrvjf8fmnr02r08.apps.googleusercontent.com",
+              "client_id": "580441862822-d5l9edh49gqv9p7j34sdt53on4qs6c9m.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

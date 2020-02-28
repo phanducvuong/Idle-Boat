@@ -1,5 +1,8 @@
 package com.ss.gameLogic.objects;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import static com.badlogic.gdx.math.Interpolation.*;
 import com.badlogic.gdx.math.Rectangle;
@@ -16,6 +19,7 @@ import com.badlogic.gdx.utils.Align;
 import com.ss.GMain;
 import com.ss.core.action.exAction.GSimpleAction;
 import com.ss.core.action.exAction.GTween;
+import com.ss.core.effect.SoundEffects;
 import com.ss.core.util.GUI;
 import com.ss.gameLogic.Game;
 import com.ss.gameLogic.Interface.ICollision;
@@ -42,6 +46,8 @@ public class Weapon extends Image {
   private IMerge iMerge;
   private ICollision iCollision;
   public String nameWeapon;
+
+//  public Sound mShot, mAddWeapon;
 
   private EffectGame effectGame = EffectGame.getInstance();
 
@@ -81,6 +87,7 @@ public class Weapon extends Image {
     bound = new Rectangle(bullet.getX(), bullet.getY(), bullet.getWidth(), bullet.getHeight());
 
     initBurnAndSmoke();
+//    initMusic();
     dragAndDrop();
   }
 
@@ -106,7 +113,7 @@ public class Weapon extends Image {
         isFight = true;
         isDrag = true;
 
-        gCannon.moveBy(x - cannon.getWidth() / 2, y - cannon.getHeight()*1.5f);
+        gCannon.moveBy(x - cannon.getWidth() / 2, y - cannon.getHeight());
 
       }
 
@@ -138,6 +145,13 @@ public class Weapon extends Image {
     });
 
   }
+
+//  private void initMusic() {
+//
+//    mShot = Gdx.audio.newSound(SoundEffects.cannon_shot);
+//    mAddWeapon = Gdx.audio.newSound(SoundEffects.buy_cannon);
+//
+//  }
 
   private void initBurnAndSmoke() {
 
@@ -770,7 +784,13 @@ public class Weapon extends Image {
                         iCollision.Collision(this);
 
                         return true;
-                      })//simple action check collision
+                      }),//simple action check collision
+                      run(() -> {
+
+//                        mShot.stop();
+//                        mShot.play(.1f);
+
+                      })
               )//parallel action
             ),
             () -> {

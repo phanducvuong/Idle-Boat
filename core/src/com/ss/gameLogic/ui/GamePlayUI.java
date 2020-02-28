@@ -18,7 +18,9 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Align;
+import com.platform.IPlatform;
 import com.ss.GMain;
+import com.ss.core.effect.SoundEffects;
 import com.ss.core.util.GStage;
 import com.ss.core.util.GUI;
 import com.ss.data.ItemShop;
@@ -37,6 +39,8 @@ public class GamePlayUI {
 
   private static final float WIDTH = GStage.getWorldWidth();
   private static final float HEIGHT = GStage.getWorldHeight();
+
+  private IPlatform plf = GMain.platform;
 
   private TextureAtlas textureAtlas = GMain.textureAtlas;
   private EffectGame effectGame = EffectGame.getInstance();
@@ -59,7 +63,7 @@ public class GamePlayUI {
   public Image imgRecycle;
 
   public Group gTopUI;
-  private Image imgCoinCollection, bgPercentFinished, imgBtnSoundOn, imgBtnSoundOff;
+  private Image imgCoinCollection, bgPercentFinished, imgBtnSoundOn, imgBtnSoundOff, iconAds;
   public Image imgPercentFinished;
   public Label lbCoinCollection, lbLevel, lbCoinBuyWeapon;
 
@@ -71,8 +75,15 @@ public class GamePlayUI {
   public Image imgShineWeapon, imgShineBoat, imgWeaponOrBoat, imgRateDamageOrHitpoint, imgRateRangeOrSpeed, bgUnlock;
   private Label lbWeaponOrBoat, lbUnlock, lbDamageOrHitpoint, lbRangeOrSpeed;
 
+  private Group gAds, gBtnOK;
+  private Image bgAds, imgBtnXAds, imgBtnOk;
+
   public Label lbEndGame;
   public Image bgEndGame;
+
+  public Group gTutorial, gbtnStart;
+  private Image arrowL, arrowR;
+  private int iPos = 0;
 
   public GamePlayUI(Game G, Group gUI) {
 
@@ -88,9 +99,11 @@ public class GamePlayUI {
     imgBgBlack.setVisible(false);
     gUI.addActor(imgBgBlack);
 
+    initTutorial();
     initShopAndBtnBuyWeapon();
     initTopUI();
     initShop();
+    initAds();
     initUIUnlockWeapon();
     eventClickListener();
 
@@ -108,7 +121,7 @@ public class GamePlayUI {
     lbNoEnough.setFontScale(.8f);
     lbNoEnough.getColor().a = 0;
     lbNoEnough.setPosition(GStage.getWorldWidth()/2 - lbNoEnough.getWidth()/2, GStage.getHeight()/2 - lbNoEnough.getHeight()/2);
-    G.gTopUI.addActor(lbNoEnough);
+    G.gAds.addActor(lbNoEnough);
 
     //lb show win game
     lbFinishedWave = new Label(C.lang.winGame, new Label.LabelStyle(Config.BITMAP_WHITE_FONT, null));
@@ -139,6 +152,170 @@ public class GamePlayUI {
 
   }
 
+  private void initTutorial() {
+
+    gTutorial = new Group();
+    List<Image> listTutorial = new ArrayList<>();
+
+    for (int i=1; i<=5; i++) {
+
+      Image t = GUI.createImage(GMain.tutorialAtlas, "t"+i);
+      t.setSize(GStage.getWorldWidth(), GStage.getWorldHeight());
+      gTutorial.addActor(t);
+      listTutorial.add(t);
+
+      if (i!=1)
+        t.setVisible(false);
+      else
+        t.setVisible(true);
+
+    }
+
+    arrowL = GUI.createImage(GMain.tutorialAtlas, "arrow");
+    arrowL.setOrigin(Align.center);
+    arrowL.setRotation(135);
+    arrowL.setPosition(20, GStage.getWorldHeight()/2 - arrowL.getHeight()/2);
+    gTutorial.addActor(arrowL);
+
+    arrowR = GUI.createImage(GMain.tutorialAtlas, "arrow");
+    arrowR.setOrigin(Align.center);
+    arrowR.setRotation(-45);
+    arrowR.setPosition(GStage.getWorldWidth() - arrowR.getWidth() - 20, GStage.getWorldHeight()/2 - arrowL.getHeight()/2);
+    gTutorial.addActor(arrowR);
+
+    gbtnStart = new Group();
+    Image btnStart = GUI.createImage(GMain.tutorialAtlas, "btn_start");
+    gbtnStart.setSize(btnStart.getWidth(), btnStart.getHeight());
+    gbtnStart.setOrigin(Align.center);
+    gbtnStart.addActor(btnStart);
+    gbtnStart.setPosition(GStage.getWorldWidth()/2 - btnStart.getWidth()/2, GStage.getWorldHeight() - 150);
+    gTutorial.addActor(gbtnStart);
+    gbtnStart.setVisible(false);
+
+    Label lbStart = new Label(C.lang.start, new Label.LabelStyle(Config.BITMAP_WHITE_FONT, null));
+    lbStart.setAlignment(Align.center);
+    lbStart.setFontScale(.8f);
+    lbStart.setPosition(gbtnStart.getWidth()/2 - lbStart.getWidth()/2, gbtnStart.getHeight()/2 - lbStart.getHeight()/2);
+    gbtnStart.addActor(lbStart);
+
+    arrowL.addListener(new InputListener(){
+      @Override
+      public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+
+        iPos -= 1;
+
+        if (iPos >= 0) {
+
+          Image t1 = listTutorial.get(iPos);
+          Image t2 = listTutorial.get(iPos+1);
+
+          SoundEffects.start("click_button");
+
+          effectGame.eftClick(arrowR, () -> effectGame.eftSliceTutorialL(t1, t2));
+          gbtnStart.setVisible(false);
+
+        }
+        else iPos = 0;
+
+        return super.touchDown(event, x, y, pointer, button);
+      }
+    });
+
+    arrowR.addListener(new InputListener(){
+      @Override
+      public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+
+        iPos += 1;
+        Runnable run = () -> {
+
+          if (iPos == listTutorial.size()-1)
+            gbtnStart.setVisible(true);
+
+        };
+
+        if (iPos < listTutorial.size()) {
+
+          SoundEffects.start("click_button");
+
+          Image t1 = listTutorial.get(iPos-1);
+          Image t2 = listTutorial.get(iPos);
+          effectGame.eftClick(arrowR, () -> effectGame.eftSliceTutorialR(t1, t2, run));
+
+        }
+        else
+          iPos -= 1;
+
+        return super.touchDown(event, x, y, pointer, button);
+      }
+    });
+
+    gbtnStart.addListener(new InputListener(){
+      @Override
+      public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+
+        Runnable run = () -> {
+          gTutorial.remove();
+          G.resetWhenLevelUp();
+
+          GMain.pref.putBoolean("isNewMember", true);
+        };
+
+        SoundEffects.start("click_button");
+
+        effectGame.eftClick(gbtnStart, run);
+
+        return super.touchDown(event, x, y, pointer, button);
+      }
+    });
+
+    G.gTutorial.addActor(gTutorial);
+  }
+
+  private void initAds() {
+
+    gAds = new Group();
+
+    gAds.setOrigin(GStage.getWorldWidth()/2, GStage.getWorldHeight()/2);
+
+    bgAds = GUI.createImage(textureAtlas, "bg_black");
+    bgAds.setSize(GStage.getWorldWidth(), GStage.getWorldHeight());
+    bgAds.setVisible(false);
+    G.gAds.addActor(bgAds);
+
+    Image bgAds = GUI.createImage(textureAtlas, "bg_ads");
+    bgAds.setPosition(GStage.getWorldWidth()/2 - bgAds.getWidth()/2, GStage.getWorldHeight()/2 - bgAds.getHeight()/2);
+    gAds.addActor(bgAds);
+
+    Label lbAds = new Label(C.lang.coin, new Label.LabelStyle(Config.BITMAP_YELLOW_FONT, null));
+    lbAds.setAlignment(Align.center);
+    lbAds.setPosition(bgAds.getX() + bgAds.getWidth()/2 - lbAds.getWidth()/2, bgAds.getY() + bgAds.getHeight()/2 - 150);
+    lbAds.setFontScale(.7f);
+    gAds.addActor(lbAds);
+
+    gBtnOK = new Group();
+    gAds.addActor(gBtnOK);
+
+    imgBtnOk = GUI.createImage(textureAtlas, "btn_agree");
+    gBtnOK.setSize(imgBtnOk.getWidth(), imgBtnOk.getHeight());
+    gBtnOK.setPosition(bgAds.getX() + bgAds.getWidth()/2 - gBtnOK.getWidth()/2, bgAds.getY() + bgAds.getHeight() - 120);
+    gBtnOK.setOrigin(Align.center);
+    gBtnOK.addActor(imgBtnOk);
+
+    Label lbAgree = new Label(C.lang.ok, new Label.LabelStyle(Config.BITMAP_YELLOW_FONT, null));
+    lbAgree.setAlignment(Align.center);
+    lbAgree.setPosition(imgBtnOk.getWidth()/2 - lbAgree.getWidth()/2 + 15, imgBtnOk.getHeight()/2 - lbAgree.getHeight()/2);
+    lbAgree.setFontScale(.7f);
+    gBtnOK.addActor(lbAgree);
+
+    imgBtnXAds = GUI.createImage(textureAtlas, "btn_x");
+    imgBtnXAds.setPosition(bgAds.getX() + bgAds.getWidth() - 70, bgAds.getY() - 20);
+    gAds.addActor(imgBtnXAds);
+
+    gAds.setScale(0);
+    G.gAds.addActor(gAds);
+
+  }
+
   public void setNewWave(int wave) {
 
     lbLevel.setText(wave+"");
@@ -161,7 +338,7 @@ public class GamePlayUI {
     gBuyWeapon.addActor(lbCoinBuyWeapon);
     gBuyWeapon.setOrigin(btnCoin.getWidth()/2, btnCoin.getHeight()/2);
 
-    gBuyWeapon.setPosition(WIDTH/2 - btnCoin.getWidth()/2, HEIGHT - btnCoin.getHeight() - 5);
+    gBuyWeapon.setPosition(WIDTH/2 - btnCoin.getWidth()/2, HEIGHT - btnCoin.getHeight() - 40);
 
     imgShop = GUI.createImage(textureAtlas, "shop");
     imgShop.setPosition(gBuyWeapon.getX() + btnCoin.getWidth() + 20, gBuyWeapon.getY() + 5);
@@ -213,12 +390,17 @@ public class GamePlayUI {
     imgBtnSoundOff.setOrigin(Align.center);
     imgBtnSoundOff.setVisible(false);
 
+    iconAds = GUI.createImage(textureAtlas, "icon_ads");
+    iconAds.setOrigin(Align.center);
+    iconAds.setPosition(imgBtnSoundOn.getX(), imgBtnSoundOn.getY() + 100);
+
     G.gTopUI.addActor(imgCoinCollection);
     G.gTopUI.addActor(lbCoinCollection);
     G.gTopUI.addActor(bgPercentFinished);
     G.gTopUI.addActor(lbLevel);
     G.gTopUI.addActor(imgBtnSoundOn);
     G.gTopUI.addActor(imgBtnSoundOff);
+    G.gTopUI.addActor(iconAds);
     G.gTopUI.addActor(imgPercentFinished);
 
   }
@@ -486,6 +668,9 @@ public class GamePlayUI {
     lbDamageOrHitpoint.setText(C.lang.hitpoint);
     lbRangeOrSpeed.setText(C.lang.speed);
 
+    SoundEffects.stop("unlock_enemy");
+    SoundEffects.start("unlock_enemy");
+
     effectGame.eftNewWeapon(G.gEffect, run);
 
   }
@@ -501,6 +686,9 @@ public class GamePlayUI {
                 moveBy(0, GStage.getWorldHeight(), .45f, swingIn),
                 run(() -> bgShopp.setVisible(false))
         );
+
+        SoundEffects.stop("click_button");
+        SoundEffects.start("click_button");
 
         gShop.addAction(seq);
 
@@ -587,6 +775,7 @@ public class GamePlayUI {
             gBuyWeapon.setTouchable(Touchable.enabled);
 
           };
+
           effectGame.eftClick(gBuyWeapon, run);
 
           return super.touchDown(event, x, y, pointer, button);
@@ -603,10 +792,14 @@ public class GamePlayUI {
 
           imgBtnSoundOn.setTouchable(Touchable.disabled);
           Runnable run = () -> {
+            SoundEffects.isMute = true;
             imgBtnSoundOn.setVisible(false);
             imgBtnSoundOff.setVisible(true);
             imgBtnSoundOff.setTouchable(Touchable.enabled);
           };
+
+          SoundEffects.stop("click_button");
+          SoundEffects.start("click_button");
 
           effectGame.eftClick(imgBtnSoundOn, run);
 
@@ -621,10 +814,14 @@ public class GamePlayUI {
 
           imgBtnSoundOff.setTouchable(Touchable.disabled);
           Runnable run = () -> {
+            SoundEffects.isMute = false;
             imgBtnSoundOff.setVisible(false);
             imgBtnSoundOn.setVisible(true);
             imgBtnSoundOn.setTouchable(Touchable.enabled);
           };
+
+          SoundEffects.stop("click_button");
+          SoundEffects.start("click_button");
 
           effectGame.eftClick(imgBtnSoundOff, run);
 
@@ -645,6 +842,9 @@ public class GamePlayUI {
             bgShopp.setVisible(true);
             gShop.addAction(moveBy(0, -GStage.getWorldHeight(), .65f, swingOut));
           };
+
+          SoundEffects.stop("click_button");
+          SoundEffects.start("click_button");
 
           effectGame.eftClick(imgShop, run);
 
@@ -674,7 +874,109 @@ public class GamePlayUI {
 
           };
 
+          SoundEffects.stop("click_button");
+          SoundEffects.start("click_button");
+
           effectGame.eftClick(gContinue, run);
+
+          return super.touchDown(event, x, y, pointer, button);
+        }
+      });
+
+    }
+
+    btn_x_ads: {
+
+      imgBtnXAds.addListener(new InputListener() {
+        @Override
+        public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+
+          Runnable run = () -> bgAds.setVisible(false);
+
+          SequenceAction seq = sequence(
+                  scaleTo(0f, 0f, .25f, linear),
+                  run(run)
+          );
+
+          SoundEffects.stop("click_button");
+          SoundEffects.start("click_button");
+
+          gAds.addAction(seq);
+
+          return super.touchDown(event, x, y, pointer, button);
+        }
+      });
+
+    }
+
+    btn_ok : {
+
+      gBtnOK.addListener(new InputListener() {
+        @Override
+        public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+
+          gBtnOK.setTouchable(Touchable.disabled);
+          Runnable run = () -> {
+
+            if (plf.isVideoRewardReady()) {
+
+              plf.ShowVideoReward((boolean success) -> {
+                if (success) {
+
+                  Runnable run1 = () -> {
+                    bgAds.setVisible(false);
+                    gBtnOK.setTouchable(Touchable.enabled);
+                    setTextCoinCollection(Config.coin);
+                  };
+
+                  SequenceAction seq = sequence(
+                          scaleTo(0f, 0f, .25f, linear),
+                          run(run1)
+                  );
+
+                  gAds.addAction(seq);
+
+                }
+                else
+                  gBtnOK.setTouchable(Touchable.enabled);
+
+              });
+
+            }
+            else
+              gBtnOK.setTouchable(Touchable.enabled);
+
+          };
+
+          SoundEffects.stop("click_button");
+          SoundEffects.start("click_button");
+
+          effectGame.eftClick(gBtnOK, run);
+
+          return super.touchDown(event, x, y, pointer, button);
+        }
+      });
+
+    }
+
+    btn_icon_ads: {
+
+      iconAds.addListener(new InputListener() {
+
+        @Override
+        public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+
+          Runnable run = () -> {
+
+            bgAds.setVisible(true);
+            gAds.addAction(scaleTo(1f, 1f, .75f, swingOut));
+
+          };
+
+          SoundEffects.stop("click_button");
+          SoundEffects.start("click_button");
+
+          effectGame.eftClick(iconAds, run);
 
           return super.touchDown(event, x, y, pointer, button);
         }

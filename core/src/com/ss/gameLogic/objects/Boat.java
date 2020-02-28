@@ -1,5 +1,8 @@
 package com.ss.gameLogic.objects;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import static com.badlogic.gdx.math.Interpolation.*;
 import com.badlogic.gdx.math.Rectangle;
@@ -13,6 +16,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.utils.Align;
 import com.ss.GMain;
 import com.ss.core.action.exAction.GSimpleAction;
+import com.ss.core.effect.SoundEffects;
 import com.ss.core.util.GStage;
 import com.ss.core.util.GUI;
 import com.ss.gameLogic.Game;
@@ -33,6 +37,8 @@ public class Boat extends Image {
   public boolean isAlive = false;
   public int col;
   public Label lbCoin;
+
+//  public Sound burn, smoke;
 
   private Game G;
   private Group gBoat;
@@ -62,6 +68,15 @@ public class Boat extends Image {
 
     assert imgBoat != null;
     bound = new Rectangle(imgBoat.getX(), imgBoat.getY(), imgBoat.getWidth(), imgBoat.getHeight() - 15);
+
+//    initMusic();
+  }
+
+  private void initMusic() {
+
+//    smoke = Gdx.audio.newSound(SoundEffects.smoke);
+//    burn = Gdx.audio.newSound(SoundEffects.burn);
+
   }
 
   public void setPosBoat() {

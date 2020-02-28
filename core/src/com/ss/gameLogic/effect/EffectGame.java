@@ -9,7 +9,9 @@ import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.google.gson.Gson;
+import com.ss.core.action.exAction.GSimpleAction;
 import com.ss.core.action.exAction.GTween;
+import com.ss.core.effect.SoundEffects;
 import com.ss.core.util.GStage;
 import com.ss.gameLogic.Game;
 import com.ss.gameLogic.objects.Boat;
@@ -89,7 +91,7 @@ public class EffectGame {
 
   }
 
-  public void eftBurn(Image image, float x, float y) {
+  public void eftBurn(Image image, float x, float y, Boat boat) {
 
     image.setPosition(x, y);
     image.setScale(0);
@@ -97,7 +99,15 @@ public class EffectGame {
     image.setVisible(true);
 
     SequenceAction seq = sequence(
-            scaleTo(1.2f, 1.2f, .25f, fastSlow),
+            parallel(
+                    scaleTo(1.2f, 1.2f, .25f, fastSlow),
+                    run(() -> {
+
+//                      SoundEffects.stop(boat.burn);
+//                      SoundEffects.start(boat.burn);
+
+                    })
+            ),
             alpha(0, .25f, fastSlow),
             run(() -> {
 
@@ -123,7 +133,7 @@ public class EffectGame {
 
   }
 
-  public void eftSmoke(Image image, float x, float y) {
+  public void eftSmoke(Image image, float x, float y, Boat boat) {
 
     image.setPosition(x, y);
     image.setScale(0);
@@ -135,7 +145,13 @@ public class EffectGame {
             parallel(
                     scaleTo(1, 1, .25f, fastSlow),
                     moveBy(0, -20, .25f, fastSlow),
-                    alpha(0, 1f, linear)
+                    alpha(0, 1f, linear),
+                    run(() -> {
+
+//                      SoundEffects.stop(boat.smoke);
+//                      SoundEffects.start(boat.smoke);
+
+                    })
             ),
             run(() -> {
               image.setScale(0);
@@ -201,7 +217,15 @@ public class EffectGame {
     pos.getImgEftMerge().setVisible(true);
     pos.getImgEftMerge().setZIndex(1000);
     SequenceAction seq = sequence(
-            scaleTo(1f, 1f, .5f, fastSlow),
+            parallel(
+                    scaleTo(1f, 1f, .5f, fastSlow),
+                    run(() -> {
+
+//                      SoundEffects.stop(pos.mMergeCannon);
+//                      SoundEffects.start(pos.mMergeCannon);
+
+                    })
+            ),
             run(pos::resetImgMerge)
     );
 
@@ -266,6 +290,19 @@ public class EffectGame {
             run(() -> G.logicGame.chkWinOrEndGame(isWin))
     );
 
+    if (isWin) {
+
+      SoundEffects.stop("wave_finished");
+      SoundEffects.start("wave_finished");
+
+    }
+    else {
+
+      SoundEffects.stop("wave_failed");
+      SoundEffects.start("wave_failed");
+
+    }
+
     lb.addAction(seq);
 
   }
@@ -277,13 +314,52 @@ public class EffectGame {
     float y = GStage.getWorldHeight()/2 - lb.getHeight()/2 - 200;
 
     SequenceAction seq = sequence(
-            moveTo(xTo, y, 1.25f, fastSlow),
+            parallel(
+                    moveTo(xTo, y, 1.25f, fastSlow),
+                    run(() -> {
+
+                      SoundEffects.start("wave_start");
+
+                    })
+            ),
             delay(.75f),
             moveBy(GStage.getWorldWidth(), 0, .75f, swingIn),
             run(onComplete)
     );
 
     lb.addAction(seq);
+
+  }
+
+  public void eftSliceTutorialL(Image t1, Image t2) {
+
+    t1.setPosition(-t1.getWidth(), 0);
+    t1.setVisible(true);
+
+    t1.addAction(moveTo(0, 0, .25f, fastSlow));
+
+    SequenceAction seq = sequence(
+            moveTo(GStage.getWorldWidth(), 0, .25f, fastSlow),
+            run(() -> t2.setVisible(false))
+    );
+
+    t2.addAction(seq);
+
+  }
+
+  public void eftSliceTutorialR(Image t1, Image t2, Runnable onComplete) {
+
+    t2.setVisible(true);
+    t2.setPosition(GStage.getWorldWidth(), 0);
+
+    SequenceAction seq = sequence(
+            moveTo(-t1.getWidth(), 0, .25f, fastSlow),
+            run(() -> t1.setVisible(false)),
+            run(onComplete)
+    );
+
+    t1.addAction(seq);
+    t2.addAction(moveTo(0, 0, .25f, fastSlow));
 
   }
 
@@ -336,7 +412,13 @@ public class EffectGame {
             parallel(
                     moveTo(xTo, yTo, .5f, fastSlow),
                     alpha(0, .5f, linear),
-                    run(() -> G.animMergeWeapon.stop())
+                    run(() -> {
+
+                      G.animMergeWeapon.stop();
+                      SoundEffects.stop("unlock_cannon_intro");
+                      SoundEffects.start("unlock_cannon_intro");
+
+                    })
             ),
             run(onComplete)
     );

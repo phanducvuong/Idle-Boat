@@ -13,6 +13,7 @@ public class C {
 
     public static class remote {
         public static int adsTime = 50;
+        public static long coin = Config.coin;
         static void initRemoteConfig() {
 
         }
@@ -21,7 +22,6 @@ public class C {
     public static class lang {
         private static I18NBundle locale;
         public static String title_shop = "";
-        public static String adsTimeLbl = "";
         public static String noEnoughEmty = "";
         public static String noEnoughCoin = "";
         public static String winGame = "";
@@ -31,9 +31,12 @@ public class C {
         public static String unlock_boat = "";
         public static String damage = "";
         public static String range = "";
-      public static String hitpoint = "";
-      public static String speed = "";
+        public static String hitpoint = "";
+        public static String speed = "";
         public static String textContinue = "";
+        public static String coin = "";
+        public static String ok = "";
+        public static String start = "";
 
         public static String cannon_1 = "";
         public static String cannon_2 = "";
@@ -100,7 +103,9 @@ public class C {
             }
 
             title_shop = locale.get("title_shop");
-            adsTimeLbl = locale.format("adsTime", remote.adsTime);
+            coin = locale.format("coin", remote.coin);
+            ok = locale.get("ok");
+            start = locale.get("start");
 
             noEnoughEmty = locale.get("no_enough_empty");
             noEnoughCoin = locale.get("no_enough_coin");

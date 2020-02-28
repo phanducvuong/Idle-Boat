@@ -3,6 +3,7 @@ package com.ss.gameLogic;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.ss.core.effect.SoundEffects;
 import com.ss.data.Data;
 import com.ss.data.ItemShop;
 import com.ss.gameLogic.config.C;
@@ -92,6 +93,9 @@ public class LogicGame {
   }
 
   private void changePosOfWeapon(PosOfWeapon pFrom, PosOfWeapon pTo) {
+
+//    SoundEffects.stop(pFrom.mWhoosh);
+//    SoundEffects.start(pFrom.mWhoosh);
 
     Weapon weTemp = pTo.getWeapon();
     pTo.setWeapon(pFrom.getWeapon());
@@ -193,6 +197,10 @@ public class LogicGame {
 
       Runnable run = () -> {
         G.bgGame.remove();
+
+        SoundEffects.stop("unlock_cannon");
+        SoundEffects.start("unlock_cannon");
+
         G.gamePlayUI.showGUnlockWeaponOrBoat(weapon);
       };
 

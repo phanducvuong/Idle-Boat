@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.platform.IPlatform;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.ss.core.effect.SoundEffects;
 import com.ss.core.exSprite.particle.GParticleSystem;
 import com.ss.core.util.GAssetsManager;
 import com.ss.core.util.GDirectedGame;
@@ -22,7 +23,7 @@ public class GMain extends GDirectedGame {
   public static int screenHeight = 0;
   public static int screenWidth = 0;
   public static final int testType = 2;
-  public static TextureAtlas textureAtlas, weaponAtlas, boatAtlas, weaponMerge, boatMerge, animAtlas;
+  public static TextureAtlas textureAtlas, weaponAtlas, boatAtlas, weaponMerge, boatMerge, animAtlas, tutorialAtlas;
   public static float ratioX, ratioY;
   public static Preferences pref;
 
@@ -95,11 +96,13 @@ public class GMain extends GDirectedGame {
       weaponMerge = GAssetsManager.getTextureAtlas("weapon_merge.atlas");
       boatMerge = GAssetsManager.getTextureAtlas("boat_merge.atlas");
       animAtlas = GAssetsManager.getTextureAtlas("anim.atlas");
+      tutorialAtlas = GAssetsManager.getTextureAtlas("tutorial.atlas");
 
       pref = Gdx.app.getPreferences("data_idle_boat");
 
       this.init();
       C.init();
+      SoundEffects.initSound();
       Data.getInstance();
       this.setScreen(menuScreen());
 

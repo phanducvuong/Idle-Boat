@@ -1,10 +1,14 @@
 package com.ss.gameLogic.objects;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.utils.Align;
 import com.ss.GMain;
+import com.ss.core.effect.SoundEffects;
 import com.ss.core.util.GUI;
 import com.ss.gameLogic.config.Config;
 import com.ss.gameLogic.effect.EffectGame;
@@ -21,6 +25,7 @@ public class PosOfWeapon {
   private Image imgEftMerge;
 
   public int col;
+//  public Sound mMergeCannon, mWhoosh;
 
   public PosOfWeapon(Group gUI, Group gPos) {
     this.gUI = gUI;
@@ -36,6 +41,9 @@ public class PosOfWeapon {
     imgEftMerge.setScale(0);
     imgEftMerge.setVisible(false);
     gPos.addActor(imgEftMerge);
+
+//    mMergeCannon = Gdx.audio.newSound(SoundEffects.merge_cannon);
+//    mWhoosh = Gdx.audio.newSound(SoundEffects.whoosh);
 
   }
 
